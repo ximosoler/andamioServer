@@ -1,5 +1,6 @@
 package net.ausiasmarch.wildcart;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="factura")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class FacturaEntity implements Serializable{
     
     @Id
