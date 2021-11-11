@@ -1,4 +1,4 @@
-package net.ausiasmarch.wildcart.bean;
+package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,12 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="usuario")
+@Table(name = "usuario")
 @JsonIgnoreProperties({"hibernateLazyInitialize", "handler"})
-public class UsuarioEntity implements Serializable{
+public class UsuarioEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String dni;
     private String nombre;
@@ -38,7 +38,7 @@ public class UsuarioEntity implements Serializable{
     public UsuarioEntity(Long id) {
         this.id = id;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -142,6 +142,5 @@ public class UsuarioEntity implements Serializable{
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-    
-    
+
 }

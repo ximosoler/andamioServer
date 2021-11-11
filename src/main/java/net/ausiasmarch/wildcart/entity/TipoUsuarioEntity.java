@@ -1,4 +1,4 @@
-package net.ausiasmarch.wildcart.bean;
+package net.ausiasmarch.wildcart.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tipousuario")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipoUsuarioEntity {
 
     @Id

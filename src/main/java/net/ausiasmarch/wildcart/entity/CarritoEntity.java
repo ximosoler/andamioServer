@@ -1,4 +1,4 @@
-package net.ausiasmarch.wilcart.entity;
+package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
@@ -10,23 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="carrito")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+@Table(name = "carrito")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
-public class Carrito implements Serializable {
+public class CarritoEntity implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int cantidad;
     private double precio;
     private Long id_producto;
     private Long id_usuario;
-    
-    
-    public Carrito() {
-        
-        
-        
+
+    public CarritoEntity() {
+
     }
 
     public Long getId() {
@@ -50,9 +48,7 @@ public class Carrito implements Serializable {
     }
 
     public void setPrecio(double precio) {
-        
-        
-        
+
         this.precio = precio;
     }
 
@@ -71,5 +67,5 @@ public class Carrito implements Serializable {
     public void setId_usuario(Long id_usuario) {
         this.id_usuario = id_usuario;
     }
-    
+
 }

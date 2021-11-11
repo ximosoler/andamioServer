@@ -1,4 +1,3 @@
-
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "producto")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ProductoEntity  {
+public class ProductoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +31,6 @@ public class ProductoEntity  {
     private Double precio;
     private Long imagen;
     private Integer descuento;
-    
-  
 
     public ProductoEntity() {
     }
@@ -97,8 +94,5 @@ public class ProductoEntity  {
     public void setDescuento(Integer descuento) {
         this.descuento = descuento;
     }
-
-    
-            
 
 }

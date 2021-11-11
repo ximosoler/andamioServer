@@ -1,4 +1,4 @@
-package net.ausiasmarch.wildcart;
+package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
@@ -9,14 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="factura")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-public class FacturaEntity implements Serializable{
-    
+@Table(name = "factura")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class FacturaEntity implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime fecha;
     private int iva;
@@ -27,7 +26,7 @@ public class FacturaEntity implements Serializable{
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id) {                        
         this.id = id;
     }
 
