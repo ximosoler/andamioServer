@@ -22,7 +22,7 @@ public class CompraEntity implements Serializable{
     private Long id ;
     private int cantidad;
     private double precio;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
     private int descuento_usuario;
     private int descuento_producto;
