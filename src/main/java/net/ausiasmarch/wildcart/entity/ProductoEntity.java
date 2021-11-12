@@ -1,11 +1,13 @@
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +25,9 @@ public class ProductoEntity {
     private Double precio;
     private Long imagen;
     private Integer descuento;
+
+    @OneToMany(mappedBy = "producto")
+    private ArrayList<CompraEntity> compras = new ArrayList<>();
 
     public ProductoEntity() {
     }
@@ -87,4 +92,7 @@ public class ProductoEntity {
         this.descuento = descuento;
     }
 
+    public int getCompras() {
+        return compras.size();
+    }
 }
