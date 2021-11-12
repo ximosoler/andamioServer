@@ -31,6 +31,9 @@ public class CompraEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_factura")
     private FacturaEntity facturaentity;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private ProductoEntity producto;
 
     public CompraEntity() {
     }
@@ -99,4 +102,11 @@ public class CompraEntity implements Serializable {
         this.facturaentity = facturaentity;
     }
 
+    public ProductoEntity getProducto() {
+        return producto;
+    }
+
+    public void setProducto(ProductoEntity producto) {
+        this.producto = producto;
+    }
 }
