@@ -37,6 +37,7 @@ public class UsuarioEntity implements Serializable {
     private TipoUsuarioEntity tipousuario;
 
     @OneToMany(mappedBy = "usuario")
+    private ArrayList<CarritoEntity> carritos = new ArrayList<>();
     private ArrayList<FacturaEntity> facturas = new ArrayList<>();
 
     public UsuarioEntity() {
@@ -150,4 +151,7 @@ public class UsuarioEntity implements Serializable {
         this.tipousuario = tipousuario;
     }
 
+    public int getCarritos() {
+        return carritos.size();
+    }
 }
