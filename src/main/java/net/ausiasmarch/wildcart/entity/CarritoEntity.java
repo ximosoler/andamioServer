@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +23,10 @@ public class CarritoEntity implements Serializable {
     private double precio;
     private Long id_producto;
     private Long id_usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
 
     public CarritoEntity() {
 
