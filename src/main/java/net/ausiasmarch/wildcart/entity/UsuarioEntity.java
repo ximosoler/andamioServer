@@ -2,12 +2,14 @@ package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,13 +31,13 @@ public class UsuarioEntity implements Serializable {
     private String token;
     private boolean validado;
     private boolean activo;
-    
-    
+
     @ManyToOne
-    @JoinColumn(name="id_tipousuario")
+    @JoinColumn(name = "id_tipousuario")
     private TipoUsuarioEntity tipousuario;
-    
-    
+
+    @OneToMany(mappedBy = "usuario")
+    private ArrayList<FacturaEntity> facturas = new ArrayList<>();
 
     public UsuarioEntity() {
     }
