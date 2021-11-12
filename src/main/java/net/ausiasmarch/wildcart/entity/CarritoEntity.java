@@ -27,6 +27,9 @@ public class CarritoEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_producto")
 	private ProductoEntity producto;
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private UsuarioEntity usuario;
 
 	public CarritoEntity() {
 	}

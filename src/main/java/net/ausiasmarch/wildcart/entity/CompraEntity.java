@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,7 +27,13 @@ public class CompraEntity implements Serializable {
     private int descuento_usuario;
     private int descuento_producto;
     private Long id_producto;
-    private Long id_factura;
+
+    @ManyToOne
+    @JoinColumn(name = "id_factura")
+    private FacturaEntity facturaentity;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private ProductoEntity producto;
 
     public CompraEntity() {
     }
@@ -86,12 +94,19 @@ public class CompraEntity implements Serializable {
         this.id_producto = id_producto;
     }
 
-    public Long getId_factura() {
-        return id_factura;
+    public FacturaEntity getFacturaentity() {
+        return facturaentity;
     }
 
-    public void setId_factura(Long id_factura) {
-        this.id_factura = id_factura;
+    public void setFacturaentity(FacturaEntity facturaentity) {
+        this.facturaentity = facturaentity;
     }
 
+    public ProductoEntity getProducto() {
+        return producto;
+    }
+
+    public void setProducto(ProductoEntity producto) {
+        this.producto = producto;
+    }
 }
