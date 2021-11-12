@@ -2,6 +2,8 @@ package net.ausiasmarch.wildcart.api;
 
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.bean.UsuarioBean;
+import net.ausiasmarch.wildcart.entity.UsuarioEntity;
+import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,21 +21,30 @@ public class SessionController {
     @Autowired
     HttpSession oHttpSession;
 
+    @Autowired
+    UsuarioRepository oUsuarioRepository;
+
     @GetMapping("")
-    public ResponseEntity<UsuarioBean> check() {
-        UsuarioBean oUsuarioBean = (UsuarioBean) oHttpSession.getAttribute("usuario");
-        if (oUsuarioBean == null) {
+    public ResponseEntity<UsuarioEntity> check() {
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        try {
+            oSessionUsuarioEntity = oUsuarioRepository.findById(oSessionUsuarioEntity.getId()).get();
+        } catch (Exception ex) {
+            oSessionUsuarioEntity = null;
+        }
+        if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<UsuarioBean>(oUsuarioBean, HttpStatus.OK);
+            return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
         }
     }
 
     @PostMapping("")
-    public ResponseEntity<UsuarioBean> login(@RequestBody UsuarioBean oUsuarioBean) {
-        if (oUsuarioBean.getLogin().equalsIgnoreCase("admin") && oUsuarioBean.getPassword().equalsIgnoreCase("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918")) {
-            oHttpSession.setAttribute("usuario", oUsuarioBean);
-            return new ResponseEntity<UsuarioBean>(oUsuarioBean, HttpStatus.OK);
+    public ResponseEntity<UsuarioEntity> login(@RequestBody UsuarioBean oUsuarioBean) {
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(), oUsuarioBean.getPassword().toLowerCase());
+        if (oUsuarioEntity != null) {
+            oHttpSession.setAttribute("usuario", oUsuarioEntity);
+            return new ResponseEntity<UsuarioEntity>(oUsuarioEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
