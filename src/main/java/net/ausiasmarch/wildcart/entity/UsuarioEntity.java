@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,10 +26,16 @@ public class UsuarioEntity implements Serializable {
     private String password;
     private String email;
     private int descuento;
-    private Long id_tipousuario;
     private String token;
     private boolean validado;
     private boolean activo;
+    
+    
+    @ManyToOne
+    @JoinColumn(name="id_tipousuario")
+    private TipoUsuarioEntity tipousuario;
+    
+    
 
     public UsuarioEntity() {
     }
@@ -108,14 +116,6 @@ public class UsuarioEntity implements Serializable {
         this.descuento = descuento;
     }
 
-    public Long getId_tipousuario() {
-        return id_tipousuario;
-    }
-
-    public void setId_tipousuario(Long id_tipousuario) {
-        this.id_tipousuario = id_tipousuario;
-    }
-
     public String getToken() {
         return token;
     }
@@ -138,6 +138,14 @@ public class UsuarioEntity implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public TipoUsuarioEntity getTipousuario() {
+        return tipousuario;
+    }
+
+    public void setTipousuario(TipoUsuarioEntity tipousuario) {
+        this.tipousuario = tipousuario;
     }
 
 }

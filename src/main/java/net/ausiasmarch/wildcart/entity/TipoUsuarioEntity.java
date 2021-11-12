@@ -5,8 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
+import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "tipousuario")
@@ -17,6 +18,9 @@ public class TipoUsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+
+    @OneToMany(mappedBy = "tipousuario")
+    private ArrayList<UsuarioEntity> usuarios = new ArrayList<>();
 
     public TipoUsuarioEntity(Long id, String nombre) {
         this.id = id;
@@ -30,4 +34,9 @@ public class TipoUsuarioEntity {
     public String getNombre() {
         return this.nombre;
     }
+
+    public int getUsuarios() {
+        return usuarios.size();
+    }
+
 }
