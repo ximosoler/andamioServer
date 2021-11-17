@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TipoProductoRepository extends JpaRepository<TipoProductoEntity, Long> {
 
-    Page<TipoProductoEntity> findByIdIgnoreCaseContainingOrNombreIgnoreCaseContaining(String id, String nombre, Pageable oPageable);
+    Page<TipoProductoEntity> findByNombreIgnoreCaseContaining(String nombre, Pageable oPageable);
 
 }

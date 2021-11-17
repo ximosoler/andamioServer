@@ -57,51 +57,62 @@ public class TipoProductoController {
 
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-            if (oTipoProductoRepository.existsById(id)) {
-                oTipoProductoRepository.deleteById(id);
-                if (oTipoProductoRepository.existsById(id)) {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                } else {
-                    return new ResponseEntity<Long>(id, HttpStatus.OK);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-            }
-        } else if (oSessionUsuarioEntity == null) {
+        if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                if (oTipoProductoRepository.existsById(id)) {
+                    oTipoProductoRepository.deleteById(id);
+                    if (oTipoProductoRepository.existsById(id)) {
+                        return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+                    } else {
+                        return new ResponseEntity<Long>(id, HttpStatus.OK);
+                    }
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            }
         }
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody TipoProductoEntity oTipoProductoEntity) {
+    public ResponseEntity<?> create(@RequestBody TipoProductoEntity oTipoProductoEntity
+    ) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-            oTipoProductoEntity.setId(null);
-            return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
-        } else if (oSessionUsuarioEntity == null) {
+        if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                    oTipoProductoEntity.setId(null);
+                    return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            }
         }
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody TipoProductoEntity oTipoProductoEntity) {
+    public ResponseEntity<?> update(@RequestBody TipoProductoEntity oTipoProductoEntity
+    ) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-            if (oTipoProductoRepository.existsById(oTipoProductoEntity.getId())) {
-                return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-            }
-        } else if (oSessionUsuarioEntity == null) {
+        if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                if (oTipoProductoRepository.existsById(oTipoProductoEntity.getId())) {
+                    return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+                }
+            } else {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            }
         }
     }
-
 }
