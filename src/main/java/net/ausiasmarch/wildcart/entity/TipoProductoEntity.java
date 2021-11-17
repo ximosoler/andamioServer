@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class TipoProductoEntity {
     private String nombre;
 
     @OneToMany(mappedBy = "tipoproducto")
-    private ArrayList<ProductoEntity> productos = new ArrayList<>();
+    private List<ProductoEntity> productos = new ArrayList<>();
 
     public Long getId() {
         return id;

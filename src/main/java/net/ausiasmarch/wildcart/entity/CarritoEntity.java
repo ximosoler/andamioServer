@@ -12,75 +12,67 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "carrito")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class CarritoEntity implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private int cantidad;
-	private double precio;
-	private Long id_producto;
-	private Long id_usuario;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private int cantidad;
+    private double precio;
 
-	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private ProductoEntity producto;
-	@ManyToOne
-	@JoinColumn(name = "id_usuario")
-	private UsuarioEntity usuario;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private ProductoEntity producto;
 
-	public CarritoEntity() {
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
 
-	public Long getId() {
-		return id;
-	}
+    public CarritoEntity() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public int getCantidad() {
-		return cantidad;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
+    public int getCantidad() {
+        return cantidad;
+    }
 
-	public double getPrecio() {
-		return precio;
-	}
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
-	public void setPrecio(double precio) {
+    public double getPrecio() {
+        return precio;
+    }
 
-		this.precio = precio;
-	}
+    public void setPrecio(double precio) {
 
-	public Long getId_producto() {
-		return id_producto;
-	}
+        this.precio = precio;
+    }
 
-	public void setId_producto(Long id_producto) {
-		this.id_producto = id_producto;
-	}
+    public ProductoEntity getProducto() {
+        return producto;
+    }
 
-	public Long getId_usuario() {
-		return id_usuario;
-	}
+    public void setProducto(ProductoEntity producto) {
+        this.producto = producto;
+    }
 
-	public void setId_usuario(Long id_usuario) {
-		this.id_usuario = id_usuario;
-	}
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
 
-	public ProductoEntity getProducto() {
-		return producto;
-	}
-
-	public void setProducto(ProductoEntity producto) {
-		this.producto = producto;
-	}
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
+    }
 
 }

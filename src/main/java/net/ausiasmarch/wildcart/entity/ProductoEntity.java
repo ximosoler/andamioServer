@@ -1,7 +1,6 @@
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -9,98 +8,115 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "producto")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProductoEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
-	private String codigo;
-	private String nombre;
-	private Integer existencias;
-	private Double precio;
-	private Long imagen;
-	private Integer descuento;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    
+    private String codigo;
+    private String nombre;
+    private Integer existencias;
+    private Double precio;
+    private Long imagen;
+    private Integer descuento;
 
-	@OneToMany(mappedBy = "producto")
-	private List<CarritoEntity> carrito = new ArrayList<>();
-	@OneToMany(mappedBy = "producto")
-	private ArrayList<CompraEntity> compras = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "id_tipoproducto")
+    private TipoProductoEntity tipoproducto;
 
-	public ProductoEntity() {
-	}
+    @OneToMany(mappedBy = "producto")
+    private List<CarritoEntity> carrito = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "producto")
+    private List<CompraEntity> compras = new ArrayList<>();
 
-	public ProductoEntity(Long id) {
-		this.id = id;
-	}
+    public ProductoEntity() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public ProductoEntity(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getCodigo() {
-		return codigo;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+    public String getCodigo() {
+        return codigo;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public Integer getExistencias() {
-		return existencias;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public void setExistencias(Integer existencias) {
-		this.existencias = existencias;
-	}
+    public Integer getExistencias() {
+        return existencias;
+    }
 
-	public Double getPrecio() {
-		return precio;
-	}
+    public void setExistencias(Integer existencias) {
+        this.existencias = existencias;
+    }
 
-	public void setPrecio(Double precio) {
-		this.precio = precio;
-	}
+    public Double getPrecio() {
+        return precio;
+    }
 
-	public Long getImagen() {
-		return imagen;
-	}
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
 
-	public void setImagen(Long imagen) {
-		this.imagen = imagen;
-	}
+    public Long getImagen() {
+        return imagen;
+    }
 
-	public Integer getDescuento() {
-		return descuento;
-	}
+    public void setImagen(Long imagen) {
+        this.imagen = imagen;
+    }
 
-	public void setDescuento(Integer descuento) {
-		this.descuento = descuento;
-	}
+    public Integer getDescuento() {
+        return descuento;
+    }
 
-	public int getCarritoLength() {
-		return this.carrito.size();
-	}
+    public void setDescuento(Integer descuento) {
+        this.descuento = descuento;
+    }
 
-	public int getCompras() {
-		return compras.size();
-	}
+    public int getCarritoLength() {
+        return this.carrito.size();
+    }
+
+    public int getCompras() {
+        return compras.size();
+    }
+
+    public TipoProductoEntity getTipoproducto() {
+        return tipoproducto;
+    }
+
+    public void setTipoproducto(TipoProductoEntity tipoproducto) {
+        this.tipoproducto = tipoproducto;
+    }
+
 }

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,12 +18,11 @@ public class TipoUsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String nombre;
 
     @OneToMany(mappedBy = "tipousuario")
-    private ArrayList<UsuarioEntity> usuarios = new ArrayList<>();
-    
-    
+    private List<UsuarioEntity> usuarios = new ArrayList<>();
 
     public TipoUsuarioEntity(Long id, String nombre) {
         this.id = id;
