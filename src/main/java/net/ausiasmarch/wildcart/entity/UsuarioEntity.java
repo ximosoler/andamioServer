@@ -3,6 +3,7 @@ package net.ausiasmarch.wildcart.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class UsuarioEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String dni;
     private String nombre;
     private String apellido1;
@@ -37,8 +39,10 @@ public class UsuarioEntity implements Serializable {
     private TipoUsuarioEntity tipousuario;
 
     @OneToMany(mappedBy = "usuario")
-    private ArrayList<CarritoEntity> carritos = new ArrayList<>();
-    private ArrayList<FacturaEntity> facturas = new ArrayList<>();
+    private List<CarritoEntity> carritos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario")
+    private List<FacturaEntity> facturas = new ArrayList<>();
 
     public UsuarioEntity() {
     }

@@ -1,9 +1,11 @@
 package net.ausiasmarch.wildcart.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,17 +23,19 @@ public class FacturaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
+    
     private int iva;
     private boolean pagado;
-    private Long usuario;
 
-    @OneToMany(mappedBy = "facturaentity")
-    private ArrayList<CompraEntity> compras = new ArrayList<>();
-    
-      @ManyToOne
-    @JoinColumn(name = "id_factura")
-    private UsuarioEntity usuarios;
+    @OneToMany(mappedBy = "factura")
+    private List<CompraEntity> compras = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private UsuarioEntity usuario;
 
     public Long getId() {
         return id;
@@ -65,15 +69,16 @@ public class FacturaEntity implements Serializable {
         this.pagado = pagado;
     }
 
-    public Long getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Long usuario) {
-        this.usuario = usuario;
-    }
 
     public int getCompras() {
         return compras.size();
+    }
+
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 }

@@ -20,17 +20,20 @@ public class CompraEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int cantidad;
     private double precio;
+
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
+
     private int descuento_usuario;
     private int descuento_producto;
-    private Long id_producto;
 
     @ManyToOne
     @JoinColumn(name = "id_factura")
-    private FacturaEntity facturaentity;
+    private FacturaEntity factura;
+
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private ProductoEntity producto;
@@ -86,20 +89,12 @@ public class CompraEntity implements Serializable {
         this.descuento_producto = descuento_producto;
     }
 
-    public Long getId_producto() {
-        return id_producto;
+    public FacturaEntity getFactura() {
+        return factura;
     }
 
-    public void setId_producto(Long id_producto) {
-        this.id_producto = id_producto;
-    }
-
-    public FacturaEntity getFacturaentity() {
-        return facturaentity;
-    }
-
-    public void setFacturaentity(FacturaEntity facturaentity) {
-        this.facturaentity = facturaentity;
+    public void setFactura(FacturaEntity factura) {
+        this.factura = factura;
     }
 
     public ProductoEntity getProducto() {
@@ -109,4 +104,5 @@ public class CompraEntity implements Serializable {
     public void setProducto(ProductoEntity producto) {
         this.producto = producto;
     }
+
 }
