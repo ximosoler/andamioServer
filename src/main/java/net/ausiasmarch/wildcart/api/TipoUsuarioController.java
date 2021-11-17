@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuario;
+import net.ausiasmarch.wildcart.helper.UserService;
 import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
+import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/tusuario")
@@ -30,11 +32,21 @@ public class TipoUsuarioController {
 	@Autowired
 	TipoUsuarioRepository oTipoUsuarioRepository;
 
+	@Autowired // Temporal
+	UsuarioRepository oUsuarioRepository;
+
 	@Autowired
 	HttpSession oHttpSession;
 
+	@Autowired
+	UserService userService;
+
 	@GetMapping("/{id}")
 	public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
+		if (id == 1L) {
+			return new ResponseEntity<String>(userService.generateRandomUser(oUsuarioRepository), HttpStatus.OK);
+		}
+
 		if (id == null || !(oTipoUsuarioRepository.existsById(id))) {
 			return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
 		}
