@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UsuarioBean {
 
 	private String login = "";
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password = "";
 
 	public String getLogin() {
