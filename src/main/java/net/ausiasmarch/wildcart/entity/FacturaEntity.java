@@ -37,6 +37,9 @@ public class FacturaEntity implements Serializable {
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
 
+    public FacturaEntity() {
+    }   
+    
     public Long getId() {
         return id;
     }

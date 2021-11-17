@@ -24,6 +24,9 @@ public class TipoUsuarioEntity {
     @OneToMany(mappedBy = "tipousuario")
     private List<UsuarioEntity> usuarios = new ArrayList<>();
 
+    public TipoUsuarioEntity() {
+    }    
+    
     public TipoUsuarioEntity(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;

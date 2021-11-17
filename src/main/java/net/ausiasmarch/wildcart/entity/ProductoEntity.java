@@ -35,7 +35,7 @@ public class ProductoEntity {
     private TipoProductoEntity tipoproducto;
 
     @OneToMany(mappedBy = "producto")
-    private List<CarritoEntity> carrito = new ArrayList<>();
+    private List<CarritoEntity> carritos = new ArrayList<>();
     
     @OneToMany(mappedBy = "producto")
     private List<CompraEntity> compras = new ArrayList<>();
@@ -104,7 +104,7 @@ public class ProductoEntity {
     }
 
     public int getCarritoLength() {
-        return this.carrito.size();
+        return this.carritos.size();
     }
 
     public int getCompras() {
