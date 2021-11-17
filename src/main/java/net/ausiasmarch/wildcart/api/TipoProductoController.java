@@ -39,7 +39,7 @@ public class TipoProductoController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         Page<TipoProductoEntity> oPage = null;
         oPage = oTipoProductoRepository.findAll(oPageable);
@@ -49,7 +49,7 @@ public class TipoProductoController {
     @GetMapping("/filter/{filtro}")
     public ResponseEntity<Page<TipoProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         Page<TipoProductoEntity> oPage = null;
-        oPage = oTipoProductoRepository.findByIdIgnoreCaseContainingOrNombreIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
+        oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(sfiltro, oPageable);
         return new ResponseEntity<Page<TipoProductoEntity>>(oPage, HttpStatus.OK);
     }
 
@@ -68,6 +68,8 @@ public class TipoProductoController {
             } else {
                 return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
             }
+        } else if (oSessionUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
@@ -79,6 +81,8 @@ public class TipoProductoController {
         if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
             oTipoProductoEntity.setId(null);
             return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+        } else if (oSessionUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
@@ -93,6 +97,8 @@ public class TipoProductoController {
             } else {
                 return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
             }
+        } else if (oSessionUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
