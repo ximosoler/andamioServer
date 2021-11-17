@@ -12,33 +12,36 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "tipousuario")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class TipoUsuarioEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String nombre;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @OneToMany(mappedBy = "tipousuario")
-    private List<UsuarioEntity> usuarios = new ArrayList<>();
+	private String nombre;
 
-    public TipoUsuarioEntity(Long id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
+	@OneToMany(mappedBy = "tipousuario")
+	private List<UsuarioEntity> usuarios = new ArrayList<>();
 
-    public Long getId() {
-        return this.id;
-    }
+	public TipoUsuarioEntity() {
+	}
 
-    public String getNombre() {
-        return this.nombre;
-    }
+	public TipoUsuarioEntity(Long id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
+	}
 
-    public int getUsuarios() {
-        return usuarios.size();
-    }
+	public Long getId() {
+		return this.id;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public int getUsuarios() {
+		return usuarios.size();
+	}
 
 }

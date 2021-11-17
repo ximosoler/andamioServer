@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
+import net.ausiasmarch.wildcart.helper.TipoUsuario;
 import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
 
 @RestController
 @RequestMapping("/tusuario")
 public class TipoUsuarioController {
-
-	public final static Long ADMIN_ID = 1L;
 
 	@Autowired
 	TipoUsuarioRepository oTipoUsuarioRepository;
@@ -39,6 +38,7 @@ public class TipoUsuarioController {
 		if (id == null || !(oTipoUsuarioRepository.existsById(id))) {
 			return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
 		}
+
 		return new ResponseEntity<TipoUsuarioEntity>(oTipoUsuarioRepository.getById(id), HttpStatus.OK);
 	}
 
@@ -53,15 +53,17 @@ public class TipoUsuarioController {
 	}
 
 	@GetMapping("/page")
-	public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 5, direction = Direction.ASC) Pageable oPageable) {
+	public ResponseEntity<?> getPage(
+			@PageableDefault(page = 0, size = 5, direction = Direction.ASC) Pageable oPageable) {
 		Page<TipoUsuarioEntity> oPage = oTipoUsuarioRepository.findAll(oPageable);
+
 		return new ResponseEntity<Page<TipoUsuarioEntity>>(oPage, HttpStatus.OK);
 	}
 
-	@PutMapping("/")
+	@PutMapping
 	public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
 		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != ADMIN_ID) {
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
