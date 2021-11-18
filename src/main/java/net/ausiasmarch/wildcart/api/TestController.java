@@ -37,6 +37,7 @@ class TestController {
 				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
+
 		return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUserService.generateRandomUser()),
 				HttpStatus.OK);
 	}
