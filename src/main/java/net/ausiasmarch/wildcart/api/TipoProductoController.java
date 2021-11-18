@@ -1,9 +1,11 @@
 package net.ausiasmarch.wildcart.api;
 
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.TipoProductoEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.TipoProductoRepository;
+import net.ausiasmarch.wildcart.service.TipoProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,9 @@ public class TipoProductoController {
 
     @Autowired
     TipoProductoRepository oTipoProductoRepository;
+
+    @Autowired
+    TipoProductoService oTipoProductoService;
 
     @Autowired
     HttpSession oHttpSession;
@@ -93,6 +98,29 @@ public class TipoProductoController {
                 if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
                     oTipoProductoEntity.setId(null);
                     return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
+
+    @PostMapping("/autolistg")
+    public ResponseEntity<?> generateTipoProdList() {
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oSessionUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                    List<TipoProductoEntity> ListaTipoProd = oTipoProductoService.generateTipoProdList();
+                    for (int i = 0; i < ListaTipoProd.size(); i++) {
+                        oTipoProductoRepository.save(ListaTipoProd.get(i));
+                    }
+                    return new ResponseEntity<>(oTipoProductoRepository.findAll(), HttpStatus.OK);
+
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
                 }
