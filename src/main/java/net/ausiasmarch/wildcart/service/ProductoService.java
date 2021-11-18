@@ -4,7 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.repository.TipoProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductoService {
 
     @Autowired
