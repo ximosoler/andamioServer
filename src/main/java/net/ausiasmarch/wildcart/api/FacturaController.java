@@ -12,6 +12,7 @@ import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuario;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
+import net.ausiasmarch.wildcart.service.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,9 @@ public class FacturaController {
 
     @Autowired
     UsuarioRepository oUsuarioRepository;
+    
+    @Autowired
+    FacturaService oFacturaService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
@@ -200,5 +204,28 @@ public class FacturaController {
             }
         }
     }
+    
+    @PostMapping("/random")
+    public ResponseEntity<?> facturaRandom(FacturaEntity oFacturaEntity) {
+         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
+
+                if (oFacturaEntity.getId() == null) {
+                  return new ResponseEntity<Long>(oFacturaService.generateRandomFactura(10L), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+                }
+
+            } else {  //usuario sin permiso
+
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+    }
 }
