@@ -1,5 +1,6 @@
 package net.ausiasmarch.wildcart.api;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CarritoEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
@@ -7,6 +8,7 @@ import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.CarritoRepository;
 import net.ausiasmarch.wildcart.repository.ProductoRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
+import net.ausiasmarch.wildcart.service.CarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,8 @@ public class CarritoController {
     @Autowired
     ProductoRepository oProductoRepository;
     
+    @Autowired
+    CarritoService oCarritoService;
 
     @GetMapping("")
     public ResponseEntity<Page<CarritoEntity>> get(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
@@ -132,6 +136,19 @@ public class CarritoController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
+    }
+    
+    @PostMapping("/random/{rows}")
+    public ResponseEntity<?> random(@PathVariable(value = "rows") int rows) {
+        try {
+            ArrayList<CarritoEntity> carritos = oCarritoService.generate(rows);
+            for (int i = 0; i < carritos.size(); i++) {
+                oCarritoRepository.save(carritos.get(i));
+            }
+            return new ResponseEntity<>(carritos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }   
     }
     
     @DeleteMapping("")
