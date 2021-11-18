@@ -46,6 +46,11 @@ public class TipoProductoController {
         return new ResponseEntity<Page<TipoProductoEntity>>(oPage, HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oTipoProductoRepository.count(), HttpStatus.OK);
+    }
+
     @GetMapping("/filter/{filtro}")
     public ResponseEntity<Page<TipoProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         Page<TipoProductoEntity> oPage = null;
