@@ -10,9 +10,9 @@ public class TipoProductoService {
 
     String nombre;
     int contador = 0;
-    private final String[] Cat1 = {"Para hogar", "Para jardin", "Para restauracion", "Para oficina", "Para camping", "Para aulas", "Para prisiones", "Plegable"};
-    private final String[] Cat2 = {" Deluxe", " economico", " de segunda mano", " normal"};
-    private final String[] Cat3 = {" infantil", " de adulto"};
+    private final String[] Cat3 = {" para hogar", " para jardin", " para restauracion", " para oficina", " para camping", " para aulas", " para prisiones", " plegable"};
+    private final String[] Cat2 = {" edicion deluxe", " edicion economica", " de segunda mano", " edicion estandar"};
+    private final String[] Cat1 = {"Infantil", "De adulto"};
 
     public List<TipoProductoEntity> generateTipoProdList() {
         List<TipoProductoEntity> TipoProdLista = new ArrayList<TipoProductoEntity>();
@@ -23,6 +23,7 @@ public class TipoProductoService {
                     TipoProductoEntity TipoPlist = new TipoProductoEntity();
                     TipoPlist.setNombre(nombre);
                     TipoProdLista.add(TipoPlist);
+                    
                 }
             }
         }
