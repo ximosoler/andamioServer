@@ -1,10 +1,13 @@
 package net.ausiasmarch.wildcart.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.CompraRepository;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
+import net.ausiasmarch.wildcart.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +36,9 @@ public class CompraController {
 
     @Autowired
     FacturaRepository oFacturaRepository;
+
+    @Autowired
+    CompraService oCompraService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CompraEntity> view(@PathVariable(value = "id") Long id) {
@@ -149,4 +155,39 @@ public class CompraController {
         }
     }
 
+    @PostMapping("/compra")
+    public ResponseEntity<?> createCompra() {
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+                return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraService.generateRandomCompra()),
+                        HttpStatus.OK);
+            }
+
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/compra/{amount}")
+    public ResponseEntity<?> createCompras(@PathVariable(value = "amount") Integer amount
+    ) {
+        List<CompraEntity> compraList = new ArrayList<>();
+
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+
+                for (int i = 0; i < amount; i++) {
+                    CompraEntity oCompraEntity = oCompraService.generateRandomCompra();
+                    oCompraRepository.save(oCompraEntity);
+                    compraList.add(oCompraEntity);
+                }
+            }
+            return new ResponseEntity<List<CompraEntity>>(compraList, HttpStatus.OK);
+        }
+    }
 }
