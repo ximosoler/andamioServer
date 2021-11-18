@@ -1,4 +1,4 @@
-package net.ausiasmarch.wildcart.helper;
+package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
+import net.ausiasmarch.wildcart.helper.TipoUsuario;
 import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
 
 @Service
