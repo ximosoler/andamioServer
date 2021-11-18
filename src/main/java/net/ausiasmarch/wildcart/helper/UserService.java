@@ -67,6 +67,7 @@ public class UserService {
 		List<String> list = new ArrayList<>();
 		list.add(name);
 		list.add(surname);
+
 		return getFromList(list) + "_" + getFromList(list) + "@daw.tk";
 	}
 
@@ -74,6 +75,7 @@ public class UserService {
 		int randomNumber = generateNumber(0, list.size());
 		String value = list.get(randomNumber);
 		list.remove(randomNumber);
+
 		return value;
 	}
 }
