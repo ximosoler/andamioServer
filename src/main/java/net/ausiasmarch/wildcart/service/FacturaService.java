@@ -24,28 +24,25 @@ import org.springframework.stereotype.Service;
  *
  * @author a023862896m
  */
-
 @Service
 public class FacturaService {
 
-    
-    
     @Autowired
     UsuarioRepository oUsuarioRepository;
-    
+
     @Autowired
     FacturaRepository oFacturaRepository;
-    
-   public Long generateRandomFactura(Long cantidad) {
+
+    public Long generateRandomFactura(Long cantidad) {
         int[] ivas = {4, 10, 21};
 
         for (int i = 1; i <= cantidad; i++) {
             int iva = ivas[(int) (Math.floor(Math.random() * ((ivas.length - 1) - 0 + 1) + 0))];
             FacturaEntity oFacturaEntity = new FacturaEntity();
             oFacturaEntity.setFecha(getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-            oFacturaEntity.setIva(iva);           
+            oFacturaEntity.setIva(iva);
             List<UsuarioEntity> lUsuarioEntity = oUsuarioRepository.findAll();
-            UsuarioEntity oUsuarioEntity = lUsuarioEntity.get(generateNumber(0,2));                          
+            UsuarioEntity oUsuarioEntity = lUsuarioEntity.get(generateNumber(0, 2));
             oFacturaEntity.setUsuario(oUsuarioEntity);
             oFacturaEntity.setPagado(true);
             oFacturaRepository.save(oFacturaEntity);
@@ -53,7 +50,8 @@ public class FacturaService {
         return cantidad;
 
     }
-   public static Date getRadomDate() {
+
+    public static Date getRadomDate() {
         GregorianCalendar gc = new GregorianCalendar();
         int year = getRandomInt(2010, 2021);
         gc.set(gc.YEAR, year);
@@ -62,20 +60,14 @@ public class FacturaService {
         Date date = new Date(gc.getTimeInMillis());
         return date;
     }
-   public static int getRandomInt(int min, int max) {
+
+    public static int getRandomInt(int min, int max) {
         Random rand = new Random();
-        int randomNum = rand.nextInt((max - min)+1) + min;
+        int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
     }
-   
-   private int generateNumber(int minValue, int maxValue) {
-       return ThreadLocalRandom.current().nextInt(minValue, maxValue);
-	}
-    }
-    
- 
-        
-        
-    
-   
 
+    private int generateNumber(int minValue, int maxValue) {
+        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+    }
+}

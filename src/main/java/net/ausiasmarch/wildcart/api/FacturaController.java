@@ -46,7 +46,7 @@ public class FacturaController {
 
     @Autowired
     UsuarioRepository oUsuarioRepository;
-    
+
     @Autowired
     FacturaService oFacturaService;
 
@@ -204,10 +204,10 @@ public class FacturaController {
             }
         }
     }
-    
+
     @PostMapping("/random")
     public ResponseEntity<?> facturaRandom(FacturaEntity oFacturaEntity) {
-         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -216,7 +216,7 @@ public class FacturaController {
             if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
 
                 if (oFacturaEntity.getId() == null) {
-                  return new ResponseEntity<Long>(oFacturaService.generateRandomFactura(10L), HttpStatus.OK);
+                    return new ResponseEntity<Long>(oFacturaService.generateRandomFactura(10L), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
