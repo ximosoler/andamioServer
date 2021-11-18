@@ -1,4 +1,3 @@
-
 package net.ausiasmarch.wildcart.api;
 
 import java.util.List;
@@ -6,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.ProductoRepository;
+import net.ausiasmarch.wildcart.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/producto")
 public class ProductoController {
@@ -32,6 +31,9 @@ public class ProductoController {
 
     @Autowired
     HttpSession oHttpSession;
+
+    @Autowired
+    ProductoService oProductoService;
 
     // /producto/3
     @GetMapping("/{id}")
@@ -76,6 +78,27 @@ public class ProductoController {
                 oProductoEntity.setId(null);
 
                 return new ResponseEntity<ProductoEntity>(oProductoRepository.save(oProductoEntity), HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/genera/{num}")
+    public ResponseEntity<?> genera(@PathVariable(value = "num") int num) {
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity.getTipousuario().getId() == 1) {
+            if (oUsuarioEntity == null) {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            } else {
+                for (int i = 0; i < num; i++) {
+                    ProductoEntity oProductoEntity;
+                    oProductoEntity = oProductoService.generateRandomProduct();
+                    oProductoRepository.save(oProductoEntity);
+                }
+
+                return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
             }
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
