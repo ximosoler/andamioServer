@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuario;
-import net.ausiasmarch.wildcart.helper.UserService;
 import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
 
 @RestController
@@ -33,9 +32,6 @@ public class TipoUsuarioController {
 
 	@Autowired
 	HttpSession oHttpSession;
-
-	@Autowired
-	UserService userService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
