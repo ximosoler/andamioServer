@@ -23,6 +23,7 @@ import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuario;
 import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
+import net.ausiasmarch.wildcart.service.UserTypeService;
 
 @RestController
 @RequestMapping("/tusuario")
@@ -33,6 +34,9 @@ public class TipoUsuarioController {
 
 	@Autowired
 	HttpSession oHttpSession;
+
+	@Autowired
+	UserTypeService oUserTypeService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
@@ -61,10 +65,25 @@ public class TipoUsuarioController {
 		return new ResponseEntity<Page<TipoUsuarioEntity>>(oPage, HttpStatus.OK);
 	}
 
-	// @PostMapping("/initialize")
-	// public ResponseEntity<?> initialize(){
+	@PostMapping("/initialize")
+	public ResponseEntity<?> initialize() {
+		List<TipoUsuarioEntity> usersTypeList = oUserTypeService.generateUsersType();
 
-	// }
+		if (oHttpSession.getAttribute("usuario") == null
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
+			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+		}
+
+		for (int i = usersTypeList.size() - 1; i >= 0; i--) {
+			if (!oTipoUsuarioRepository.existsById(usersTypeList.get(i).getId())) {
+				oTipoUsuarioRepository.save(usersTypeList.get(i));
+			} else {
+				usersTypeList.remove(i);
+			}
+		}
+
+		return new ResponseEntity<List<TipoUsuarioEntity>>(usersTypeList, HttpStatus.OK);
+	}
 
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
