@@ -1,5 +1,6 @@
 package net.ausiasmarch.wildcart.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,10 +28,16 @@ public class UsuarioEntity implements Serializable {
     private String apellido1;
     private String apellido2;
     private String login;
+    
+    @JsonIgnore
     private String password;
+    
     private String email;
     private int descuento;
+    
+    @JsonIgnore
     private String token;
+    
     private boolean validado;
     private boolean activo;
 
@@ -158,4 +165,9 @@ public class UsuarioEntity implements Serializable {
     public int getCarritos() {
         return carritos.size();
     }
+    
+    public int getFacturas() {
+        return facturas.size();
+    }    
+    
 }

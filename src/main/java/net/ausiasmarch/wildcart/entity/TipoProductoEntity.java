@@ -23,6 +23,9 @@ public class TipoProductoEntity {
     @OneToMany(mappedBy = "tipoproducto")
     private List<ProductoEntity> productos = new ArrayList<>();
 
+    public TipoProductoEntity() {
+    }   
+    
     public Long getId() {
         return id;
     }
