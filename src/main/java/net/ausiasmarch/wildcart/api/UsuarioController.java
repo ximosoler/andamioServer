@@ -144,7 +144,7 @@ public class UsuarioController {
 	@PostMapping("/aleatorio")
 	public ResponseEntity<?> createUser() {
 		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
@@ -157,7 +157,7 @@ public class UsuarioController {
 		List<UsuarioEntity> userList = new ArrayList<>();
 
 		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
