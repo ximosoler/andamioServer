@@ -70,7 +70,7 @@ public class TipoUsuarioController {
 		List<TipoUsuarioEntity> usersTypeList = oUserTypeService.generateUsersType();
 
 		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
@@ -88,7 +88,7 @@ public class TipoUsuarioController {
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
 		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getId() != TipoUsuario.ADMIN) {
+				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
