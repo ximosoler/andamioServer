@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,14 +47,6 @@ public class ProductoController {
         }
     }
 
-    // /producto?page=0&size=10&sort=precio,desc
-    @GetMapping("")
-    public ResponseEntity<Page<ProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable) {
-        Page<ProductoEntity> oPage = null;
-        oPage = oProductoRepository.findAll(oPageable);
-        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
-    }
-
     // producto/all
     @GetMapping("/all")
     public ResponseEntity<List> getall() {
@@ -66,16 +59,32 @@ public class ProductoController {
         return new ResponseEntity<Long>(oProductoRepository.count(), HttpStatus.OK);
     }
 
-    @GetMapping("/filter/{filtro}")
-    public ResponseEntity<Page<ProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+//    @GetMapping("/filter/{filtro}")
+//    public ResponseEntity<Page<ProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+//        Page<ProductoEntity> oPage = null;
+//        oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
+//        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/filtertp/{filtro}")
+//    public ResponseEntity<Page<ProductoEntity>> getFilteredTP(@PathVariable(value = "filtro") long sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+//        Page<ProductoEntity> oPage = null;
+//        oPage = oProductoRepository.findAllBytipoproductoId(sfiltro, oPageable);
+//        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
+//    }
+
+    // /producto?page=0&size=10&sort=precio,desc&filter=verde&filtertype=2
+    @GetMapping("")
+    public ResponseEntity<Page<ProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+             @RequestParam(name = "filter") String filter, @RequestParam(name = "filtertype") Long filtertype) {
         Page<ProductoEntity> oPage = null;
-        oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
-        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
-    }
-      @GetMapping("/filtertp/{filtro}")
-    public ResponseEntity<Page<ProductoEntity>> getFilteredTP(@PathVariable(value = "filtro") long sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-        Page<ProductoEntity> oPage = null;
-        oPage = oProductoRepository.findAllBytipoproductoId(sfiltro, oPageable);
+        if (filtertype!=null) {
+            oPage = oProductoRepository.findByTipoproductoIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(filtertype, filter, filter, oPageable);
+        } else {
+            oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(filter, filter, oPageable);
+        }
+
+        oPage = oProductoRepository.findAll(oPageable);
         return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
     }
 
