@@ -65,11 +65,11 @@ public class ProductoController {
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oProductoRepository.count(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/filter/{filtro}")
     public ResponseEntity<Page<ProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         Page<ProductoEntity> oPage = null;
-        oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro,sfiltro, oPageable);
+        oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
         return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
     }
 
