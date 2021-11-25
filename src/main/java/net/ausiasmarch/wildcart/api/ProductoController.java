@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,12 +80,12 @@ public class ProductoController {
              @RequestParam(name = "filter") String filter, @RequestParam(name = "filtertype") Long filtertype) {
         Page<ProductoEntity> oPage = null;
         if (filtertype!=null) {
-            oPage = oProductoRepository.findByTipoproductoIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(filtertype, filter, filter, oPageable);
+            oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(filtertype,filter,filter,oPageable);
         } else {
             oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(filter, filter, oPageable);
         }
 
-        oPage = oProductoRepository.findAll(oPageable);
+       
         return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
     }
 
