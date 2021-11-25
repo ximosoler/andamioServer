@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> {
 
     Page<ProductoEntity> findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(String nombre, String codigo, Pageable oPageable);
-    Page<ProductoEntity> findAllBytipoproductoId(Long id, Pageable oPageable);
+
+    public Page<ProductoEntity> findByTipoproductoIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(Long filtertype, String filter, String filter0, Pageable oPageable);
 }
