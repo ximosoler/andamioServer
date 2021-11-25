@@ -106,7 +106,7 @@ public class UsuarioController {
     public ResponseEntity<?> getPage(
             @PageableDefault(page = 0, size = 5, direction = Direction.ASC) Pageable oPageable,
             @RequestParam(required = false) Long id,
-            @RequestParam(required = false) String nombre) {
+            @RequestParam(required = false) String filter) {
 
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 
@@ -119,10 +119,10 @@ public class UsuarioController {
                 if (id != null) {
                     oPage = oUsuarioRepository.findByTipousuarioIdAndNombreIgnoreCaseContaining(
                             id,
-                            nombre == null ? "" : nombre, oPageable);
+                            filter == null ? "" : filter, oPageable);
                 } else {
                     oPage = oUsuarioRepository.findByNombreIgnoreCaseContaining(
-                            nombre == null ? "" : nombre, oPageable);
+                            filter == null ? "" : filter, oPageable);
                 }
 
                 return new ResponseEntity<Page<UsuarioEntity>>(oPage, HttpStatus.OK);
