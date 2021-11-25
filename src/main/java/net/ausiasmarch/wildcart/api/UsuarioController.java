@@ -117,12 +117,12 @@ public class UsuarioController {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
                 Page<UsuarioEntity> oPage;
                 if (filtertype != null) {
-                    oPage = oUsuarioRepository.findByTipousuarioIdAndNombreIgnoreCaseContaining(
+                    oPage = oUsuarioRepository.findByTipousuarioIdAndNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
                             filtertype,
-                            filter == null ? "" : filter, oPageable);
+                            filter == null ? "" : filter, filter == null ? "" : filter, filter == null ? "" : filter, filter == null ? "" : filter, oPageable);
                 } else {
-                    oPage = oUsuarioRepository.findByNombreIgnoreCaseContaining(
-                            filter == null ? "" : filter, oPageable);
+                    oPage = oUsuarioRepository.findByNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+                            filter == null ? "" : filter, filter == null ? "" : filter, filter == null ? "" : filter, filter == null ? "" : filter, oPageable);
                 }
 
                 return new ResponseEntity<Page<UsuarioEntity>>(oPage, HttpStatus.OK);

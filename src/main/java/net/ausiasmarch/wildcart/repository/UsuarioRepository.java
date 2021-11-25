@@ -10,8 +10,8 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
     UsuarioEntity findByLoginAndPassword(String login, String password);
 
-    Page<UsuarioEntity> findByTipousuarioIdAndNombreIgnoreCaseContaining(Long filtertype, String filter,
+    Page<UsuarioEntity> findByTipousuarioIdAndNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(Long filtertype, String nombre, String dni, String apellido1, String apellido2,
             Pageable oPageable);
 
-    Page<UsuarioEntity> findByNombreIgnoreCaseContaining(String filter, Pageable oPageable);
+    Page<UsuarioEntity> findByNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(String nombre, String dni, String apellido1, String apellido2, Pageable oPageable);
 }
