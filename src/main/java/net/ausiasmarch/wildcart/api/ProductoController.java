@@ -72,6 +72,12 @@ public class ProductoController {
         oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
         return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
     }
+      @GetMapping("/filtertp/{filtro}")
+    public ResponseEntity<Page<ProductoEntity>> getFilteredTP(@PathVariable(value = "filtro") long sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+        Page<ProductoEntity> oPage = null;
+        oPage = oProductoRepository.findAllBytipoproductoId(sfiltro, oPageable);
+        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
+    }
 
     //CREAR
     // producto/
