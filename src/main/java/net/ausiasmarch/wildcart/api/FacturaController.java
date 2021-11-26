@@ -160,31 +160,26 @@ public class FacturaController {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody FacturaEntity oFacturaEntity) {
-
+    @PutMapping("/")
+    public ResponseEntity<?> update(@RequestBody FacturaEntity oFacturaEntity) {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-
-            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
-
-                oFacturaEntity.setId(id);
-                if (oFacturaRepository.existsById(id)) {
+            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador              
+                if (oFacturaRepository.existsById(oFacturaEntity.getId())) {
                     return new ResponseEntity<FacturaEntity>(oFacturaRepository.save(oFacturaEntity), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
-
             } else {  //usuario sin permisos
-
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
-
     }
+
+    
+    
 
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Direction.ASC) Pageable oPageable) {
