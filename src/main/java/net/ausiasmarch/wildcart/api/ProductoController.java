@@ -48,11 +48,11 @@ public class ProductoController {
         }
     }
 
-    // producto/all
-    @GetMapping("/all")
-    public ResponseEntity<List> getall() {
-        return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
-    }
+//    // producto/all
+//    @GetMapping("/all")
+//    public ResponseEntity<List> getall() {
+//        return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
+//    }
 
     // producto/count
     @GetMapping("/count")
@@ -60,32 +60,24 @@ public class ProductoController {
         return new ResponseEntity<Long>(oProductoRepository.count(), HttpStatus.OK);
     }
 
-//    @GetMapping("/filter/{filtro}")
-//    public ResponseEntity<Page<ProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-//        Page<ProductoEntity> oPage = null;
-//        oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(sfiltro, sfiltro, oPageable);
-//        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/filtertp/{filtro}")
-//    public ResponseEntity<Page<ProductoEntity>> getFilteredTP(@PathVariable(value = "filtro") long sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-//        Page<ProductoEntity> oPage = null;
-//        oPage = oProductoRepository.findAllBytipoproductoId(sfiltro, oPageable);
-//        return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
-//    }
-
-    // /producto?page=0&size=10&sort=precio,desc&filter=verde&filtertype=2
+    // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
     @GetMapping("")
     public ResponseEntity<Page<ProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-             @RequestParam(name = "filter") String filter, @RequestParam(name = "filtertype") Long filtertype) {
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long LtipoProducto) {
         Page<ProductoEntity> oPage = null;
-        if (filtertype!=null) {
-            oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(filtertype,filter,filter,oPageable);
+        if (LtipoProducto != null) {
+            if (strFilter != null) {
+                oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(LtipoProducto, strFilter, strFilter, oPageable);
+            } else {
+                oPage = oProductoRepository.findByTipoproductoId(LtipoProducto, oPageable);
+            }
         } else {
-            oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(filter, filter, oPageable);
+            if (strFilter != null) {
+                oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(strFilter, strFilter, oPageable);
+            } else {
+                oPage = oProductoRepository.findAll(oPageable);
+            }
         }
-
-       
         return new ResponseEntity<Page<ProductoEntity>>(oPage, HttpStatus.OK);
     }
 

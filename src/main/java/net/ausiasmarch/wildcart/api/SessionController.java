@@ -18,46 +18,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/session")
 public class SessionController {
 
-	@Autowired
-	HttpSession oHttpSession;
+    @Autowired
+    HttpSession oHttpSession;
 
-	@Autowired
-	UsuarioRepository oUsuarioRepository;
+    @Autowired
+    UsuarioRepository oUsuarioRepository;
 
-	@GetMapping("")
-	public ResponseEntity<UsuarioEntity> check() {
-		UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-		try {
-			oSessionUsuarioEntity = oUsuarioRepository.findById(oSessionUsuarioEntity.getId()).get();
-		} catch (Exception ex) {
-			oSessionUsuarioEntity = null;
-		}
-		if (oSessionUsuarioEntity == null) {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		} else {
-			return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
-		}
-	}
+    @GetMapping("")
+    public ResponseEntity<UsuarioEntity> check() {
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oSessionUsuarioEntity != null) {
+            return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+//        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+//        try {
+//            oSessionUsuarioEntity = oUsuarioRepository.findById(oSessionUsuarioEntity.getId()).get();
+//        } catch (Exception ex) {
+//            oSessionUsuarioEntity = null;
+//        }
+//        if (oSessionUsuarioEntity == null) {
+//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//        } else {
+//            return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
+//        }
+    }
 
-	@PostMapping
-	public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
-		if (oUsuarioBean.getPassword() == null)
-			return new ResponseEntity<Long>(-1L, HttpStatus.METHOD_NOT_ALLOWED);
+    @PostMapping
+    public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
+        if (oUsuarioBean.getPassword() != null) {
+            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(), oUsuarioBean.getPassword());
+            if (oUsuarioEntity != null) {
+                oHttpSession.setAttribute("usuario", oUsuarioEntity);
+                return new ResponseEntity<UsuarioEntity>(oUsuarioEntity, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+    }
 
-		UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(),
-				oUsuarioBean.getPassword());
-		if (oUsuarioEntity != null) {
-			oHttpSession.setAttribute("usuario", oUsuarioEntity);
-			return new ResponseEntity<UsuarioEntity>(oUsuarioEntity, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		}
-	}
-
-	@DeleteMapping("")
-	public ResponseEntity<?> logout() {
-		oHttpSession.invalidate();
-		return new ResponseEntity<>(null, HttpStatus.OK);
-	}
+    @DeleteMapping("")
+    public ResponseEntity<?> logout() {
+        oHttpSession.invalidate();
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
 }

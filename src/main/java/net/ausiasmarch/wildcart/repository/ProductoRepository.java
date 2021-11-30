@@ -10,6 +10,8 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     Page<ProductoEntity> findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(String nombre, String codigo, Pageable oPageable);
 
+    Page<ProductoEntity> findByTipoproductoId(Long tipoproducto, Pageable oPageable);
+
     @Query(
             value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)",
             nativeQuery = true)
