@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class ProductoService {
 
     @Autowired
-    TipoProductoRepository oTipoProducto;
+    TipoProductoRepository oTipoProductoRepository;
 
     private final String[] PRODUCTO = {"silla", "mesa", "armario", "cama"};
     private final String[] MATERIAL = {"madera", "metal", "plastico"};
@@ -26,7 +26,7 @@ public class ProductoService {
         oProductoEntity.setPrecio((double) generateNumber(0, 100));
         oProductoEntity.setImagen((long) generateNumber(0, 100));
         oProductoEntity.setDescuento(generateNumber(0, 51));
-        oProductoEntity.setTipoproducto(oTipoProducto.getById((long) generateNumber(1, (int) oTipoProducto.count())));
+        oProductoEntity.setTipoproducto(oTipoProductoRepository.getById((long) generateNumber(1, (int) oTipoProductoRepository.count())));
 
         return oProductoEntity;
     }

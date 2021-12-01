@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,11 +45,24 @@ public class TipoProductoController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+  @GetMapping("")
+    public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long LtipoProducto) {
         Page<TipoProductoEntity> oPage = null;
-        oPage = oTipoProductoRepository.findAll(oPageable);
-        return new ResponseEntity<Page<TipoProductoEntity>>(oPage, HttpStatus.OK);
+        if (LtipoProducto != null) {
+            if (strFilter != null) {
+                oPage = oTipoProductoRepository.findByTipoproductoIdAndNombreIgnoreCaseContaining(LtipoProducto, strFilter, oPageable);
+            } else {
+                oPage = oTipoProductoRepository.findByTipoproductoId(LtipoProducto, oPageable);
+            }
+        } else {
+            if (strFilter != null) {
+                oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
+            } else {
+                oPage = oTipoProductoRepository.findAll(oPageable);
+            }
+        }
+        return new ResponseEntity<>(oPage, HttpStatus.OK);
     }
 
     @GetMapping("/count")
