@@ -155,27 +155,26 @@ public class CompraController {
             return new ResponseEntity<>(oPage, HttpStatus.OK);
         }
     }
-    
-     @GetMapping("")
+
+    @GetMapping("")
     public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura,@RequestParam(name = "producto", required = false) Long lProducto) {
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura, @RequestParam(name = "producto", required = false) Long lProducto) {
         Page<CompraEntity> oPage = null;
         if (lFactura != null) {
             if (strFilter != null) {
-                oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter,strFilter,strFilter,strFilter, oPageable);
+                oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
             } else {
                 oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
             }
-        } else if (lProducto!=null) {
+        } else if (lProducto != null) {
             if (strFilter != null) {
-                oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter,strFilter,strFilter,strFilter, oPageable);
+                oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
             } else {
                 oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
             }
-        }  
-        else {
+        } else {
             if (strFilter != null) {
-                oPage = oCompraRepository.findByIdContain(strFilter,strFilter,strFilter,strFilter,strFilter,strFilter, oPageable);
+                oPage = oCompraRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
             } else {
                 oPage = oCompraRepository.findAll(oPageable);
             }

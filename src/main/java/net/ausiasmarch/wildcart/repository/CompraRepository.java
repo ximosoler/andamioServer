@@ -25,7 +25,7 @@ public interface CompraRepository extends JpaRepository<CompraEntity, Long> {
     @Query(
             value = "SELECT * FROM compra WHERE id LIKE  %?1% OR cantidad LIKE  %?2% OR precio LIKE %?3% OR fecha LIKE %?4% OR descuento_usuario LIKE %?5% OR descuento_producto LIKE %?6%",
             nativeQuery = true)
-    Page<CompraEntity> findByIdContain(String IdCompra,String cantidad,String precio,String fecha,String descuentoUsuario,String descuentoProducto,  Pageable oPageable);
+    Page<CompraEntity> findByIdContain(String IdCompra, String cantidad, String precio, String fecha, String descuentoUsuario, String descuentoProducto, Pageable oPageable);
 
     Page<CompraEntity> findByCantidadIgnoreCaseContainingOrPrecioIgnoreCaseContainingOrFechaIgnoreCaseContaining(String cantidad, String precio, String fecha, Pageable oPageable);
 
