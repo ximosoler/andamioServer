@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
@@ -57,20 +59,25 @@ public class TipoUsuarioController {
 		return new ResponseEntity<Long>(oTipoUsuarioRepository.count(), HttpStatus.OK);
 	}
 
-	@GetMapping("/page")
-	public ResponseEntity<?> getPage(
-			@PageableDefault(page = 0, size = 5, direction = Direction.ASC) Pageable oPageable) {
-		Page<TipoUsuarioEntity> oPage = oTipoUsuarioRepository.findAll(oPageable);
-
-		return new ResponseEntity<Page<TipoUsuarioEntity>>(oPage, HttpStatus.OK);
+	@GetMapping("")
+	public ResponseEntity<Page<TipoUsuarioEntity>> getPage(
+			@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+			@RequestParam(name = "filter", required = false) String strFilter) {
+		Page<TipoUsuarioEntity> oPage = null;
+		if (strFilter != null) {
+			oPage = oTipoUsuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
+		} else {
+			oPage = oTipoUsuarioRepository.findAll(oPageable);
+		}
+		return new ResponseEntity<>(oPage, HttpStatus.OK);
 	}
 
 	@PostMapping("/initialize")
 	public ResponseEntity<?> initialize() {
 		List<TipoUsuarioEntity> usersTypeList = oUserTypeService.generateUsersType();
 
-		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
+		if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
+				.getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
@@ -87,8 +94,8 @@ public class TipoUsuarioController {
 
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
-		if (oHttpSession.getAttribute("usuario") == null
-				|| ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario().getId() != TipoUsuario.ADMIN) {
+		if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
+				.getTipousuario().getId() != TipoUsuario.ADMIN) {
 			return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 		}
 
