@@ -63,13 +63,13 @@ public class ProductoController {
     // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
     @GetMapping("")
     public ResponseEntity<Page<ProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long LtipoProducto) {
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
         Page<ProductoEntity> oPage = null;
-        if (LtipoProducto != null) {
+        if (lTipoProducto != null) {
             if (strFilter != null) {
-                oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(LtipoProducto, strFilter, strFilter, oPageable);
+                oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
             } else {
-                oPage = oProductoRepository.findByTipoproductoId(LtipoProducto, oPageable);
+                oPage = oProductoRepository.findByTipoproductoId(lTipoProducto, oPageable);
             }
         } else {
             if (strFilter != null) {

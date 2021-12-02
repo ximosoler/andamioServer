@@ -45,22 +45,14 @@ public class TipoProductoController {
         }
     }
 
-  @GetMapping("")
+    @GetMapping("")
     public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long LtipoProducto) {
+            @RequestParam(name = "filter", required = false) String strFilter) {
         Page<TipoProductoEntity> oPage = null;
-        if (LtipoProducto != null) {
-            if (strFilter != null) {
-                oPage = oTipoProductoRepository.findByTipoproductoIdAndNombreIgnoreCaseContaining(LtipoProducto, strFilter, oPageable);
-            } else {
-                oPage = oTipoProductoRepository.findByTipoproductoId(LtipoProducto, oPageable);
-            }
+        if (strFilter != null) {
+            oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
         } else {
-            if (strFilter != null) {
-                oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-            } else {
-                oPage = oTipoProductoRepository.findAll(oPageable);
-            }
+            oPage = oTipoProductoRepository.findAll(oPageable);
         }
         return new ResponseEntity<>(oPage, HttpStatus.OK);
     }
