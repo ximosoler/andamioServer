@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -153,6 +154,33 @@ public class CompraController {
             oPage = oCompraRepository.findByCompraIdUsuarioPage(oUsuarioEntity.getId(), oPageable);
             return new ResponseEntity<>(oPage, HttpStatus.OK);
         }
+    }
+    
+     @GetMapping("")
+    public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura,@RequestParam(name = "producto", required = false) Long lProducto) {
+        Page<CompraEntity> oPage = null;
+        if (lFactura != null) {
+            if (strFilter != null) {
+                oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter,strFilter,strFilter,strFilter, oPageable);
+            } else {
+                oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
+            }
+        } else if (lProducto!=null) {
+            if (strFilter != null) {
+                oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter,strFilter,strFilter,strFilter, oPageable);
+            } else {
+                oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
+            }
+        }  
+        else {
+            if (strFilter != null) {
+                oPage = oCompraRepository.findByIdContain(strFilter,strFilter,strFilter,strFilter,strFilter,strFilter, oPageable);
+            } else {
+                oPage = oCompraRepository.findAll(oPageable);
+            }
+        }
+        return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
     }
 
     @PostMapping("/compra")
