@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tipoprod")
+@RequestMapping("/tipoproducto")
 public class TipoProductoController {
 
     @Autowired
