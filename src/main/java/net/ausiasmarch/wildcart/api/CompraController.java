@@ -181,20 +181,20 @@ public class CompraController {
         return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
     }
 
-    @PostMapping("/generate")
-    public ResponseEntity<?> generate() {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraService.generateRandomCompra()),
-                        HttpStatus.OK);
-            }
-
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    @PostMapping("/generate")
+//    public ResponseEntity<?> generate() {
+//        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+//        if (oUsuarioEntity == null) {
+//            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+//        } else {
+//            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+//                return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraService.generateRandomCompra()),
+//                        HttpStatus.OK);
+//            }
+//
+//            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
     @PostMapping("/generate/{amount}")
     public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {        

@@ -175,18 +175,18 @@ public class CarritoController {
         }
     }
 
-    @PostMapping("/random/{rows}")
-    public ResponseEntity<?> random(@PathVariable(value = "rows") int rows) {
-        try {
-            ArrayList<CarritoEntity> carritos = oCarritoService.generate(rows);
-            for (int i = 0; i < carritos.size(); i++) {
-                oCarritoRepository.save(carritos.get(i));
-            }
-            return new ResponseEntity<>(carritos, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/random/{rows}")
+//    public ResponseEntity<?> random(@PathVariable(value = "rows") int rows) {
+//        try {
+//            ArrayList<CarritoEntity> carritos = oCarritoService.generate(rows);
+//            for (int i = 0; i < carritos.size(); i++) {
+//                oCarritoRepository.save(carritos.get(i));
+//            }
+//            return new ResponseEntity<>(carritos, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody CarritoEntity carritoEntity) {
