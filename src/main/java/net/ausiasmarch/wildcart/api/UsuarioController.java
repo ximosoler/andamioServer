@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuario;
+import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
-import net.ausiasmarch.wildcart.service.UserService;
+import net.ausiasmarch.wildcart.service.UsuarioService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class UsuarioController {
     HttpSession oHttpSession;
 
     @Autowired
-    UserService oUserService;
+    UsuarioService oUserService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
@@ -90,12 +90,10 @@ public class UsuarioController {
     @GetMapping("/count")
     public ResponseEntity<?> count() {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-
         if (oUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-
                 return new ResponseEntity<Long>(oUsuarioRepository.count(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -151,37 +149,6 @@ public class UsuarioController {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
-    }
-
-    @PostMapping("/aleatorio")
-    public ResponseEntity<?> createUser() {
-        if (oHttpSession.getAttribute("usuario") == null
-                || ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario()
-                        .getId() != TipoUsuario.ADMIN) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        }
-
-        return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUserService.generateRandomUser()),
-                HttpStatus.OK);
-    }
-
-    @PostMapping("/aleatorio/{amount}")
-    public ResponseEntity<?> createUsers(@PathVariable(value = "amount") Integer amount) {
-        List<UsuarioEntity> userList = new ArrayList<>();
-
-        if (oHttpSession.getAttribute("usuario") == null
-                || ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario()
-                        .getId() != TipoUsuario.ADMIN) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        }
-
-        for (int i = 0; i < amount; i++) {
-            UsuarioEntity oUsuarioEntity = oUserService.generateRandomUser();
-            oUsuarioRepository.save(oUsuarioEntity);
-            userList.add(oUsuarioEntity);
-        }
-
-        return new ResponseEntity<List<UsuarioEntity>>(userList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -241,4 +208,36 @@ public class UsuarioController {
             }
         }
     }
+    
+    @PostMapping("/generate")
+    public ResponseEntity<?> generate() {
+        if (oHttpSession.getAttribute("usuario") == null
+                || ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario()
+                        .getId() != TipoUsuarioHelper.ADMIN) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUserService.generateRandomUser()),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {
+        List<UsuarioEntity> userList = new ArrayList<>();
+
+        if (oHttpSession.getAttribute("usuario") == null
+                || ((UsuarioEntity) oHttpSession.getAttribute("usuario")).getTipousuario()
+                        .getId() != TipoUsuarioHelper.ADMIN) {
+            return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+        }
+
+        for (int i = 0; i < amount; i++) {
+            UsuarioEntity oUsuarioEntity = oUserService.generateRandomUser();
+            oUsuarioRepository.save(oUsuarioEntity);
+            userList.add(oUsuarioEntity);
+        }
+
+        return new ResponseEntity<>(oUsuarioRepository.count(), HttpStatus.OK);
+    }    
+    
 }

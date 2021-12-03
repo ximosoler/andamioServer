@@ -9,7 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuario;
+import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import net.ausiasmarch.wildcart.service.FacturaService;
@@ -178,9 +178,6 @@ public class FacturaController {
         }
     }
 
-    
-    
-
     @GetMapping("/page")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Direction.ASC) Pageable oPageable) {
 
@@ -193,34 +190,31 @@ public class FacturaController {
             if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
                 return new ResponseEntity<Page<FacturaEntity>>(oPage, HttpStatus.OK);
             } else {
-
                 return new ResponseEntity<Page<FacturaEntity>>(oFacturaRepository.findByFacturaXUsuario(oUsuarioEntity.getId(), oPageable), HttpStatus.OK);
-
             }
         }
     }
 
-    @PostMapping("/random")
-    public ResponseEntity<?> facturaRandom(FacturaEntity oFacturaEntity) {
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> generate(@PathVariable(value = "amount") int amount) {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else {
-
-            if (oUsuarioEntity.getTipousuario().getId() == 1) { //administrador
-
-                if (oFacturaEntity.getId() == null) {
-                    return new ResponseEntity<Long>(oFacturaService.generateRandomFactura(10L), HttpStatus.OK);
+        if (oUsuarioEntity.getTipousuario().getId() == 1) {
+            if (oUsuarioEntity == null) {
+                return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+            } else {
+                if (oUsuarioRepository.count() > 0) {
+                    for (int i = 0; i < amount; i++) {
+                        FacturaEntity oFacturaEntity = oFacturaService.generateRandomFactura();
+                        oFacturaRepository.save(oFacturaEntity);
+                    }
+                    return new ResponseEntity<>(oFacturaRepository.count(), HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
+                    return new ResponseEntity<>(0L, HttpStatus.OK);
                 }
-
-            } else {  //usuario sin permiso
-
-                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
+        } else {
+            return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
         }
-
     }
+
 }

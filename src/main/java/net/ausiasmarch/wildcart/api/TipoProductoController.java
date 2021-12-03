@@ -47,7 +47,7 @@ public class TipoProductoController {
 
     @GetMapping("")
     public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter) {
+           @RequestParam(name = "filter", required = false) String strFilter) {
         Page<TipoProductoEntity> oPage = null;
         if (strFilter != null) {
             oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
@@ -113,29 +113,6 @@ public class TipoProductoController {
         }
     }
 
-    @PostMapping("/autolistg")
-    public ResponseEntity<?> generateTipoProdList() {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                    List<TipoProductoEntity> ListaTipoProd = oTipoProductoService.generateTipoProdList();
-                    for (int i = 0; i < ListaTipoProd.size(); i++) {
-                        oTipoProductoRepository.save(ListaTipoProd.get(i));
-                    }
-                    return new ResponseEntity<>(oTipoProductoRepository.findAll(), HttpStatus.OK);
-
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
-    }
-
     @PutMapping("/")
     public ResponseEntity<?> update(@RequestBody TipoProductoEntity oTipoProductoEntity
     ) {
@@ -154,4 +131,46 @@ public class TipoProductoController {
             }
         }
     }
+
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") int amount) {
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity.getTipousuario().getId() == 1) {
+            if (oUsuarioEntity == null) {
+                return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+            } else {
+                for (int i = 0; i < amount; i++) {
+                    TipoProductoEntity oTipoProductoEntity = oTipoProductoService.generateTipoProducto();
+                    oTipoProductoRepository.save(oTipoProductoEntity);
+                }
+                return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity<?> generate() {
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oSessionUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
+                    List<TipoProductoEntity> ListaTipoProd = oTipoProductoService.generateAllTipoProductoList();
+                    for (int i = 0; i < ListaTipoProd.size(); i++) {
+                        oTipoProductoRepository.save(ListaTipoProd.get(i));
+                    }
+                    return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
+
+                } else {
+                    return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
+
 }

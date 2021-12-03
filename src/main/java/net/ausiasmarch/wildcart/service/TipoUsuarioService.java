@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 
 @Service
-public class UserTypeService {
+public class TipoUsuarioService {
 
 	public List<TipoUsuarioEntity> generateUsersType() {
 		List<TipoUsuarioEntity> usersTypeList = new ArrayList<>();

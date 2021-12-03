@@ -1,29 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.ausiasmarch.wildcart.service;
 
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuario;
+import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author a023862896m
- */
 @Service
 public class FacturaService {
 
@@ -32,42 +19,41 @@ public class FacturaService {
 
     @Autowired
     FacturaRepository oFacturaRepository;
+    
+    @Autowired
+    UsuarioService oUsuarioService;
 
-    public Long generateRandomFactura(Long cantidad) {
-        int[] ivas = {4, 10, 21};
+    public FacturaEntity generateRandomFactura() {
+        if (oUsuarioRepository.count() > 0) {
+            int[] ivas = {4, 10, 21};
 
-        for (int i = 1; i <= cantidad; i++) {
             int iva = ivas[(int) (Math.floor(Math.random() * ((ivas.length - 1) - 0 + 1) + 0))];
             FacturaEntity oFacturaEntity = new FacturaEntity();
-            oFacturaEntity.setFecha(getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+            oFacturaEntity.setFecha(RandomHelper.getRadomDateTime());
             oFacturaEntity.setIva(iva);
-            List<UsuarioEntity> lUsuarioEntity = oUsuarioRepository.findAll();
-            UsuarioEntity oUsuarioEntity = lUsuarioEntity.get(generateNumber(0, 2));
-            oFacturaEntity.setUsuario(oUsuarioEntity);
-            oFacturaEntity.setPagado(true);
-            oFacturaRepository.save(oFacturaEntity);
+
+            oFacturaEntity.setUsuario(oUsuarioService.getRandomUsuario());
+
+            if (RandomHelper.getRandomInt(0, 1) == 0) {
+                oFacturaEntity.setPagado(true);
+            } else {
+                oFacturaEntity.setPagado(false);
+            }
+            return oFacturaEntity;
+        } else {
+            return null;
         }
-        return cantidad;
 
     }
 
-    public static Date getRadomDate() {
-        GregorianCalendar gc = new GregorianCalendar();
-        int year = getRandomInt(2010, 2021);
-        gc.set(gc.YEAR, year);
-        int dayOfYear = getRandomInt(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
-        gc.set(gc.DAY_OF_YEAR, dayOfYear);
-        Date date = new Date(gc.getTimeInMillis());
-        return date;
+    public FacturaEntity getRandomFactura() {
+        FacturaEntity oFacturaEntity = null;
+        int iPosicion = RandomHelper.getRandomInt(1, (int) oFacturaRepository.count());
+        Pageable oPageable = PageRequest.of(iPosicion, 1);
+        Page<FacturaEntity> facturaPage = oFacturaRepository.findAll(oPageable);
+        List<FacturaEntity> facturaList = facturaPage.getContent();
+        oFacturaEntity = oFacturaRepository.getById(facturaList.get(0).getId());
+        return oFacturaEntity;
     }
 
-    public static int getRandomInt(int min, int max) {
-        Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
-    }
-
-    private int generateNumber(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
-    }
 }

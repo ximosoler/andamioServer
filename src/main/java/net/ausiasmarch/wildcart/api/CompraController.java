@@ -139,22 +139,22 @@ public class CompraController {
         }
     }
 
-    @GetMapping("/page")
-    public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
-            Page<CompraEntity> oPage = null;
-            oPage = oCompraRepository.findAll(oPageable);
-            return new ResponseEntity<>(oPage, HttpStatus.OK);
-        } else {
-            Page<CompraEntity> oPage = null;
-            oPage = oCompraRepository.findByCompraIdUsuarioPage(oUsuarioEntity.getId(), oPageable);
-            return new ResponseEntity<>(oPage, HttpStatus.OK);
-        }
-    }
+//    @GetMapping("/page")
+//    public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+//
+//        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+//        if (oUsuarioEntity == null) {
+//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
+//            Page<CompraEntity> oPage = null;
+//            oPage = oCompraRepository.findAll(oPageable);
+//            return new ResponseEntity<>(oPage, HttpStatus.OK);
+//        } else {
+//            Page<CompraEntity> oPage = null;
+//            oPage = oCompraRepository.findByCompraIdUsuarioPage(oUsuarioEntity.getId(), oPageable);
+//            return new ResponseEntity<>(oPage, HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping("")
     public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
@@ -182,8 +182,8 @@ public class CompraController {
         return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
     }
 
-    @PostMapping("/compra")
-    public ResponseEntity<?> createCompra() {
+    @PostMapping("/generate")
+    public ResponseEntity<?> generate() {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
@@ -197,8 +197,8 @@ public class CompraController {
         }
     }
 
-    @PostMapping("/compra/{amount}")
-    public ResponseEntity<?> createCompras(@PathVariable(value = "amount") Integer amount
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount
     ) {
         List<CompraEntity> compraList = new ArrayList<>();
 

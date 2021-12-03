@@ -53,7 +53,6 @@ public class ProductoController {
 //    public ResponseEntity<List> getall() {
 //        return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
 //    }
-
     // producto/count
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
@@ -63,7 +62,7 @@ public class ProductoController {
     // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
     @GetMapping("")
     public ResponseEntity<Page<ProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
+           @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
         Page<ProductoEntity> oPage = null;
         if (lTipoProducto != null) {
             if (strFilter != null) {
@@ -93,27 +92,6 @@ public class ProductoController {
                 oProductoEntity.setId(null);
 
                 return new ResponseEntity<ProductoEntity>(oProductoRepository.save(oProductoEntity), HttpStatus.OK);
-            }
-        } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        }
-
-    }
-
-    @PostMapping("/genera/{num}")
-    public ResponseEntity<?> genera(@PathVariable(value = "num") int num) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity.getTipousuario().getId() == 1) {
-            if (oUsuarioEntity == null) {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            } else {
-                for (int i = 0; i < num; i++) {
-                    ProductoEntity oProductoEntity;
-                    oProductoEntity = oProductoService.generateRandomProduct();
-                    oProductoRepository.save(oProductoEntity);
-                }
-
-                return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
             }
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
@@ -165,6 +143,34 @@ public class ProductoController {
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 
+        }
+    }
+
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> genera(@PathVariable(value = "amount") int amount) {
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntity.getTipousuario() == null) {
+                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            } else {
+                if (oUsuarioEntity.getTipousuario().getId() == 1) {
+                    if (oUsuarioEntity == null) {
+                        return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+                    } else {
+                        for (int i = 0; i < amount; i++) {
+                            ProductoEntity oProductoEntity;
+                            oProductoEntity = oProductoService.generateRandomProduct();
+                            oProductoRepository.save(oProductoEntity);
+                        }
+                        return new ResponseEntity<>(oProductoRepository.count(), HttpStatus.OK);
+                    }
+                } else {
+                    return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+                }
+            }
         }
     }
 
