@@ -312,4 +312,17 @@ public class CarritoController {
         }
     }
 
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<?> generate(@PathVariable(value = "amount") int amount) {
+        try {
+            ArrayList<CarritoEntity> carritos = oCarritoService.generate(amount);
+            for (int i = 0; i < carritos.size(); i++) {
+                oCarritoRepository.save(carritos.get(i));
+            }
+            return new ResponseEntity<>(oCarritoRepository.count(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
