@@ -19,7 +19,7 @@ public class FacturaService {
 
     @Autowired
     FacturaRepository oFacturaRepository;
-    
+
     @Autowired
     UsuarioService oUsuarioService;
 
@@ -48,7 +48,7 @@ public class FacturaService {
 
     public FacturaEntity getRandomFactura() {
         FacturaEntity oFacturaEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(1, (int) oFacturaRepository.count());
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oFacturaRepository.count() - 1);
         Pageable oPageable = PageRequest.of(iPosicion, 1);
         Page<FacturaEntity> facturaPage = oFacturaRepository.findAll(oPageable);
         List<FacturaEntity> facturaList = facturaPage.getContent();

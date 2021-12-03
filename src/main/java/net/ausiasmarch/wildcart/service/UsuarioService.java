@@ -83,7 +83,7 @@ public class UsuarioService {
 
     public UsuarioEntity getRandomUsuario() {
         UsuarioEntity oUsuarioEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(1, (int) oUsuarioRepository.count());
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
         Pageable oPageable = PageRequest.of(iPosicion, 1);
         Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
         List<UsuarioEntity> usuarioList = usuarioPage.getContent();

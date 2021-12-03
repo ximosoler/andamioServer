@@ -10,11 +10,11 @@ import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 @Service
 public class TipoUsuarioService {
 
-	public List<TipoUsuarioEntity> generateUsersType() {
-		List<TipoUsuarioEntity> usersTypeList = new ArrayList<>();
-		usersTypeList.add(new TipoUsuarioEntity(1L, "administrador"));
-		usersTypeList.add(new TipoUsuarioEntity(2L, "usuario"));
+    public List<TipoUsuarioEntity> generateUsersType() {
+        List<TipoUsuarioEntity> usersTypeList = new ArrayList<>();
+        usersTypeList.add(new TipoUsuarioEntity(1L, "administrador"));
+        usersTypeList.add(new TipoUsuarioEntity(2L, "usuario"));
 
-		return usersTypeList;
-	}
+        return usersTypeList;
+    }
 }

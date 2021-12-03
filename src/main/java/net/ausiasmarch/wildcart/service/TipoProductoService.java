@@ -49,7 +49,7 @@ public class TipoProductoService {
 
     public TipoProductoEntity getRandomTipoProducto() {
         TipoProductoEntity oTipoProductoEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(1, (int) oTipoProductoRepository.count());
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oTipoProductoRepository.count()-1);
         Pageable oPageable = PageRequest.of(iPosicion, 1);
         Page<TipoProductoEntity> tipoProductoPage = oTipoProductoRepository.findAll(oPageable);
         List<TipoProductoEntity> tipoProductoList = tipoProductoPage.getContent();

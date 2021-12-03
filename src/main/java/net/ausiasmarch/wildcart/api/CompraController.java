@@ -155,7 +155,6 @@ public class CompraController {
 //            return new ResponseEntity<>(oPage, HttpStatus.OK);
 //        }
 //    }
-
     @GetMapping("")
     public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura, @RequestParam(name = "producto", required = false) Long lProducto) {
@@ -198,16 +197,15 @@ public class CompraController {
     }
 
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount
-    ) {
-        List<CompraEntity> compraList = new ArrayList<>();
-
+    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {        
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        
+        List<CompraEntity> compraList = new ArrayList<>();
+        
         if (oUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntity.getTipousuario().getId() == 1) {
-
                 for (int i = 0; i < amount; i++) {
                     CompraEntity oCompraEntity = oCompraService.generateRandomCompra();
                     oCompraRepository.save(oCompraEntity);
