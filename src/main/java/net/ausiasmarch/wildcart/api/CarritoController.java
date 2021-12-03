@@ -68,8 +68,8 @@ public class CarritoController {
 
         CarritoEntity carritoEntity = oCarritoRepository.getById(id);
 
-        if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN ||
-                oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+        if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
+                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -104,8 +104,8 @@ public class CarritoController {
             return new ResponseEntity<Long>(0L, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        if (oSessionUsuarioEntity == null ||
-                oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+        if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
+                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -196,8 +196,8 @@ public class CarritoController {
             return new ResponseEntity<Long>(0L, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        if (oSessionUsuarioEntity == null ||
-                oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+        if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
+                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -230,8 +230,8 @@ public class CarritoController {
             return new ResponseEntity<Long>(0L, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        if (oSessionUsuarioEntity == null ||
-                oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+        if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
+                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
