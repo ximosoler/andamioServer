@@ -48,9 +48,9 @@ public class CarritoController {
 
     @GetMapping("")
     public ResponseEntity<Page<CarritoEntity>> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "idproducto", required = false) Long id_producto,
-            @RequestParam(name = "idusuario", required = false) Long id_usuario) {
+           @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+           @RequestParam(name = "idproducto", required = false) Long id_producto,
+           @RequestParam(name = "idusuario", required = false) Long id_usuario) {
         Page<CarritoEntity> oPage = null;
         if (id_producto != null) {
             oPage = oCarritoRepository.findByProductoId(id_producto, oPageable);
@@ -69,7 +69,7 @@ public class CarritoController {
         CarritoEntity carritoEntity = oCarritoRepository.getById(id);
 
         if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
-                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+               && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -78,7 +78,7 @@ public class CarritoController {
 
     @GetMapping("/admin/filter/{filter}")
     public ResponseEntity<Page<CarritoEntity>> getAdmin(@PathVariable(value = "filter") String filter,
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+           @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         Page<CarritoEntity> oCarritoEntity;
         try {
@@ -88,8 +88,8 @@ public class CarritoController {
         }
         if (oSessionUsuarioEntity != null && oSessionUsuarioEntity.getTipousuario().getId() == 1) {
             oCarritoEntity = oCarritoRepository
-                    .findAllByIdIgnoreCaseContainingOrCantidadIgnoreCaseContainingOrPrecioIgnoreCaseContainingOrProductoIgnoreCaseContainingOrUsuarioIgnoreCaseContaining(
-                            filter, filter, filter, filter, filter, oPageable);
+                   .findAllByIdIgnoreCaseContainingOrCantidadIgnoreCaseContainingOrPrecioIgnoreCaseContainingOrProductoIgnoreCaseContainingOrUsuarioIgnoreCaseContaining(
+                          filter, filter, filter, filter, filter, oPageable);
             return new ResponseEntity<Page<CarritoEntity>>(oCarritoEntity, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -105,7 +105,7 @@ public class CarritoController {
         }
 
         if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
-                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+               && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -144,7 +144,7 @@ public class CarritoController {
 
     @PostMapping("/admin/{id}/{amount}/{user}")
     public ResponseEntity<?> addAdmin(@PathVariable(value = "id") long id, @PathVariable(value = "amount") int amount,
-            @PathVariable(value = "user") long user) {
+           @PathVariable(value = "user") long user) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         CarritoEntity oCarritoEntity = new CarritoEntity();
         CarritoEntity oCarritoEntityProducto;
@@ -187,7 +187,6 @@ public class CarritoController {
 //            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
-
     @PutMapping
     public ResponseEntity<?> update(@RequestBody CarritoEntity carritoEntity) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
@@ -197,7 +196,7 @@ public class CarritoController {
         }
 
         if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
-                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+               && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -231,7 +230,7 @@ public class CarritoController {
         }
 
         if (oSessionUsuarioEntity == null || oSessionUsuarioEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN
-                && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
+               && oSessionUsuarioEntity.getId() != carritoEntity.getUsuario().getId()) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
 
@@ -260,7 +259,7 @@ public class CarritoController {
 
     @DeleteMapping("/{id_producto}/{amount}")
     public ResponseEntity<?> deleteOne(@PathVariable(value = "id_producto") long id_producto,
-            @PathVariable(value = "amount") int amount) {
+           @PathVariable(value = "amount") int amount) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         CarritoEntity oCarritoEntity;
         ProductoEntity oProducto;
@@ -286,7 +285,7 @@ public class CarritoController {
 
     @DeleteMapping("/admin/{id_producto}/{amount}/{user}")
     public ResponseEntity<?> deleteOneAdmin(@PathVariable(value = "id_producto") long id_producto,
-            @PathVariable(value = "amount") int amount, @PathVariable(value = "user") long user) {
+           @PathVariable(value = "amount") int amount, @PathVariable(value = "user") long user) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         CarritoEntity oCarritoEntity = new CarritoEntity();
         ProductoEntity oProducto;
@@ -309,6 +308,18 @@ public class CarritoController {
             return new ResponseEntity<>(null, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
+            return new ResponseEntity<Long>(oCarritoRepository.count(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Long>(oCarritoRepository.countByUsuarioId(oUsuarioEntity.getId()), HttpStatus.OK);
         }
     }
 
