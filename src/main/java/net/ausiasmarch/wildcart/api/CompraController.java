@@ -212,7 +212,7 @@ public class CompraController {
                     compraList.add(oCompraEntity);
                 }
             }
-            return new ResponseEntity<List<CompraEntity>>(compraList, HttpStatus.OK);
+            return new ResponseEntity<>(oCompraRepository.count(), HttpStatus.OK);
         }
     }
 }

@@ -7,13 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
-import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
