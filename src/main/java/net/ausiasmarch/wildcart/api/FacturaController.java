@@ -16,6 +16,7 @@ import net.ausiasmarch.wildcart.service.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -216,5 +217,12 @@ public class FacturaController {
             return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
         }
     }
+     @GetMapping("/filter/{filtro}")
+    public ResponseEntity<Page<FacturaEntity>> getFilteredPage(@PathVariable(value = "filtro") Long sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
+        Page<FacturaEntity> oPage = null;
+        oPage = oFacturaRepository.findByFacturaXUsuario(sfiltro, oPageable);
+        return new ResponseEntity<Page<FacturaEntity>>(oPage, HttpStatus.OK);
+    }
+    
 
 }
