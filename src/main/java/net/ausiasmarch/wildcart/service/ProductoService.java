@@ -31,7 +31,8 @@ public class ProductoService {
         oProductoEntity.setNombre(generateProduct());
         oProductoEntity.setExistencias(RandomHelper.getRandomInt(0, 100));
         oProductoEntity.setPrecio(RandomHelper.getRadomDouble(0, 100));
-        oProductoEntity.setImagen((long) RandomHelper.getRandomInt(0, 100));
+        //oProductoEntity.setImagen((long) RandomHelper.getRandomInt(0, 100));
+        oProductoEntity.setImagen(1L);
         oProductoEntity.setDescuento(RandomHelper.getRandomInt(0, 51));
         //oProductoEntity.setTipoproducto(oTipoProductoRepository.getById((long) RandomHelper.getRandomInt(1, (int) oTipoProductoRepository.count())));
         oProductoEntity.setTipoproducto(oTipoProductoService.getRandomTipoProducto());
@@ -39,10 +40,10 @@ public class ProductoService {
     }
 
     private String generateProduct() {
-        String name = PRODUCTO[RandomHelper.getRandomInt(0, PRODUCTO.length)];
-        String material = MATERIAL[RandomHelper.getRandomInt(0, MATERIAL.length)].toLowerCase();
-        String color = COLOR[RandomHelper.getRandomInt(0, COLOR.length)].toLowerCase();
-        String tamanyo = TAMANYO[RandomHelper.getRandomInt(0, TAMANYO.length)].toLowerCase();
+        String name = PRODUCTO[RandomHelper.getRandomInt(0, PRODUCTO.length-1)];
+        String material = MATERIAL[RandomHelper.getRandomInt(0, MATERIAL.length-1)].toLowerCase();
+        String color = COLOR[RandomHelper.getRandomInt(0, COLOR.length-1)].toLowerCase();
+        String tamanyo = TAMANYO[RandomHelper.getRandomInt(0, TAMANYO.length-1)].toLowerCase();
         return name + " de " + material + " de color " + color + " de tamaño " + tamanyo;
     }
 

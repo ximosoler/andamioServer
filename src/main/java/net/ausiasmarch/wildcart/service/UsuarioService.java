@@ -60,11 +60,11 @@ public class UsuarioService {
     }
 
     private String generateName() {
-        return NAMES[RandomHelper.getRandomInt(0, NAMES.length)].toLowerCase();
+        return NAMES[RandomHelper.getRandomInt(0, NAMES.length - 1)].toLowerCase();
     }
 
     private String generateSurname() {
-        return SURNAMES[RandomHelper.getRandomInt(0, SURNAMES.length)].toLowerCase();
+        return SURNAMES[RandomHelper.getRandomInt(0, SURNAMES.length - 1)].toLowerCase();
     }
 
     private String generateEmail(String name, String surname) {
@@ -75,7 +75,7 @@ public class UsuarioService {
     }
 
     private String getFromList(List<String> list) {
-        int randomNumber = RandomHelper.getRandomInt(0, list.size()-1);
+        int randomNumber = RandomHelper.getRandomInt(0, list.size() - 1);
         String value = list.get(randomNumber);
         list.remove(randomNumber);
         return value;
