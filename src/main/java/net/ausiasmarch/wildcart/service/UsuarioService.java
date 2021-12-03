@@ -75,7 +75,7 @@ public class UsuarioService {
     }
 
     private String getFromList(List<String> list) {
-        int randomNumber = RandomHelper.getRandomInt(0, list.size());
+        int randomNumber = RandomHelper.getRandomInt(0, list.size()-1);
         String value = list.get(randomNumber);
         list.remove(randomNumber);
         return value;
