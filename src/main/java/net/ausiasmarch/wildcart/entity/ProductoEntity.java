@@ -103,7 +103,7 @@ public class ProductoEntity {
         this.descuento = descuento;
     }
 
-    public int getCarritoLength() {
+    public int getCarritos() {
         return this.carritos.size();
     }
 
