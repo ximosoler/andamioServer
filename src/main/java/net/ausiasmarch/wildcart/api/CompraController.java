@@ -156,29 +156,59 @@ public class CompraController {
 //        }
 //    }
     @GetMapping("")
-    public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+    public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura, @RequestParam(name = "producto", required = false) Long lProducto) {
         Page<CompraEntity> oPage = null;
-        if (lFactura != null) {
-            if (strFilter != null) {
-                oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-            } else {
-                oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
-            }
-        } else if (lProducto != null) {
-            if (strFilter != null) {
-                oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-            } else {
-                oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
-            }
+        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntity == null) {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
-            if (strFilter != null) {
-                oPage = oCompraRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+            if (oUsuarioEntity.getTipousuario().getId() == 1) {
+                if (lFactura != null) {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    } else {
+                        oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
+                    }
+                } else if (lProducto != null) {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    } else {
+                        oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
+                    }
+                } else {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    } else {
+                        oPage = oCompraRepository.findAll(oPageable);
+                    }
+                }
+                return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
             } else {
-                oPage = oCompraRepository.findAll(oPageable);
+                if (lFactura != null) {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter,oUsuarioEntity.getId(), oPageable);
+                    } else {
+                        oPage = oCompraRepository.findByFacturaIdUsuario(lFactura, oUsuarioEntity.getId(), oPageable);
+                    }
+                } else if (lProducto != null) {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter,oUsuarioEntity.getId(), oPageable);
+                    } else {
+                        oPage = oCompraRepository.findByProductoIdUsuario(lProducto,oUsuarioEntity.getId(), oPageable);
+                    }
+                } else {
+                    if (strFilter != null) {
+                        oPage = oCompraRepository.findByIdContainUsuario(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oUsuarioEntity.getId(),oPageable);
+                    } else {
+                        oPage = oCompraRepository.findAllUsuario(oUsuarioEntity.getId(),oPageable);
+                    }
+                }
+                return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
+
             }
         }
-        return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
+
     }
 
 //    @PostMapping("/generate")
@@ -195,13 +225,12 @@ public class CompraController {
 //            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
 //        }
 //    }
-
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {        
+    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        
+
         List<CompraEntity> compraList = new ArrayList<>();
-        
+
         if (oUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
