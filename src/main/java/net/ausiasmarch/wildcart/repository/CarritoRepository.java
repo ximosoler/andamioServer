@@ -1,5 +1,6 @@
 package net.ausiasmarch.wildcart.repository;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.entity.CarritoEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
@@ -13,6 +14,8 @@ public interface CarritoRepository extends JpaRepository<CarritoEntity, Long> {
 	Page<CarritoEntity> findByProductoId(Long id_Producto, Pageable oPageable);
 
 	Page<CarritoEntity> findByUsuarioId(Long id_Usuario, Pageable oPageable);
+        
+	List<CarritoEntity> findByUsuarioId(Long id_Usuario);        
         
 	long countByUsuarioId(Long id_Usuario);
                 

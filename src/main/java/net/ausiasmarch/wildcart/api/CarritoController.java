@@ -197,6 +197,18 @@ public class CarritoController {
     // }
     // }
     @PutMapping
+    public ResponseEntity<?> comprarCarrito() {
+        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oSessionUsuarioEntity != null) {
+            oCarritoService.compra();
+            return new ResponseEntity<Long>(0L, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+        }
+        
+    }
+
+    @PutMapping
     public ResponseEntity<?> update(@RequestBody CarritoEntity carritoEntity) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
 

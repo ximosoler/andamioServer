@@ -28,7 +28,7 @@ public class ProductoEntity {
     private Integer existencias;
     private Double precio;
     private Long imagen;
-    private Integer descuento;
+    private int descuento;
 
     @ManyToOne
     @JoinColumn(name = "id_tipoproducto")
