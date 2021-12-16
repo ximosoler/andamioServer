@@ -200,12 +200,16 @@ public class CarritoController {
     public ResponseEntity<?> comprarCarrito() {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oSessionUsuarioEntity != null) {
-            oCarritoService.compra();
+            try {
+                oCarritoService.compra();
+            } catch (Exception e) {
+                return new ResponseEntity<>(0L, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
             return new ResponseEntity<Long>(0L, HttpStatus.OK);
         } else {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         }
-        
+
     }
 
     @PutMapping
