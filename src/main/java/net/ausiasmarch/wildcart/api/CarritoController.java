@@ -196,7 +196,7 @@ public class CarritoController {
     // return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     // }
     // }
-    @PutMapping
+    @PutMapping("/comprar")
     public ResponseEntity<?> comprarCarrito() {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oSessionUsuarioEntity != null) {
