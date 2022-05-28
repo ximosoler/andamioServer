@@ -41,7 +41,7 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            System.out.println("uploadImage...");
+            System.out.println("uploading Image...");
             BufferedImage oBufferedImage = createImageFromBytes(file.getBytes());
             if (file.getBytes().length > 500000) {
                 System.out.println("--> file.getBytes().length" + file.getBytes().length);

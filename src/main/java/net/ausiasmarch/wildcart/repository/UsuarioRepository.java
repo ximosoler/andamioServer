@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
-	UsuarioEntity findByLoginAndPassword(String login, String password);
+    UsuarioEntity findByLoginAndPassword(String login, String password);
 
-	@Query(value = "select * from usuario where id_tipousuario = ?1 and (nombre like %?2% or dni like %?3% or apellido1 like %?4% or apellido2 like %?5%)", nativeQuery = true)
-	Page<UsuarioEntity> findByTipousuarioIdAndNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
-			Long filtertype, String nombre, String dni, String apellido1, String apellido2, Pageable oPageable);
+    @Query(value = "select * from usuario where id_tipousuario = ?1 and (dni like %?2% or nombre like %?3% or or apellido1 like %?4% or apellido2 like %?5%)", nativeQuery = true)
+    Page<UsuarioEntity> findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+           Long filtertype, String dni, String nombre, String apellido1, String apellido2, Pageable oPageable);
 
-	Page<UsuarioEntity> findByNombreIgnoreCaseContainingOrDniIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
-			String nombre, String dni, String apellido1, String apellido2, Pageable oPageable);
+    Page<UsuarioEntity> findByDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+           String dni, String nombre, String apellido1, String apellido2, Pageable oPageable);
+
+    Page<UsuarioEntity> findByTipousuarioId(Long tipoproducto, Pageable oPageable);
 }
