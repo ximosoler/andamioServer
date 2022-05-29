@@ -66,7 +66,7 @@ public class TipoUsuarioController {
         return new ResponseEntity<>(oPage, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("")
     public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
         if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
                .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
