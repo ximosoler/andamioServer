@@ -53,6 +53,7 @@ public class ProductoController {
 //    public ResponseEntity<List> getall() {
 //        return new ResponseEntity<List>(oProductoRepository.findAll(), HttpStatus.OK);
 //    }
+    
     // producto/count
     @GetMapping("/count")
     public ResponseEntity<Long> count() {

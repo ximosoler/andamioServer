@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
     UsuarioEntity findByLoginAndPassword(String login, String password);
+    Long countByLogin(String login);
 
     @Query(value = "select * from usuario where id_tipousuario = ?1 and (dni like %?2% or nombre like %?3% or or apellido1 like %?4% or apellido2 like %?5%)", nativeQuery = true)
     Page<UsuarioEntity> findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
