@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
-import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
 import net.ausiasmarch.wildcart.service.TipoUsuarioService;
+import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 
 @RestController
 @RequestMapping("/tipousuario")
 public class TipoUsuarioController {
 
     @Autowired
-    TipoUsuarioRepository oTipoUsuarioRepository;
+    TipousuarioRepository oTipoUsuarioRepository;
 
     @Autowired
     HttpSession oHttpSession;
@@ -44,10 +44,11 @@ public class TipoUsuarioController {
         return new ResponseEntity<TipoUsuarioEntity>(oTipoUsuarioRepository.getById(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<?> get() {
-//        return new ResponseEntity<List<TipoUsuarioEntity>>(oTipoUsuarioRepository.findAll(), HttpStatus.OK);
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<?> get() {
+        return new ResponseEntity<List<TipoUsuarioEntity>>(oTipoUsuarioRepository.findAll(), HttpStatus.OK);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<?> count() {
         return new ResponseEntity<Long>(oTipoUsuarioRepository.count(), HttpStatus.OK);
@@ -56,7 +57,8 @@ public class TipoUsuarioController {
     @GetMapping("")
     public ResponseEntity<Page<TipoUsuarioEntity>> getPage(
            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-           @RequestParam(name = "filter", required = false) String strFilter) {
+           @RequestParam(name = "filter", required = false) String strFilter
+    ) {
         Page<TipoUsuarioEntity> oPage = null;
         if (strFilter != null) {
             oPage = oTipoUsuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
@@ -70,34 +72,32 @@ public class TipoUsuarioController {
     public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
         if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
                .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oTipoUsuarioEntity.getId() == null) {
+                return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
+            } else {
+                if (!oTipoUsuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
+                    return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
+                } else {
+                    return new ResponseEntity<>(oTipoUsuarioRepository.save(oTipoUsuarioEntity), HttpStatus.OK);
+                }
+            }
         }
-
-        if (oTipoUsuarioEntity.getId() == null || !oTipoUsuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
-            return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(oTipoUsuarioRepository.save(oTipoUsuarioEntity), HttpStatus.OK);
     }
 
     @PostMapping("/generate")
     public ResponseEntity<?> generate() {
         List<TipoUsuarioEntity> usersTypeList = oUserTypeService.generateUsersType();
-
         if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
                .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
-            return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
-        }
-
-        for (int i = usersTypeList.size() - 1; i >= 0; i--) {
-            if (!oTipoUsuarioRepository.existsById(usersTypeList.get(i).getId())) {
+            return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
+        } else {
+            for (int i = usersTypeList.size() - 1; i >= 0; i--) {
                 oTipoUsuarioRepository.save(usersTypeList.get(i));
-            } else {
-                usersTypeList.remove(i);
             }
+            return new ResponseEntity<>(oTipoUsuarioRepository.count(), HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(oTipoUsuarioRepository.count(), HttpStatus.OK);
     }
 
 }

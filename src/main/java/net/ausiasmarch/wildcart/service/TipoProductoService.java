@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import net.ausiasmarch.wildcart.entity.TipoProductoEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
-import net.ausiasmarch.wildcart.repository.TipoProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import net.ausiasmarch.wildcart.repository.TipoproductoRepository;
 
 @Service
 public class TipoProductoService {
 
     @Autowired
-    TipoProductoRepository oTipoProductoRepository;
+    TipoproductoRepository oTipoProductoRepository;
 
     private final String[] TIPO = {"Productos", "Artículos", "Utilidades", "Herramientas", "Manufacturas", "Elaboraciones", "Mercancías"};
     private final String[] CARATERISTICA = {"artesanos", "de lujo", "económicos", "de segunda mano", "estándar", "retro", "plegables", "abatibles", "de gran tonelage", "ortopédicos", "de alta resistencia"};

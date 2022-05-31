@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
-import net.ausiasmarch.wildcart.repository.TipoUsuarioRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 
 @Service
 public class UsuarioService {
 
     @Autowired
-    TipoUsuarioRepository oTipoUsuarioRepository;
+    TipousuarioRepository oTipoUsuarioRepository;
 
     @Autowired
     UsuarioRepository oUsuarioRepository;

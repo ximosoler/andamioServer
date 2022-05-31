@@ -48,4 +48,22 @@ public class ValidationHelper {
         return m.matches();
     }
 
+    public static boolean validateLogin(String strLogin) {
+        if (!validateStringLength(strLogin, 6, 20)) {
+            return false;
+        }
+        String ePattern = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){4,18}[a-zA-Z0-9]$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(strLogin);
+        return m.matches();
+    }
+
+    public static boolean validateIntRange(int iNumber, int iMin, int iMax) {
+        if (iNumber >= iMin && iNumber <= iMax) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

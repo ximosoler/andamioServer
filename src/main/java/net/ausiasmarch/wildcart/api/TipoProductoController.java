@@ -4,7 +4,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.TipoProductoEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.repository.TipoProductoRepository;
 import net.ausiasmarch.wildcart.service.TipoProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import net.ausiasmarch.wildcart.repository.TipoproductoRepository;
 
 @RestController
 @RequestMapping("/tipoproducto")
 public class TipoProductoController {
 
     @Autowired
-    TipoProductoRepository oTipoProductoRepository;
+    TipoproductoRepository oTipoProductoRepository;
 
     @Autowired
     TipoProductoService oTipoProductoService;
