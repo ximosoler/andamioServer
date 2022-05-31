@@ -86,7 +86,7 @@ public class UsuarioController {
 
     @GetMapping("")
     public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-           @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipousuario", required = false) Long lTipoUsuario) {
+            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "tipousuario", required = false) Long lTipoUsuario) {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity == null) {
             return new ResponseEntity<String>("not authorized", HttpStatus.UNAUTHORIZED);
@@ -96,14 +96,14 @@ public class UsuarioController {
                 if (lTipoUsuario != null) {
                     if (strFilter != null) {
                         oPage = oUsuarioRepository.findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
-                               lTipoUsuario, strFilter, strFilter, strFilter, strFilter, oPageable);
+                                lTipoUsuario, strFilter, strFilter, strFilter, strFilter, oPageable);
                     } else {
                         oPage = oUsuarioRepository.findByTipousuarioId(lTipoUsuario, oPageable);
                     }
                 } else {
                     if (strFilter != null) {
                         oPage = oUsuarioRepository.findByDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
-                               strFilter, strFilter, strFilter, strFilter, oPageable);
+                                strFilter, strFilter, strFilter, strFilter, oPageable);
                     } else {
                         oPage = oUsuarioRepository.findAll(oPageable);
                     }
@@ -140,16 +140,16 @@ public class UsuarioController {
                         return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
                     }
                     if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
+                        return new ResponseEntity<>("login invalid", HttpStatus.NOT_MODIFIED);
+                    } else {
                         if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
                             return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
                         }
-                    } else {
-                        return new ResponseEntity<>("login invalid", HttpStatus.NOT_MODIFIED);
                     }
                     if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
                         return new ResponseEntity<>("descuento invalid", HttpStatus.NOT_MODIFIED);
                     }
-                    if (oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
+                    if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
                         return new ResponseEntity<>("tipousuario id invalid", HttpStatus.NOT_MODIFIED);
                     }
                     oNewUsuarioEntity.setPassword("4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64"); //wildcart
@@ -199,7 +199,7 @@ public class UsuarioController {
                         return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
                     }
                     if (ValidationHelper.validateLogin(oUsuarioEntity.getLogin())) {
-                        if (!oUsuarioRepository.existsByLogin(oUsuarioEntity.getLogin())) {
+                        if (!oUsuarioRepository.existsByLoginAndIdNot(oUsuarioEntity.getLogin(), id)) {
                             oUpdatedUsuarioEntity.setLogin(oUsuarioEntity.getLogin());
                         } else {
                             return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
@@ -214,7 +214,7 @@ public class UsuarioController {
                     }
                     oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
                     oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
-                    if (oTipousuarioRepository.existsById(id)) {
+                    if (oTipousuarioRepository.existsById(oUsuarioEntity.getTipousuario().getId())) {
                         oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
                     } else {
                         return new ResponseEntity<>("tipousuario invalid", HttpStatus.NOT_MODIFIED);
@@ -252,7 +252,7 @@ public class UsuarioController {
                         return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
                     }
                     if (ValidationHelper.validateLogin(oUsuarioEntity.getLogin())) {
-                        if (!oUsuarioRepository.existsByLogin(oUsuarioEntity.getLogin())) {
+                        if (!oUsuarioRepository.existsByLoginAndIdNot(oUsuarioEntity.getLogin(),id)) {
                             oUpdatedUsuarioEntity.setLogin(oUsuarioEntity.getLogin());
                         } else {
                             return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
@@ -295,7 +295,7 @@ public class UsuarioController {
     @PostMapping("/generate")
     public ResponseEntity<?> generate() {
         if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
-               .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
+                .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
             return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUserService.generateRandomUser()), HttpStatus.OK);
@@ -307,7 +307,7 @@ public class UsuarioController {
     ) {
         List<UsuarioEntity> userList = new ArrayList<>();
         if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
-               .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
+                .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
             return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
         } else {
             for (int i = 0; i < amount; i++) {
