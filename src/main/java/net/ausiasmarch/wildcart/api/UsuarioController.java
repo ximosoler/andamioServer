@@ -130,16 +130,16 @@ public class UsuarioController {
                     if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
                         return new ResponseEntity<>("nombre invalid", HttpStatus.NOT_MODIFIED);
                     }
-                    if (ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
-                        return new ResponseEntity<>("apellido1 invalid", HttpStatus.NOT_MODIFIED);
+                    if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
+                        ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("apellido1 invalid");
                     }
-                    if (ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
+                    if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
                         return new ResponseEntity<>("apellido2 invalid", HttpStatus.NOT_MODIFIED);
                     }
-                    if (ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
+                    if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
                         return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
                     }
-                    if (ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
+                    if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
                         if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
                             return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
                         }
@@ -150,7 +150,7 @@ public class UsuarioController {
                         return new ResponseEntity<>("descuento invalid", HttpStatus.NOT_MODIFIED);
                     }
                     if (oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
-                        return new ResponseEntity<>("tipousuario invalid", HttpStatus.NOT_MODIFIED);
+                        return new ResponseEntity<>("tipousuario id invalid", HttpStatus.NOT_MODIFIED);
                     }
                     oNewUsuarioEntity.setPassword("4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64"); //wildcart
                     oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
