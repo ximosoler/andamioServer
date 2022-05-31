@@ -115,7 +115,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/new")
+    @PostMapping("/")
     public ResponseEntity<?> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity == null) {
