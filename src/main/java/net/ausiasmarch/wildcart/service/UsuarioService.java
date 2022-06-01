@@ -2,22 +2,26 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.ausiasmarch.wildcart.Exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
+import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Service
 public class UsuarioService {
 
     @Autowired
-    TipousuarioRepository oTipoUsuarioRepository;
+    TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
     UsuarioRepository oUsuarioRepository;
@@ -42,9 +46,9 @@ public class UsuarioService {
         oUserEntity.setEmail(generateEmail(oUserEntity.getNombre(), oUserEntity.getApellido1()));
         oUserEntity.setDescuento(RandomHelper.getRandomInt(0, 51));
         if (RandomHelper.getRandomInt(0, 10) > 1) {
-            oUserEntity.setTipousuario(oTipoUsuarioRepository.getById(TipoUsuarioHelper.USER));
+            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.USER));
         } else {
-            oUserEntity.setTipousuario(oTipoUsuarioRepository.getById(TipoUsuarioHelper.ADMIN));
+            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.ADMIN));
         }
         oUserEntity.setValidado(false);
         oUserEntity.setActivo(false);
@@ -89,6 +93,41 @@ public class UsuarioService {
         List<UsuarioEntity> usuarioList = usuarioPage.getContent();
         oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
         return oUsuarioEntity;
+    }
+
+    public void validate(UsuarioEntity oNewUsuarioEntity) {
+        if (oNewUsuarioEntity.getId() == null) {
+            //validaciones
+            if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
+                throw new ValidationException("error en el campo DNI");
+            }
+            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
+                throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 50 caracteres)");
+            }
+            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
+                throw new ValidationException("error en el campo Primer Apellido (debe tener longitud de 2 a 50 caracteres)");
+            }
+            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
+                throw new ValidationException("error en el campo Segundo Apellido (debe tener longitud de 2 a 50 caracteres)");
+            }
+            if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
+                throw new ValidationException("error en el campo email");
+            }
+            if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
+                throw new ValidationException("error en el campo Login (debe tener longitud de 6 a 20 caracteres alfanuméricos con punto o guiones)");
+            } else {
+                if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
+                    throw new ValidationException("error el campo Login está repetido");
+                }
+            }
+            if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
+                throw new ValidationException("error en el campo Descuento (debe ser un entero entre 0 y 100)");
+            }
+            if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
+                throw new ValidationException("error en el campo Tipo de usuario (debe ser un entero 1 o 2)");
+            }
+
+        }
     }
 
 }

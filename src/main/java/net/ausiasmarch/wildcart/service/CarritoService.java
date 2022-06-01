@@ -104,7 +104,7 @@ public class CarritoService {
             }
             oFacturaRepository.save(oFacturaEntity);
         } else {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("");
         }
     }
 

@@ -3,6 +3,8 @@ package net.ausiasmarch.wildcart.api;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.Exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
+import net.ausiasmarch.wildcart.service.AuthService;
 import net.ausiasmarch.wildcart.service.UsuarioService;
 import org.springframework.data.domain.Sort;
 
@@ -39,10 +42,13 @@ public class UsuarioController {
     TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
+    AuthService oAuthService;
+
+    @Autowired
     HttpSession oHttpSession;
 
     @Autowired
-    UsuarioService oUserService;
+    UsuarioService oUsuarioService;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
@@ -117,155 +123,38 @@ public class UsuarioController {
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
-        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioSessionEntity.getTipousuario().getId() == TipoUsuarioHelper.ADMIN) {
-                if (oNewUsuarioEntity.getId() == null) {
-                    //validaciones
-                    if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
-                        return new ResponseEntity<>("dni invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
-                        return new ResponseEntity<>("nombre invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
-                        ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("apellido1 invalid");
-                    }
-                    if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
-                        return new ResponseEntity<>("apellido2 invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
-                        return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
-                        return new ResponseEntity<>("login invalid", HttpStatus.NOT_MODIFIED);
-                    } else {
-                        if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
-                            return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
-                        }
-                    }
-                    if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
-                        return new ResponseEntity<>("descuento invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
-                        return new ResponseEntity<>("tipousuario id invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    oNewUsuarioEntity.setPassword("4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64"); //wildcart
-                    oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
-                    return new ResponseEntity<>(oUsuarioRepository.save(oNewUsuarioEntity), HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
-                }
-            } else {
-                return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
-            }
-        }
+        oAuthService.OnlyAdmins();
+        oUsuarioService.validate(oNewUsuarioEntity);
+        oNewUsuarioEntity.setId(0L);
+        oNewUsuarioEntity.setPassword("4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64"); //wildcart
+        oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
+        return new ResponseEntity<>(oUsuarioRepository.save(oNewUsuarioEntity), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioEntity oUsuarioEntity) {
-        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioSessionEntity.getTipousuario().getId() == TipoUsuarioHelper.ADMIN) {
-                if (oUsuarioRepository.existsById(id)) {
-                    UsuarioEntity oUpdatedUsuarioEntity = oUsuarioRepository.findById(id).get();
-                    if (ValidationHelper.validateDNI(oUsuarioEntity.getDni())) {
-                        oUpdatedUsuarioEntity.setDni(oUsuarioEntity.getDni());
-                    } else {
-                        return new ResponseEntity<>("dni invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getNombre())) {
-                        oUpdatedUsuarioEntity.setNombre(oUsuarioEntity.getNombre());
-                    } else {
-                        return new ResponseEntity<>("nombre invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getApellido1())) {
-                        oUpdatedUsuarioEntity.setApellido1(oUsuarioEntity.getApellido1());
-                    } else {
-                        return new ResponseEntity<>("apellido1 invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getApellido2())) {
-                        oUpdatedUsuarioEntity.setApellido2(oUsuarioEntity.getApellido2());
-                    } else {
-                        return new ResponseEntity<>("apellido2 invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateEmail(oUsuarioEntity.getEmail())) {
-                        oUpdatedUsuarioEntity.setEmail(oUsuarioEntity.getEmail());
-                    } else {
-                        return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateLogin(oUsuarioEntity.getLogin())) {
-                        if (!oUsuarioRepository.existsByLoginAndIdNot(oUsuarioEntity.getLogin(), id)) {
-                            oUpdatedUsuarioEntity.setLogin(oUsuarioEntity.getLogin());
-                        } else {
-                            return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
-                        }
-                    } else {
-                        return new ResponseEntity<>("login invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateIntRange(oUsuarioEntity.getDescuento(), 0, 100)) {
-                        oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
-                    } else {
-                        return new ResponseEntity<>("descuento invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
-                    oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
-                    if (oTipousuarioRepository.existsById(oUsuarioEntity.getTipousuario().getId())) {
-                        oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
-                    } else {
-                        return new ResponseEntity<>("tipousuario invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("id not found", HttpStatus.NOT_FOUND);
-                }
+        oAuthService.OnlyAdminsOrUsers();
+        oUsuarioService.validate(oUsuarioEntity);
+        if (oUsuarioRepository.existsById(id)) {
+            UsuarioEntity oUpdatedUsuarioEntity = oUsuarioRepository.findById(id).get();
+            if (oAuthService.isAdmin()) {
+                oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+                oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+                return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
             } else {
-                if (oUsuarioSessionEntity.getId() == id) {
-                    UsuarioEntity oUpdatedUsuarioEntity = oUsuarioRepository.findById(id).get();
-                    if (ValidationHelper.validateDNI(oUsuarioEntity.getDni())) {
-                        oUpdatedUsuarioEntity.setDni(oUsuarioEntity.getDni());
-                    } else {
-                        return new ResponseEntity<>("dni invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getNombre())) {
-                        oUpdatedUsuarioEntity.setNombre(oUsuarioEntity.getNombre());
-                    } else {
-                        return new ResponseEntity<>("nombre invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getApellido1())) {
-                        oUpdatedUsuarioEntity.setApellido1(oUsuarioEntity.getApellido1());
-                    } else {
-                        return new ResponseEntity<>("apellido1 invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateNombre(oUsuarioEntity.getApellido2())) {
-                        oUpdatedUsuarioEntity.setApellido2(oUsuarioEntity.getApellido2());
-                    } else {
-                        return new ResponseEntity<>("apellido2 invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateEmail(oUsuarioEntity.getEmail())) {
-                        oUpdatedUsuarioEntity.setEmail(oUsuarioEntity.getEmail());
-                    } else {
-                        return new ResponseEntity<>("email invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    if (ValidationHelper.validateLogin(oUsuarioEntity.getLogin())) {
-                        if (!oUsuarioRepository.existsByLoginAndIdNot(oUsuarioEntity.getLogin(),id)) {
-                            oUpdatedUsuarioEntity.setLogin(oUsuarioEntity.getLogin());
-                        } else {
-                            return new ResponseEntity<>("repeated login", HttpStatus.NOT_MODIFIED);
-                        }
-                    } else {
-                        return new ResponseEntity<>("login invalid", HttpStatus.NOT_MODIFIED);
-                    }
-                    return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
-                }
+                oAuthService.OnlyMyData(id);
+                oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+                oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+                oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
+                oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
+                oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
+                oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
+                return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
             }
+        } else {
+            throw new ResourceNotFoundException("id not found");
         }
+
     }
 
     @DeleteMapping("/{id}")
@@ -298,7 +187,7 @@ public class UsuarioController {
                 .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
             return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUserService.generateRandomUser()), HttpStatus.OK);
+            return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUsuarioService.generateRandomUser()), HttpStatus.OK);
         }
     }
 
@@ -311,7 +200,7 @@ public class UsuarioController {
             return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
         } else {
             for (int i = 0; i < amount; i++) {
-                UsuarioEntity oUsuarioEntity = oUserService.generateRandomUser();
+                UsuarioEntity oUsuarioEntity = oUsuarioService.generateRandomUser();
                 oUsuarioRepository.save(oUsuarioEntity);
                 userList.add(oUsuarioEntity);
             }
