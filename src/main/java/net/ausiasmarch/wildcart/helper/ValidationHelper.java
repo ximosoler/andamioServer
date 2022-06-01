@@ -38,6 +38,14 @@ public class ValidationHelper {
         }
     }
 
+    public static boolean validateDescripcion(String strDesc) {
+        if (validateStringLength(strDesc, 5, 255)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean validateEmail(String email) {
         if (!validateStringLength(email, 3, 255)) {
             return false;

@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.TipoProductoEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
+import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.service.TipoProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,7 @@ public class TipoProductoController {
 
     @GetMapping("")
     public ResponseEntity<Page<TipoProductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-           @RequestParam(name = "filter", required = false) String strFilter) {
+            @RequestParam(name = "filter", required = false) String strFilter) {
         Page<TipoProductoEntity> oPage = null;
         if (strFilter != null) {
             oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
@@ -62,15 +63,7 @@ public class TipoProductoController {
         return new ResponseEntity<Long>(oTipoProductoRepository.count(), HttpStatus.OK);
     }
 
-    @GetMapping("/filter/{filtro}")
-    public ResponseEntity<Page<TipoProductoEntity>> getFilteredPage(@PathVariable(value = "filtro") String sfiltro, @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-        Page<TipoProductoEntity> oPage = null;
-        oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(sfiltro, oPageable);
-        return new ResponseEntity<Page<TipoProductoEntity>>(oPage, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}")
-
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oSessionUsuarioEntity == null) {
@@ -94,18 +87,17 @@ public class TipoProductoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody TipoProductoEntity oTipoProductoEntity
-    ) {
+    public ResponseEntity<?> create(@RequestBody TipoProductoEntity oTipoProductoEntity) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                    oTipoProductoEntity.setId(null);
-                    return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                oTipoProductoEntity.setId(null);
+                if (!ValidationHelper.validateDescripcion(oTipoProductoEntity.getNombre())) {
+                    return new ResponseEntity<>("descripción invalid", HttpStatus.NOT_MODIFIED);
                 } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
                 }
             } else {
                 return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
@@ -114,15 +106,18 @@ public class TipoProductoController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody TipoProductoEntity oTipoProductoEntity
-    ) {
+    public ResponseEntity<?> update(@RequestBody TipoProductoEntity oTipoProductoEntity) {
         UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
             if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
                 if (oTipoProductoRepository.existsById(oTipoProductoEntity.getId())) {
-                    return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                    if (!ValidationHelper.validateDescripcion(oTipoProductoEntity.getNombre())) {
+                        return new ResponseEntity<>("descripción invalid", HttpStatus.NOT_MODIFIED);
+                    } else {
+                        return new ResponseEntity<TipoProductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
+                    }
                 } else {
                     return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
                 }
@@ -134,9 +129,9 @@ public class TipoProductoController {
 
     @PostMapping("/generate/{amount}")
     public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") int amount) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity.getTipousuario().getId() == 1) {
-            if (oUsuarioEntity == null) {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity.getTipousuario().getId() == 1) {
+            if (oUsuarioSessionEntity == null) {
                 return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
             } else {
                 for (int i = 0; i < amount; i++) {
@@ -152,21 +147,16 @@ public class TipoProductoController {
 
     @PostMapping("/generate")
     public ResponseEntity<?> generate() {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity == null) {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity == null) {
             return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                    List<TipoProductoEntity> ListaTipoProd = oTipoProductoService.generateAllTipoProductoList();
-                    for (int i = 0; i < ListaTipoProd.size(); i++) {
-                        oTipoProductoRepository.save(ListaTipoProd.get(i));
-                    }
-                    return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
-
-                } else {
-                    return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
+            if (oUsuarioSessionEntity.getTipousuario().getId() == 1) {
+                List<TipoProductoEntity> ListaTipoProd = oTipoProductoService.generateAllTipoProductoList();
+                for (int i = 0; i < ListaTipoProd.size(); i++) {
+                    oTipoProductoRepository.save(ListaTipoProd.get(i));
                 }
+                return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
             }
