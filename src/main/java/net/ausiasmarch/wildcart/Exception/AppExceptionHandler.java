@@ -19,8 +19,8 @@ public class AppExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<?> UnauthorizedException(UnauthorizedException ex, WebRequest request) {
         ErrorResponseBean errorDetails
-                = new ErrorResponseBean(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+                = new ErrorResponseBean(new Date(), HttpStatus.UNAUTHORIZED.toString(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -29,12 +29,18 @@ public class AppExceptionHandler {
                 = new ErrorResponseBean(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ResourceNotModifiedException.class)
+    public ResponseEntity<?> ResourceNotModifiedException(ResourceNotModifiedException ex, WebRequest request) {
+        ErrorResponseBean errorDetails
+                = new ErrorResponseBean(new Date(), HttpStatus.NOT_MODIFIED.toString(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_MODIFIED);
+    }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<?> ValidationException(ValidationException ex, WebRequest request) {
         ErrorResponseBean errorDetails
-                = new ErrorResponseBean(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+                = new ErrorResponseBean(new Date(), HttpStatus.NOT_ACCEPTABLE.toString(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(Exception.class)

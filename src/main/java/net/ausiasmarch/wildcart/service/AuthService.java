@@ -15,21 +15,20 @@ public class AuthService {
 
     public boolean isAdmin() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity != null) {                    
-            if (oUsuarioSessionEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
+        if (!oUsuarioSessionEntity.equals(null)) {
+            if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.ADMIN)) {
                 return true;
             }
         }
         return false;
     }
-   
-    
+
     public void OnlyAdmins() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
+        if (oUsuarioSessionEntity.equals(null)) {
             throw new UnauthorizedException("this request is only allowed to admin role");
         } else {
-            if (oUsuarioSessionEntity.getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
+            if (!oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.ADMIN)) {
                 throw new UnauthorizedException("this request is only allowed to admin role");
             }
         }
@@ -37,24 +36,23 @@ public class AuthService {
 
     public void OnlyAdminsOrUsers() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
+        if (oUsuarioSessionEntity.equals(null)) {
             throw new UnauthorizedException("this request is only allowed to user or admin role");
         } else {
 
         }
     }
 
-    public void OnlyMyData(Long id) {
+    public void OnlyAdminsOrOwnUsersData(Long id) {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
-            throw new UnauthorizedException("this request is only allowed to user or admin role");
-        } else {
-            if (oUsuarioSessionEntity.getTipousuario().getId() == TipoUsuarioHelper.USER) {
-                if (oUsuarioSessionEntity.getTipousuario().getId() != id) {
-                    throw new UnauthorizedException("this request is only allowed to your own data");
+        if (!oUsuarioSessionEntity.equals(null)) {
+            if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.USER)) {
+                if (oUsuarioSessionEntity.getId().equals(id)) {
+                    throw new UnauthorizedException("this request is only allowed for your own data");
                 }
             }
-
+        } else {
+            throw new UnauthorizedException("this request is only allowed to user or admin role");
         }
     }
 

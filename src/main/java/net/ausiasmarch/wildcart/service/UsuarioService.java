@@ -2,6 +2,8 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.Exception.ResourceNotModifiedException;
 import net.ausiasmarch.wildcart.Exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository oUsuarioRepository;
+
+    @Autowired
+    AuthService oAuthService;
 
     private final String DNI_LETTERS = "TRWAGMYFPDXBNJZSQVHLCKE";
     private final String[] NAMES = {"Jose", "Mark", "Elen", "Toni", "Hector", "Jose", "Laura", "Vika", "Sergio",
@@ -97,7 +102,6 @@ public class UsuarioService {
 
     public void validate(UsuarioEntity oNewUsuarioEntity) {
         if (oNewUsuarioEntity.getId() == null) {
-            //validaciones
             if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
                 throw new ValidationException("error en el campo DNI");
             }
@@ -126,8 +130,99 @@ public class UsuarioService {
             if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
                 throw new ValidationException("error en el campo Tipo de usuario (debe ser un entero 1 o 2)");
             }
-
         }
+    }
+
+    public ResponseEntity<UsuarioEntity> get(Long id) {
+        try {
+            return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.findById(id).get(), HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oUsuarioRepository.count(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<Page<UsuarioEntity>> getPage(Pageable oPageable, String strFilter, Long lTipoUsuario) {
+        Page<UsuarioEntity> oPage = null;
+        if (lTipoUsuario != null) {
+            if (strFilter != null) {
+                oPage = oUsuarioRepository.findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+                        lTipoUsuario, strFilter, strFilter, strFilter, strFilter, oPageable);
+            } else {
+                oPage = oUsuarioRepository.findByTipousuarioId(lTipoUsuario, oPageable);
+            }
+        } else {
+            if (strFilter != null) {
+                oPage = oUsuarioRepository.findByDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+                        strFilter, strFilter, strFilter, strFilter, oPageable);
+            } else {
+                oPage = oUsuarioRepository.findAll(oPageable);
+            }
+        }
+        return new ResponseEntity<Page<UsuarioEntity>>(oPage, HttpStatus.OK);
+    }
+
+    public ResponseEntity<UsuarioEntity> create(UsuarioEntity oNewUsuarioEntity) {
+        oNewUsuarioEntity.setId(0L);
+        oNewUsuarioEntity.setPassword("4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64"); //wildcart
+        oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
+        return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oNewUsuarioEntity), HttpStatus.OK);
+    }
+
+    public ResponseEntity<UsuarioEntity> update4Admins(Long id, UsuarioEntity oUsuarioEntity) {
+        if (oUsuarioRepository.existsById(id)) {
+            UsuarioEntity oUpdatedUsuarioEntity = oUsuarioRepository.findById(id).get();
+            oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+            oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+            return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
+        } else {
+            throw new ResourceNotFoundException("id not found");
+        }
+    }
+
+    public ResponseEntity<UsuarioEntity> update4Users(Long id, UsuarioEntity oUsuarioEntity) {
+        if (oUsuarioRepository.existsById(id)) {
+            UsuarioEntity oUpdatedUsuarioEntity = oUsuarioRepository.findById(id).get();
+            oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+            oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+            oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
+            oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
+            oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
+            oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
+            return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(oUpdatedUsuarioEntity), HttpStatus.OK);
+        } else {
+            throw new ResourceNotFoundException("id not found");
+        }
+    }
+
+    public ResponseEntity<String> delete(Long id) {
+        if (oUsuarioRepository.existsById(id)) {
+            oUsuarioRepository.deleteById(id);
+            if (oUsuarioRepository.existsById(id)) {
+                throw new ResourceNotModifiedException("Can't remove register " + id);
+            } else {
+                return new ResponseEntity<String>("OK", HttpStatus.OK);
+            }
+        } else {
+            throw new ResourceNotModifiedException("id " + id + " not exist");
+        }
+    }
+
+    public ResponseEntity<UsuarioEntity> generateOne() {
+        return new ResponseEntity<UsuarioEntity>(oUsuarioRepository.save(generateRandomUser()), HttpStatus.OK);
+    }
+
+    public ResponseEntity<Long> generateSome(Integer amount) {
+        List<UsuarioEntity> userList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            UsuarioEntity oUsuarioEntity = generateRandomUser();
+            oUsuarioRepository.save(oUsuarioEntity);
+            userList.add(oUsuarioEntity);
+        }
+        return new ResponseEntity<>(oUsuarioRepository.count(), HttpStatus.OK);
     }
 
 }
