@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import net.ausiasmarch.wildcart.entity.TipoUsuarioEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
+import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
 import net.ausiasmarch.wildcart.service.TipoUsuarioService;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
+import net.ausiasmarch.wildcart.service.AuthService;
 
 @RestController
 @RequestMapping("/tipousuario")
@@ -34,70 +33,43 @@ public class TipoUsuarioController {
     HttpSession oHttpSession;
 
     @Autowired
-    TipoUsuarioService oUserTypeService;
+    AuthService oAuthService;
+
+    @Autowired
+    TipoUsuarioService oTipousuarioService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
-        if (id == null || !(oTipoUsuarioRepository.existsById(id))) {
-            return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<TipoUsuarioEntity>(oTipoUsuarioRepository.getById(id), HttpStatus.OK);
+    public ResponseEntity<TipousuarioEntity> get(@PathVariable(value = "id") Long id) {
+        return oTipousuarioService.get(id);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> get() {
-        return new ResponseEntity<List<TipoUsuarioEntity>>(oTipoUsuarioRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<TipousuarioEntity>> all() {
+        return new ResponseEntity<List<TipousuarioEntity>>(oTipoUsuarioRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/count")
-    public ResponseEntity<?> count() {
+    public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oTipoUsuarioRepository.count(), HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<TipoUsuarioEntity>> getPage(
-           @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-           @RequestParam(name = "filter", required = false) String strFilter
-    ) {
-        Page<TipoUsuarioEntity> oPage = null;
-        if (strFilter != null) {
-            oPage = oTipoUsuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-        } else {
-            oPage = oTipoUsuarioRepository.findAll(oPageable);
-        }
-        return new ResponseEntity<>(oPage, HttpStatus.OK);
+    public ResponseEntity<Page<TipousuarioEntity>> getPage(
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter) {
+        return oTipousuarioService.getPage(oPageable, strFilter);
     }
 
     @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody TipoUsuarioEntity oTipoUsuarioEntity) {
-        if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
-               .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
-            return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oTipoUsuarioEntity.getId() == null) {
-                return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
-            } else {
-                if (!oTipoUsuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
-                    return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
-                } else {
-                    return new ResponseEntity<>(oTipoUsuarioRepository.save(oTipoUsuarioEntity), HttpStatus.OK);
-                }
-            }
-        }
+    public ResponseEntity<TipousuarioEntity> update(@RequestBody TipousuarioEntity oTipoUsuarioEntity) {
+        oAuthService.OnlyAdmins();
+        return oTipousuarioService.update(oTipoUsuarioEntity);
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generate() {
-        List<TipoUsuarioEntity> usersTypeList = oUserTypeService.generateUsersType();
-        if (oHttpSession.getAttribute("usuario") == null || ((UsuarioEntity) oHttpSession.getAttribute("usuario"))
-               .getTipousuario().getId() != TipoUsuarioHelper.ADMIN) {
-            return new ResponseEntity<>("not authorized", HttpStatus.UNAUTHORIZED);
-        } else {
-            for (int i = usersTypeList.size() - 1; i >= 0; i--) {
-                oTipoUsuarioRepository.save(usersTypeList.get(i));
-            }
-            return new ResponseEntity<>(oTipoUsuarioRepository.count(), HttpStatus.OK);
-        }
+    public ResponseEntity<Long> generate() {
+        oAuthService.OnlyAdmins();
+        return oTipousuarioService.generate();
     }
 
 }

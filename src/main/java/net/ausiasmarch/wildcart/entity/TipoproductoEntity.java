@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tipoproducto")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class TipoProductoEntity {
+public class TipoproductoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class TipoProductoEntity {
     @OneToMany(mappedBy = "tipoproducto")
     private List<ProductoEntity> productos = new ArrayList<>();
 
-    public TipoProductoEntity() {
+    public TipoproductoEntity() {
     }   
     
     public Long getId() {

@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 @Entity
 @Table(name = "tipousuario")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class TipoUsuarioEntity {
+public class TipousuarioEntity {
 
 	@Id
 	// @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class TipoUsuarioEntity {
 	@OneToMany(mappedBy = "tipousuario")
 	private List<UsuarioEntity> usuarios = new ArrayList<>();
 
-	public TipoUsuarioEntity() {
+	public TipousuarioEntity() {
 	}
 
-	public TipoUsuarioEntity(Long id, String nombre) {
+	public TipousuarioEntity(Long id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 	}

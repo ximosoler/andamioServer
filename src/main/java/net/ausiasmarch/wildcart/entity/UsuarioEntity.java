@@ -44,7 +44,7 @@ public class UsuarioEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_tipousuario")
-    private TipoUsuarioEntity tipousuario;
+    private TipousuarioEntity tipousuario;
 
     @OneToMany(mappedBy = "usuario")
     private List<CarritoEntity> carritos = new ArrayList<>();
@@ -155,11 +155,11 @@ public class UsuarioEntity implements Serializable {
         this.activo = activo;
     }
 
-    public TipoUsuarioEntity getTipousuario() {
+    public TipousuarioEntity getTipousuario() {
         return tipousuario;
     }
 
-    public void setTipousuario(TipoUsuarioEntity tipousuario) {
+    public void setTipousuario(TipousuarioEntity tipousuario) {
         this.tipousuario = tipousuario;
     }
 

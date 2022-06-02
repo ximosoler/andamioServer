@@ -32,7 +32,7 @@ public class ProductoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_tipoproducto")
-    private TipoProductoEntity tipoproducto;
+    private TipoproductoEntity tipoproducto;
 
     @OneToMany(mappedBy = "producto")
     private List<CarritoEntity> carritos = new ArrayList<>();
@@ -111,11 +111,11 @@ public class ProductoEntity {
         return compras.size();
     }
 
-    public TipoProductoEntity getTipoproducto() {
+    public TipoproductoEntity getTipoproducto() {
         return tipoproducto;
     }
 
-    public void setTipoproducto(TipoProductoEntity tipoproducto) {
+    public void setTipoproducto(TipoproductoEntity tipoproducto) {
         this.tipoproducto = tipoproducto;
     }
 
