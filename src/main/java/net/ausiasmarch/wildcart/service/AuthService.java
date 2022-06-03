@@ -15,7 +15,7 @@ public class AuthService {
 
     public boolean isAdmin() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (!oUsuarioSessionEntity.equals(null)) {
+        if (oUsuarioSessionEntity != null) {
             if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.ADMIN)) {
                 return true;
             }
@@ -25,7 +25,7 @@ public class AuthService {
 
     public void OnlyAdmins() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity.equals(null)) {
+        if (oUsuarioSessionEntity == null) {
             throw new UnauthorizedException("this request is only allowed to admin role");
         } else {
             if (!oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.ADMIN)) {
@@ -36,7 +36,7 @@ public class AuthService {
 
     public void OnlyAdminsOrUsers() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity.equals(null)) {
+        if (oUsuarioSessionEntity == null) {
             throw new UnauthorizedException("this request is only allowed to user or admin role");
         } else {
 
@@ -45,7 +45,7 @@ public class AuthService {
 
     public void OnlyAdminsOrOwnUsersData(Long id) {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (!oUsuarioSessionEntity.equals(null)) {
+        if (oUsuarioSessionEntity != null) {
             if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.USER)) {
                 if (oUsuarioSessionEntity.getId().equals(id)) {
                     throw new UnauthorizedException("this request is only allowed for your own data");

@@ -12,13 +12,22 @@ public class ValidationHelper {
     }
 
     public static boolean validateDNI(String itDNI) {
-        String intPartDNI = itDNI.trim().replaceAll(" ", "").substring(0, 7);
-        char ltrDNI = itDNI.charAt(8);
-        int valNumDni = Integer.parseInt(intPartDNI) % 23;
-        if (itDNI.length() != 9 && isNumeric(intPartDNI) == false && "TRWAGMYFPDXBNJZSQVHLCKE".charAt(valNumDni) != ltrDNI) {
-            return false;
+        String strDNI = itDNI.trim().replaceAll(" ", "");
+        if (strDNI.length() == 9) {
+            if (isNumeric(strDNI.substring(0, 7))) {
+                int intPartDNI = Integer.parseInt(strDNI.substring(0, 7));
+                char cLetraDNI = strDNI.charAt(8);
+                int valNumDni = intPartDNI % 23;
+                if ("TRWAGMYFPDXBNJZSQVHLCKE".charAt(valNumDni) != cLetraDNI) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
         } else {
-            return true;
+            return false;
         }
     }
 

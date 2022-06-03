@@ -101,35 +101,33 @@ public class UsuarioService {
     }
 
     public void validate(UsuarioEntity oNewUsuarioEntity) {
-        if (oNewUsuarioEntity.getId() == null) {
-            if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
-                throw new ValidationException("error en el campo DNI");
+        if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
+            throw new ValidationException("error en el campo DNI");
+        }
+        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
+            throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 50 caracteres)");
+        }
+        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
+            throw new ValidationException("error en el campo Primer Apellido (debe tener longitud de 2 a 50 caracteres)");
+        }
+        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
+            throw new ValidationException("error en el campo Segundo Apellido (debe tener longitud de 2 a 50 caracteres)");
+        }
+        if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
+            throw new ValidationException("error en el campo email");
+        }
+        if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
+            throw new ValidationException("error en el campo Login (debe tener longitud de 6 a 20 caracteres alfanuméricos con punto o guiones)");
+        } else {
+            if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
+                throw new ValidationException("error el campo Login está repetido");
             }
-            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
-                throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 50 caracteres)");
-            }
-            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
-                throw new ValidationException("error en el campo Primer Apellido (debe tener longitud de 2 a 50 caracteres)");
-            }
-            if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
-                throw new ValidationException("error en el campo Segundo Apellido (debe tener longitud de 2 a 50 caracteres)");
-            }
-            if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
-                throw new ValidationException("error en el campo email");
-            }
-            if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
-                throw new ValidationException("error en el campo Login (debe tener longitud de 6 a 20 caracteres alfanuméricos con punto o guiones)");
-            } else {
-                if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
-                    throw new ValidationException("error el campo Login está repetido");
-                }
-            }
-            if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
-                throw new ValidationException("error en el campo Descuento (debe ser un entero entre 0 y 100)");
-            }
-            if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
-                throw new ValidationException("error en el campo Tipo de usuario (debe ser un entero 1 o 2)");
-            }
+        }
+        if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
+            throw new ValidationException("error en el campo Descuento (debe ser un entero entre 0 y 100)");
+        }
+        if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
+            throw new ValidationException("error en el campo Tipo de usuario (debe ser un entero 1 o 2)");
         }
     }
 
