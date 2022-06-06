@@ -15,7 +15,9 @@ import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import net.ausiasmarch.wildcart.service.AuthService;
 import net.ausiasmarch.wildcart.service.UsuarioService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,61 +37,47 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioEntity> get(@PathVariable(value = "id") Long id) {
-        oAuthService.OnlyAdminsOrOwnUsersData(id);
-        return oUsuarioService.get(id);
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.get(id), HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        oAuthService.OnlyAdmins();
-        return oUsuarioService.count();
+        return new ResponseEntity<Long>(oUsuarioService.count(), HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getPage(
+    public ResponseEntity<Page<UsuarioEntity>> getPage(
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "tipousuario", required = false) Long lTipoUsuario) {
-        oAuthService.OnlyAdmins();
-        return oUsuarioService.getPage(oPageable, strFilter, lTipoUsuario);
+        return new ResponseEntity<Page<UsuarioEntity>>(oUsuarioService.getPage(oPageable, strFilter, lTipoUsuario), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
-        oAuthService.OnlyAdmins();
-        oUsuarioService.validate(oNewUsuarioEntity);
-        return oUsuarioService.create(oNewUsuarioEntity);
+    public ResponseEntity<UsuarioEntity> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.create(oNewUsuarioEntity), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioEntity> update(
             @PathVariable(value = "id") Long id,
             @RequestBody UsuarioEntity oUsuarioEntity) {
-        oAuthService.OnlyAdminsOrOwnUsersData(id);
-        oUsuarioService.validate(oUsuarioEntity);
-        if (oAuthService.isAdmin()) {
-            return oUsuarioService.update4Admins(id, oUsuarioEntity);
-        } else {
-            return oUsuarioService.update4Users(id, oUsuarioEntity);
-        }
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.update(id, oUsuarioEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable(value = "id") Long id) {
-        oAuthService.OnlyAdmins();
+    public Long delete(@PathVariable(value = "id") Long id) {
         return oUsuarioService.delete(id);
     }
 
     @PostMapping("/generate")
     public ResponseEntity<UsuarioEntity> generate() {
-        oAuthService.OnlyAdmins();
-        return oUsuarioService.generateOne();
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.generateOne(), HttpStatus.OK);
     }
 
     @PostMapping("/generate/{amount}")
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") Integer amount) {
-        oAuthService.OnlyAdmins();
-        return oUsuarioService.generateSome(amount);
+        return new ResponseEntity<>(oUsuarioService.generateSome(amount), HttpStatus.OK);
     }
 
 }
