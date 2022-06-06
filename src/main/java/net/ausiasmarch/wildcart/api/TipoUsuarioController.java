@@ -1,7 +1,6 @@
 package net.ausiasmarch.wildcart.api;
 
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,57 +18,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
 import net.ausiasmarch.wildcart.service.TipoUsuarioService;
-import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
-import net.ausiasmarch.wildcart.service.AuthService;
 
 @RestController
 @RequestMapping("/tipousuario")
 public class TipoUsuarioController {
 
     @Autowired
-    TipousuarioRepository oTipoUsuarioRepository;
-
-    @Autowired
-    HttpSession oHttpSession;
-
-    @Autowired
-    AuthService oAuthService;
-
-    @Autowired
     TipoUsuarioService oTipousuarioService;
 
     @GetMapping("/{id}")
     public ResponseEntity<TipousuarioEntity> get(@PathVariable(value = "id") Long id) {
-        return oTipousuarioService.get(id);
+        return new ResponseEntity<TipousuarioEntity>(oTipousuarioService.get(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<TipousuarioEntity>> all() {
-        return new ResponseEntity<List<TipousuarioEntity>>(oTipoUsuarioRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<List<TipousuarioEntity>>(oTipousuarioService.all(), HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        return new ResponseEntity<Long>(oTipoUsuarioRepository.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oTipousuarioService.count(), HttpStatus.OK);
     }
 
     @GetMapping("")
     public ResponseEntity<Page<TipousuarioEntity>> getPage(
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter) {
-        return oTipousuarioService.getPage(oPageable, strFilter);
+        return new ResponseEntity<Page<TipousuarioEntity>>(oTipousuarioService.getPage(oPageable, strFilter), HttpStatus.OK);
     }
 
     @PutMapping("")
     public ResponseEntity<TipousuarioEntity> update(@RequestBody TipousuarioEntity oTipoUsuarioEntity) {
-        oAuthService.OnlyAdmins();
-        return oTipousuarioService.update(oTipoUsuarioEntity);
+        return new ResponseEntity<TipousuarioEntity>(oTipousuarioService.update(oTipoUsuarioEntity), HttpStatus.OK);
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<Long> generate() {
-        oAuthService.OnlyAdmins();
-        return oTipousuarioService.generate();
+    public ResponseEntity<Long> generate() {        
+        return new ResponseEntity<Long>(oTipousuarioService.generate(), HttpStatus.OK);
     }
 
 }

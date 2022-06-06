@@ -8,24 +8,21 @@ import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class TipoUsuarioService {
 
     @Autowired
-    TipousuarioRepository oTipoUsuarioRepository;
+    TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
-    HttpSession oHttpSession;
+    AuthService oAuthService;
 
     public List<TipousuarioEntity> generateUsersType() {
         List<TipousuarioEntity> usersTypeList = new ArrayList<>();
@@ -35,43 +32,52 @@ public class TipoUsuarioService {
         return usersTypeList;
     }
 
-    public ResponseEntity<TipousuarioEntity> get(Long id) {
-        if (id == null || !(oTipoUsuarioRepository.existsById(id))) {
+    public TipousuarioEntity get(Long id) {
+        if (id == null || !(oTipousuarioRepository.existsById(id))) {
             throw new ResourceNotFoundException("id not found");
         } else {
-            return new ResponseEntity<TipousuarioEntity>(oTipoUsuarioRepository.getById(id), HttpStatus.OK);
+            return oTipousuarioRepository.getById(id);
         }
     }
 
-    public ResponseEntity<Page<TipousuarioEntity>> getPage(Pageable oPageable, String strFilter) {
+    public List<TipousuarioEntity> all() {
+        return oTipousuarioRepository.findAll();
+    }
+
+    public Long count() {
+        return oTipousuarioRepository.count();
+    }
+
+    public Page<TipousuarioEntity> getPage(Pageable oPageable, String strFilter) {
         Page<TipousuarioEntity> oPage = null;
         if (strFilter != null) {
-            oPage = oTipoUsuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
+            oPage = oTipousuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
         } else {
-            oPage = oTipoUsuarioRepository.findAll(oPageable);
+            oPage = oTipousuarioRepository.findAll(oPageable);
         }
-        return new ResponseEntity<Page<TipousuarioEntity>>(oPage, HttpStatus.OK);
+        return oPage;
     }
 
-    public ResponseEntity<TipousuarioEntity> update(TipousuarioEntity oTipoUsuarioEntity) {
+    public TipousuarioEntity update(TipousuarioEntity oTipoUsuarioEntity) {
+        oAuthService.OnlyAdmins();
         if (oTipoUsuarioEntity.getId() == null) {
             throw new ResourceNotFoundException("id not found");
         } else {
-            if (!oTipoUsuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
+            if (!oTipousuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
                 throw new ResourceNotFoundException("id not found");
             } else {
-                return new ResponseEntity<TipousuarioEntity>(oTipoUsuarioRepository.save(oTipoUsuarioEntity), HttpStatus.OK);
+                return oTipousuarioRepository.save(oTipoUsuarioEntity);
             }
         }
     }
 
-    public ResponseEntity<Long> generate() {
+    public Long generate() {
+        oAuthService.OnlyAdmins();
         List<TipousuarioEntity> usersTypeList = generateUsersType();
 
         for (int i = usersTypeList.size() - 1; i >= 0; i--) {
-            oTipoUsuarioRepository.save(usersTypeList.get(i));
+            oTipousuarioRepository.save(usersTypeList.get(i));
         }
-        return new ResponseEntity<Long>(oTipoUsuarioRepository.count(), HttpStatus.OK);
-
+        return oTipousuarioRepository.count();
     }
 }
