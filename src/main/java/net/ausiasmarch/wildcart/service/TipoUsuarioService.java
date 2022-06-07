@@ -2,18 +2,13 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
-
 import org.springframework.stereotype.Service;
-
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Service
 public class TipoUsuarioService {
@@ -28,7 +23,6 @@ public class TipoUsuarioService {
         List<TipousuarioEntity> usersTypeList = new ArrayList<>();
         usersTypeList.add(new TipousuarioEntity(1L, "administrador"));
         usersTypeList.add(new TipousuarioEntity(2L, "usuario"));
-
         return usersTypeList;
     }
 

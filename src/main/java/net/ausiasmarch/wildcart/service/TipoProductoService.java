@@ -31,9 +31,14 @@ public class TipoProductoService {
     private final String[] CARATERISTICA = {"artesanos", "de lujo", "económicos", "de segunda mano", "estándar", "retro", "plegables", "abatibles", "de gran tonelage", "ortopédicos", "de alta resistencia"};
     private final String[] UTILIDAD = {"para el hogar", "para el jardin", "para la restauracion", "para la oficina", "para el camping", "para colegios", "para prisiones", "para hospitales", "para cines y teatros"};
 
-    public void validate(TipoproductoEntity oNewEntity) {
-        if (!ValidationHelper.validateDescripcion(oNewEntity.getNombre())) {
-            throw new ValidationException("error en el campo nombre");
+    public void validate(TipoproductoEntity oTipoproductoEntity, boolean testId) {
+        if (testId) {
+            if (!oTipoproductoRepository.existsById(oTipoproductoEntity.getId())) {
+                throw new ResourceNotFoundException("id " + oTipoproductoEntity.getId() + " not exist");
+            }
+        }
+        if (!ValidationHelper.validateStringLength(oTipoproductoEntity.getNombre(), 2, 100)) {
+            throw new ValidationException("error en el campo nombre (entre 2 y 100 caracteres)");
         }
     }
 
@@ -63,15 +68,15 @@ public class TipoProductoService {
     public TipoproductoEntity create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
         oAuthService.OnlyAdmins();
         oTipoProductoEntity.setId(null);
-        validate(oTipoProductoEntity);
+        validate(oTipoProductoEntity, false);
         return oTipoproductoRepository.save(oTipoProductoEntity);
     }
 
     public TipoproductoEntity update(Long id, TipoproductoEntity oTipoproductoEntity) {
         oAuthService.OnlyAdmins();
-        validate(oTipoproductoEntity);
+        oTipoproductoEntity.setId(id);
+        validate(oTipoproductoEntity, true);
         if (oTipoproductoRepository.existsById(id)) {
-            oTipoproductoEntity.setId(id);
             return oTipoproductoRepository.save(oTipoproductoEntity);
         } else {
             throw new ResourceNotFoundException("id not found");

@@ -11,6 +11,7 @@ import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
+import static net.ausiasmarch.wildcart.helper.ValidationHelper.validateStringLength;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,33 +40,38 @@ public class UsuarioService {
         "Valcarcel", "Sesa", "Lence", "Villanueva", "Peyro", "Navarro", "Navarro", "Primo", "Gil", "Mocholi",
         "Ortega", "Dung", "Vi", "Sanchis", "Merida", "Aznar", "Aparici", "Tarazón", "Alcocer", "Salom", "Santamaría"};
 
-    public void validate(UsuarioEntity oNewUsuarioEntity) {
-        if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
+    public void validate(UsuarioEntity oUsuarioEntity, boolean testId) {
+        if (testId) {
+            if (!oUsuarioRepository.existsById(oUsuarioEntity.getId())) {
+                throw new ResourceNotFoundException("id " + oUsuarioEntity.getId() + " not exist");
+            }
+        }
+        if (!ValidationHelper.validateDNI(oUsuarioEntity.getDni())) {
             throw new ValidationException("error en el campo DNI");
         }
-        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getNombre())) {
+        if (!ValidationHelper.validateStringLength(oUsuarioEntity.getNombre(), 2, 50)) {
             throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 50 caracteres)");
         }
-        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido1())) {
+        if (!ValidationHelper.validateStringLength(oUsuarioEntity.getApellido1(), 2, 50)) {
             throw new ValidationException("error en el campo Primer Apellido (debe tener longitud de 2 a 50 caracteres)");
         }
-        if (!ValidationHelper.validateNombre(oNewUsuarioEntity.getApellido2())) {
+        if (!ValidationHelper.validateStringLength(oUsuarioEntity.getApellido2(), 2, 50)) {
             throw new ValidationException("error en el campo Segundo Apellido (debe tener longitud de 2 a 50 caracteres)");
         }
-        if (!ValidationHelper.validateEmail(oNewUsuarioEntity.getEmail())) {
+        if (!ValidationHelper.validateEmail(oUsuarioEntity.getEmail())) {
             throw new ValidationException("error en el campo email");
         }
-        if (!ValidationHelper.validateLogin(oNewUsuarioEntity.getLogin())) {
+        if (!ValidationHelper.validateLogin(oUsuarioEntity.getLogin())) {
             throw new ValidationException("error en el campo Login (debe tener longitud de 6 a 20 caracteres alfanuméricos con punto o guiones)");
         } else {
-            if (oUsuarioRepository.existsByLogin(oNewUsuarioEntity.getLogin())) {
+            if (oUsuarioRepository.existsByLogin(oUsuarioEntity.getLogin())) {
                 throw new ValidationException("error el campo Login está repetido");
             }
         }
-        if (!ValidationHelper.validateIntRange(oNewUsuarioEntity.getDescuento(), 0, 100)) {
+        if (!ValidationHelper.validateRange(oUsuarioEntity.getDescuento(), 0, 100)) {
             throw new ValidationException("error en el campo Descuento (debe ser un entero entre 0 y 100)");
         }
-        if (!oTipousuarioRepository.existsById(oNewUsuarioEntity.getTipousuario().getId())) {
+        if (!oTipousuarioRepository.existsById(oUsuarioEntity.getTipousuario().getId())) {
             throw new ValidationException("error en el campo Tipo de usuario (debe ser un entero 1 o 2)");
         }
     }
@@ -107,7 +113,7 @@ public class UsuarioService {
 
     public UsuarioEntity create(UsuarioEntity oNewUsuarioEntity) {
         oAuthService.OnlyAdmins();
-        validate(oNewUsuarioEntity);
+        validate(oNewUsuarioEntity, false);
         oNewUsuarioEntity.setId(0L);
         oNewUsuarioEntity.setPassword(WILDCART_DEFAULT_PASSWORD); //wildcart
         oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
@@ -116,7 +122,7 @@ public class UsuarioService {
 
     public UsuarioEntity update(Long id, UsuarioEntity oUsuarioEntity) {
         oAuthService.OnlyAdminsOrOwnUsersData(id);
-        validate(oUsuarioEntity);
+        validate(oUsuarioEntity, true);
         if (oAuthService.isAdmin()) {
             return update4Admins(id, oUsuarioEntity);
         } else {
@@ -125,33 +131,25 @@ public class UsuarioService {
     }
 
     private UsuarioEntity update4Admins(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
-        if (oUsuarioRepository.existsById(id)) {
-            validate(oUpdatedUsuarioEntity);
-            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
-            oUpdatedUsuarioEntity.setId(id);
-            oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
-            oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
-            return oUsuarioRepository.save(oUpdatedUsuarioEntity);
-        } else {
-            throw new ResourceNotFoundException("id not found");
-        }
+        oUpdatedUsuarioEntity.setId(id);
+        validate(oUpdatedUsuarioEntity, true);
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
+        oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+        oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+        return oUsuarioRepository.save(oUpdatedUsuarioEntity);
     }
 
     private UsuarioEntity update4Users(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
-        if (oUsuarioRepository.existsById(id)) {
-            validate(oUpdatedUsuarioEntity);
-            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
-            oUpdatedUsuarioEntity.setId(id);
-            oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
-            oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
-            oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
-            oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
-            oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
-            oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
-            return oUsuarioRepository.save(oUpdatedUsuarioEntity);
-        } else {
-            throw new ResourceNotFoundException("id not found");
-        }
+        oUpdatedUsuarioEntity.setId(id);
+        validate(oUpdatedUsuarioEntity, true);
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
+        oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
+        oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
+        oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
+        oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
+        oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
+        oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
+        return oUsuarioRepository.save(oUpdatedUsuarioEntity);
     }
 
     public Long delete(Long id) {

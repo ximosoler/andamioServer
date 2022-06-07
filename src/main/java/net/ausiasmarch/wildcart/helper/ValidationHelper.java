@@ -2,6 +2,9 @@ package net.ausiasmarch.wildcart.helper;
 
 public class ValidationHelper {
 
+    public static final String EMAIL_PATTERN = "^.+@.+\\..+$";
+    public static final String CODIGO_PATTERN = "^([A-Z0-9]{1,6}-)[A-Za-z0-9]{5,200}$";
+
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -9,6 +12,20 @@ public class ValidationHelper {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static boolean validateStringLength(String strNombre, int minlength, int maxlength) {
+        if (strNombre.length() >= minlength && strNombre.length() <= maxlength) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean validatePattern(String strInput, String strPattern) {
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(strPattern);
+        java.util.regex.Matcher m = p.matcher(strInput);
+        return m.matches();
     }
 
     public static boolean validateDNI(String itDNI) {
@@ -26,30 +43,6 @@ public class ValidationHelper {
             } else {
                 return false;
             }
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean validateStringLength(String strNombre, int minlength, int maxlength) {
-        if (strNombre.length() >= minlength && strNombre.length() <= maxlength) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean validateNombre(String strNombre) {
-        if (validateStringLength(strNombre, 2, 50)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean validateDescripcion(String strDesc) {
-        if (validateStringLength(strDesc, 5, 255)) {
-            return true;
         } else {
             return false;
         }
@@ -75,7 +68,15 @@ public class ValidationHelper {
         return m.matches();
     }
 
-    public static boolean validateIntRange(int iNumber, int iMin, int iMax) {
+    public static boolean validateRange(int iNumber, int iMin, int iMax) {
+        if (iNumber >= iMin && iNumber <= iMax) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean validateRange(double iNumber, double iMin, double iMax) {
         if (iNumber >= iMin && iNumber <= iMax) {
             return true;
         } else {

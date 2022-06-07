@@ -27,9 +27,6 @@ public class TipoProductoController {
     @Autowired
     TipoProductoService oTipoproductoService;
 
-    @Autowired
-    HttpSession oHttpSession;
-
     @GetMapping("/{id}")
     public ResponseEntity<TipoproductoEntity> get(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.get(id), HttpStatus.OK);
