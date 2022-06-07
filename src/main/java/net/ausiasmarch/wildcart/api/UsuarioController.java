@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.repository.UsuarioRepository;
-import net.ausiasmarch.wildcart.service.AuthService;
 import net.ausiasmarch.wildcart.service.UsuarioService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -25,12 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-
-    @Autowired
-    UsuarioRepository oUsuarioRepository;
-
-    @Autowired
-    AuthService oAuthService;
 
     @Autowired
     UsuarioService oUsuarioService;

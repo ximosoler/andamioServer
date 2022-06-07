@@ -39,66 +39,6 @@ public class UsuarioService {
         "Valcarcel", "Sesa", "Lence", "Villanueva", "Peyro", "Navarro", "Navarro", "Primo", "Gil", "Mocholi",
         "Ortega", "Dung", "Vi", "Sanchis", "Merida", "Aznar", "Aparici", "Tarazón", "Alcocer", "Salom", "Santamaría"};
 
-    public UsuarioEntity generateRandomUser() {
-        UsuarioEntity oUserEntity = new UsuarioEntity();
-        oUserEntity.setDni(generateDNI());
-        oUserEntity.setNombre(generateName());
-        oUserEntity.setApellido1(generateSurname());
-        oUserEntity.setApellido2(generateSurname());
-        oUserEntity.setLogin(oUserEntity.getNombre() + "_" + oUserEntity.getApellido1());
-        oUserEntity.setPassword(WILDCART_DEFAULT_PASSWORD); // wildcart
-        oUserEntity.setEmail(generateEmail(oUserEntity.getNombre(), oUserEntity.getApellido1()));
-        oUserEntity.setDescuento(RandomHelper.getRandomInt(0, 51));
-        if (RandomHelper.getRandomInt(0, 10) > 1) {
-            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.USER));
-        } else {
-            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.ADMIN));
-        }
-        oUserEntity.setValidado(false);
-        oUserEntity.setActivo(false);
-
-        return oUserEntity;
-    }
-
-    private String generateDNI() {
-        String dni = "";
-        int dniNumber = RandomHelper.getRandomInt(11111111, 99999999 + 1);
-        dni += dniNumber + "" + DNI_LETTERS.charAt(dniNumber % 23);
-        return dni;
-    }
-
-    private String generateName() {
-        return NAMES[RandomHelper.getRandomInt(0, NAMES.length - 1)].toLowerCase();
-    }
-
-    private String generateSurname() {
-        return SURNAMES[RandomHelper.getRandomInt(0, SURNAMES.length - 1)].toLowerCase();
-    }
-
-    private String generateEmail(String name, String surname) {
-        List<String> list = new ArrayList<>();
-        list.add(name);
-        list.add(surname);
-        return getFromList(list) + "_" + getFromList(list) + "@daw.tk";
-    }
-
-    private String getFromList(List<String> list) {
-        int randomNumber = RandomHelper.getRandomInt(0, list.size() - 1);
-        String value = list.get(randomNumber);
-        list.remove(randomNumber);
-        return value;
-    }
-
-    public UsuarioEntity getRandomUsuario() {
-        UsuarioEntity oUsuarioEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
-        Pageable oPageable = PageRequest.of(iPosicion, 1);
-        Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
-        List<UsuarioEntity> usuarioList = usuarioPage.getContent();
-        oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
-        return oUsuarioEntity;
-    }
-
     public void validate(UsuarioEntity oNewUsuarioEntity) {
         if (!ValidationHelper.validateDNI(oNewUsuarioEntity.getDni())) {
             throw new ValidationException("error en el campo DNI");
@@ -186,7 +126,9 @@ public class UsuarioService {
 
     private UsuarioEntity update4Admins(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
         if (oUsuarioRepository.existsById(id)) {
+            validate(oUpdatedUsuarioEntity);
             UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
+            oUpdatedUsuarioEntity.setId(id);
             oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
             oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
             return oUsuarioRepository.save(oUpdatedUsuarioEntity);
@@ -197,7 +139,9 @@ public class UsuarioService {
 
     private UsuarioEntity update4Users(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
         if (oUsuarioRepository.existsById(id)) {
+            validate(oUpdatedUsuarioEntity);
             UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
+            oUpdatedUsuarioEntity.setId(id);
             oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
             oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
             oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
@@ -215,13 +159,73 @@ public class UsuarioService {
         if (oUsuarioRepository.existsById(id)) {
             oUsuarioRepository.deleteById(id);
             if (oUsuarioRepository.existsById(id)) {
-                throw new ResourceNotModifiedException("Can't remove register " + id);
+                throw new ResourceNotModifiedException("can't remove register " + id);
             } else {
                 return id;
             }
         } else {
             throw new ResourceNotModifiedException("id " + id + " not exist");
         }
+    }
+
+    public UsuarioEntity generateRandomUser() {
+        UsuarioEntity oUserEntity = new UsuarioEntity();
+        oUserEntity.setDni(generateDNI());
+        oUserEntity.setNombre(generateName());
+        oUserEntity.setApellido1(generateSurname());
+        oUserEntity.setApellido2(generateSurname());
+        oUserEntity.setLogin(oUserEntity.getNombre() + "_" + oUserEntity.getApellido1());
+        oUserEntity.setPassword(WILDCART_DEFAULT_PASSWORD); // wildcart
+        oUserEntity.setEmail(generateEmail(oUserEntity.getNombre(), oUserEntity.getApellido1()));
+        oUserEntity.setDescuento(RandomHelper.getRandomInt(0, 51));
+        if (RandomHelper.getRandomInt(0, 10) > 1) {
+            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.USER));
+        } else {
+            oUserEntity.setTipousuario(oTipousuarioRepository.getById(TipoUsuarioHelper.ADMIN));
+        }
+        oUserEntity.setValidado(false);
+        oUserEntity.setActivo(false);
+
+        return oUserEntity;
+    }
+
+    private String generateDNI() {
+        String dni = "";
+        int dniNumber = RandomHelper.getRandomInt(11111111, 99999999 + 1);
+        dni += dniNumber + "" + DNI_LETTERS.charAt(dniNumber % 23);
+        return dni;
+    }
+
+    private String generateName() {
+        return NAMES[RandomHelper.getRandomInt(0, NAMES.length - 1)].toLowerCase();
+    }
+
+    private String generateSurname() {
+        return SURNAMES[RandomHelper.getRandomInt(0, SURNAMES.length - 1)].toLowerCase();
+    }
+
+    private String generateEmail(String name, String surname) {
+        List<String> list = new ArrayList<>();
+        list.add(name);
+        list.add(surname);
+        return getFromList(list) + "_" + getFromList(list) + "@daw.tk";
+    }
+
+    private String getFromList(List<String> list) {
+        int randomNumber = RandomHelper.getRandomInt(0, list.size() - 1);
+        String value = list.get(randomNumber);
+        list.remove(randomNumber);
+        return value;
+    }
+
+    public UsuarioEntity getRandomUsuario() {
+        UsuarioEntity oUsuarioEntity = null;
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
+        Pageable oPageable = PageRequest.of(iPosicion, 1);
+        Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
+        List<UsuarioEntity> usuarioList = usuarioPage.getContent();
+        oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
+        return oUsuarioEntity;
     }
 
     public UsuarioEntity generateOne() {

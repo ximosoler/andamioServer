@@ -1,10 +1,7 @@
 package net.ausiasmarch.wildcart.api;
 
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.TipoproductoEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.service.TipoProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,145 +19,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import net.ausiasmarch.wildcart.repository.TipoproductoRepository;
 
 @RestController
 @RequestMapping("/tipoproducto")
 public class TipoProductoController {
 
     @Autowired
-    TipoproductoRepository oTipoProductoRepository;
-
-    @Autowired
-    TipoProductoService oTipoProductoService;
+    TipoProductoService oTipoproductoService;
 
     @Autowired
     HttpSession oHttpSession;
 
     @GetMapping("/{id}")
     public ResponseEntity<TipoproductoEntity> get(@PathVariable(value = "id") Long id) {
-        if (oTipoProductoRepository.existsById(id)) {
-            return new ResponseEntity<TipoproductoEntity>(oTipoProductoRepository.getById(id), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.get(id), HttpStatus.OK);
     }
 
     @GetMapping("")
     public ResponseEntity<Page<TipoproductoEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter) {
-        Page<TipoproductoEntity> oPage = null;
-        if (strFilter != null) {
-            oPage = oTipoProductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-        } else {
-            oPage = oTipoProductoRepository.findAll(oPageable);
-        }
-        return new ResponseEntity<>(oPage, HttpStatus.OK);
+        return new ResponseEntity<Page<TipoproductoEntity>>(oTipoproductoService.getPage(oPageable, strFilter), HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        return new ResponseEntity<Long>(oTipoProductoRepository.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oTipoproductoService.count(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oTipoProductoRepository.existsById(id)) {
-                    oTipoProductoRepository.deleteById(id);
-                    if (oTipoProductoRepository.existsById(id)) {
-                        return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                    } else {
-                        return new ResponseEntity<Long>(id, HttpStatus.OK);
-                    }
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_FOUND);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<Long>(oTipoproductoService.delete(id), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                oTipoProductoEntity.setId(null);
-                if (!ValidationHelper.validateDescripcion(oTipoProductoEntity.getNombre())) {
-                    return new ResponseEntity<>("descripción invalid", HttpStatus.NOT_MODIFIED);
-                } else {
-                    return new ResponseEntity<TipoproductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.create(oTipoProductoEntity), HttpStatus.OK);
     }
 
     @PutMapping("/")
     public ResponseEntity<?> update(@RequestBody TipoproductoEntity oTipoProductoEntity) {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oSessionUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oTipoProductoRepository.existsById(oTipoProductoEntity.getId())) {
-                    if (!ValidationHelper.validateDescripcion(oTipoProductoEntity.getNombre())) {
-                        return new ResponseEntity<>("descripción invalid", HttpStatus.NOT_MODIFIED);
-                    } else {
-                        return new ResponseEntity<TipoproductoEntity>(oTipoProductoRepository.save(oTipoProductoEntity), HttpStatus.OK);
-                    }
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.update(oTipoProductoEntity.getId(), oTipoProductoEntity), HttpStatus.OK);
     }
 
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") int amount) {
-        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity.getTipousuario().getId() == 1) {
-            if (oUsuarioSessionEntity == null) {
-                return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
-            } else {
-                for (int i = 0; i < amount; i++) {
-                    TipoproductoEntity oTipoProductoEntity = oTipoProductoService.generateTipoProducto();
-                    oTipoProductoRepository.save(oTipoProductoEntity);
-                }
-                return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
-            }
-        } else {
-            return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<Long> generateAmount(@PathVariable(value = "amount") int amount) {
+        return new ResponseEntity<Long>(oTipoproductoService.generateAmount(amount), HttpStatus.OK);
     }
 
     @PostMapping("/generate")
     public ResponseEntity<?> generate() {
-        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioSessionEntity.getTipousuario().getId() == 1) {
-                List<TipoproductoEntity> ListaTipoProd = oTipoProductoService.generateAllTipoProductoList();
-                for (int i = 0; i < ListaTipoProd.size(); i++) {
-                    oTipoProductoRepository.save(ListaTipoProd.get(i));
-                }
-                return new ResponseEntity<>(oTipoProductoRepository.count(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+        return new ResponseEntity<>(oTipoproductoService.count(), HttpStatus.OK);
     }
 
 }
