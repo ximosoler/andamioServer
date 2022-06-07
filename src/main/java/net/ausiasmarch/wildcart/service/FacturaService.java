@@ -1,8 +1,12 @@
 package net.ausiasmarch.wildcart.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
+import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
+import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,18 @@ public class FacturaService {
 
     @Autowired
     UsuarioService oUsuarioService;
+
+    public void validate(Long id) {
+        if (!oFacturaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+
+    public void validate(FacturaEntity oFacturaEntity) {
+//            
+        ValidationHelper.validateDate(oFacturaEntity.getFecha(), LocalDateTime.of(1990, 01, 01, 00, 00, 00), LocalDateTime.of(2025, 01, 01, 00, 00, 00), "campo fecha de factura");
+
+    }
 
     public FacturaEntity generateRandomFactura() {
         if (oUsuarioRepository.count() > 0) {

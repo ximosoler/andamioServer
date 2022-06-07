@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import net.ausiasmarch.wildcart.service.FacturaService;
@@ -30,10 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author a023862896m
- */
 @RestController
 @RequestMapping("/factura")
 
