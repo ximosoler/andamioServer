@@ -31,15 +31,14 @@ public class TipoProductoService {
     private final String[] CARATERISTICA = {"artesanos", "de lujo", "económicos", "de segunda mano", "estándar", "retro", "plegables", "abatibles", "de gran tonelage", "ortopédicos", "de alta resistencia"};
     private final String[] UTILIDAD = {"para el hogar", "para el jardin", "para la restauracion", "para la oficina", "para el camping", "para colegios", "para prisiones", "para hospitales", "para cines y teatros"};
 
-    public void validate(TipoproductoEntity oTipoproductoEntity, boolean testId) {
-        if (testId) {
-            if (!oTipoproductoRepository.existsById(oTipoproductoEntity.getId())) {
-                throw new ResourceNotFoundException("id " + oTipoproductoEntity.getId() + " not exist");
-            }
+    public void validate(Long id) {
+        if (!oTipoproductoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
         }
-        if (!ValidationHelper.validateStringLength(oTipoproductoEntity.getNombre(), 2, 100)) {
-            throw new ValidationException("error en el campo nombre (entre 2 y 100 caracteres)");
-        }
+    }
+
+    public void validate(TipoproductoEntity oTipoproductoEntity) {
+        ValidationHelper.validateStringLength(oTipoproductoEntity.getNombre(), 2, 100, "campo nombre Tipoproducto (el campo debe tener longitud de 2 a 100 caracteres)");
     }
 
     public TipoproductoEntity get(@PathVariable(value = "id") Long id) {
@@ -68,14 +67,15 @@ public class TipoProductoService {
     public TipoproductoEntity create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
         oAuthService.OnlyAdmins();
         oTipoProductoEntity.setId(null);
-        validate(oTipoProductoEntity, false);
+        validate(oTipoProductoEntity);
         return oTipoproductoRepository.save(oTipoProductoEntity);
     }
 
     public TipoproductoEntity update(Long id, TipoproductoEntity oTipoproductoEntity) {
         oAuthService.OnlyAdmins();
         oTipoproductoEntity.setId(id);
-        validate(oTipoproductoEntity, true);
+        validate(id);
+        validate(oTipoproductoEntity);
         if (oTipoproductoRepository.existsById(id)) {
             return oTipoproductoRepository.save(oTipoproductoEntity);
         } else {

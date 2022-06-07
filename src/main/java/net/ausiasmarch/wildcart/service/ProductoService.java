@@ -32,28 +32,19 @@ public class ProductoService {
     private final String[] TAMANYO = {"pequeño", "mediano", "grade", "extra grande"};
     private final String[] LETTERS_CODE = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-    public void validate(ProductoEntity oProductoEntity, boolean testId) {
-        if (testId) {
-            if (!oProductoRepository.existsById(oProductoEntity.getId())) {
-                throw new ResourceNotFoundException("id " + oProductoEntity.getId() + " not exist");
-            }
+    public void validate(Long id) {
+        if (!oProductoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
         }
-        if (!ValidationHelper.validateStringLength(oProductoEntity.getCodigo(), 2, 50)) { //pte validar con expr reg
-            throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 50 caracteres)");
-        }
-        if (!ValidationHelper.validateStringLength(oProductoEntity.getNombre(), 2, 50)) {
-            throw new ValidationException("error en el campo Nombre (debe tener longitud de 2 a 255 caracteres)");
-        }
-        if (!ValidationHelper.validateRange(oProductoEntity.getExistencias(), 0, 1000)) {
-            throw new ValidationException("error en el campo existencias (de 0 a 1000)");
-        }
-        if (!ValidationHelper.validateRange(oProductoEntity.getPrecio(), 0, 100000)) {
-            throw new ValidationException("error en el campo precio (de 0 a 100000)");
-        }
-        if (!ValidationHelper.validateRange(oProductoEntity.getDescuento(), 0, 100)) {
-            throw new ValidationException("error en el campo descuento (de 0 a 100)");
-        }
-        //etc
+    }
+
+    public void validate(ProductoEntity oProductoEntity) {
+        ValidationHelper.validateStringLength(oProductoEntity.getCodigo(), 2, 50, "codigo en ProductoService (el campo debe tener longitud de 2 a 50 caracteres)");
+        ValidationHelper.validateStringLength(oProductoEntity.getNombre(), 2, 255, "codigo en ProductoService (el campo debe tener longitud de 2 a 255 caracteres)");
+        ValidationHelper.validateRange(oProductoEntity.getExistencias(), 0, 1000, "campo existencias (de 0 a 1000)");
+        ValidationHelper.validateRange(oProductoEntity.getPrecio(), 0, 100000, "campo precio (de 0 a 100000)");
+        ValidationHelper.validateRange(oProductoEntity.getDescuento(), 0, 100, "campo descuento (de 0 a 100)");
+        oTipoproductoService.validate(oProductoEntity.getTipoproducto().getId());
     }
 
     public ProductoEntity get(Long id) {
@@ -88,14 +79,15 @@ public class ProductoService {
 
     public ProductoEntity create(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
-        validate(oProductoEntity, false);
+        validate(oProductoEntity);
         oProductoEntity.setId(null);
         return oProductoRepository.save(oProductoEntity);
     }
 
     public ProductoEntity update(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
-        validate(oProductoEntity, true);
+        validate(oProductoEntity.getId());
+        validate(oProductoEntity);
         return oProductoRepository.save(oProductoEntity);
     }
 

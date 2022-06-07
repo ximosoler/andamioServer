@@ -3,21 +3,33 @@ package net.ausiasmarch.wildcart.service;
 import java.util.ArrayList;
 import java.util.List;
 import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.Exception.ValidationException;
 import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
+import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.TipousuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
-public class TipoUsuarioService {
+public class TipousuarioService {
 
     @Autowired
     TipousuarioRepository oTipousuarioRepository;
 
     @Autowired
     AuthService oAuthService;
+
+    public void validate(Long id) {
+        if (!oTipousuarioRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+
+    public void validate(TipousuarioEntity oTipousuarioEntity) {
+        ValidationHelper.validateStringLength(oTipousuarioEntity.getNombre(), 2, 100, "campo nombre de Tipousuario (el campo debe tener longitud de 2 a 100 caracteres)");
+    }
 
     public List<TipousuarioEntity> generateUsersType() {
         List<TipousuarioEntity> usersTypeList = new ArrayList<>();
@@ -27,11 +39,8 @@ public class TipoUsuarioService {
     }
 
     public TipousuarioEntity get(Long id) {
-        if (id == null || !(oTipousuarioRepository.existsById(id))) {
-            throw new ResourceNotFoundException("id not found");
-        } else {
-            return oTipousuarioRepository.getById(id);
-        }
+        validate(id);
+        return oTipousuarioRepository.getById(id);
     }
 
     public List<TipousuarioEntity> all() {
@@ -54,15 +63,9 @@ public class TipoUsuarioService {
 
     public TipousuarioEntity update(TipousuarioEntity oTipoUsuarioEntity) {
         oAuthService.OnlyAdmins();
-        if (oTipoUsuarioEntity.getId() == null) {
-            throw new ResourceNotFoundException("id not found");
-        } else {
-            if (!oTipousuarioRepository.existsById(oTipoUsuarioEntity.getId())) {
-                throw new ResourceNotFoundException("id not found");
-            } else {
-                return oTipousuarioRepository.save(oTipoUsuarioEntity);
-            }
-        }
+        validate(oTipoUsuarioEntity.getId());
+        validate(oTipoUsuarioEntity);
+        return oTipousuarioRepository.save(oTipoUsuarioEntity);
     }
 
     public Long generate() {

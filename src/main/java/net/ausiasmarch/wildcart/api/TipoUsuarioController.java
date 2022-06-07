@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
-import net.ausiasmarch.wildcart.service.TipoUsuarioService;
+import net.ausiasmarch.wildcart.service.TipousuarioService;
 
 @RestController
 @RequestMapping("/tipousuario")
 public class TipoUsuarioController {
 
     @Autowired
-    TipoUsuarioService oTipousuarioService;
+    TipousuarioService oTipousuarioService;
 
     @GetMapping("/{id}")
     public ResponseEntity<TipousuarioEntity> get(@PathVariable(value = "id") Long id) {
