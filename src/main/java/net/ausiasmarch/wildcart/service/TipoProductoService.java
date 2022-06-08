@@ -96,7 +96,7 @@ public class TipoProductoService {
         }
     }
 
-    public TipoproductoEntity generateTipoProducto() {
+    public TipoproductoEntity generate() {
         String nombre = TIPO[RandomHelper.getRandomInt(0, TIPO.length - 1)] + " " + CARATERISTICA[RandomHelper.getRandomInt(0, CARATERISTICA.length - 1)] + " " + UTILIDAD[RandomHelper.getRandomInt(0, UTILIDAD.length - 1)];
         TipoproductoEntity oTipoProductoEntity = new TipoproductoEntity();
         oTipoProductoEntity.setNombre(nombre);
@@ -120,10 +120,10 @@ public class TipoProductoService {
         return oTipoProductoEntity;
     }
 
-    public Long generateAmount(@PathVariable(value = "amount") int amount) {
+    public Long generateSome(@PathVariable(value = "amount") int amount) {
         oAuthService.OnlyAdmins();
         for (int i = 0; i < amount; i++) {
-            TipoproductoEntity oTipoProductoEntity = generateTipoProducto();
+            TipoproductoEntity oTipoProductoEntity = generate();
             oTipoproductoRepository.save(oTipoProductoEntity);
         }
         return oTipoproductoRepository.count();
@@ -141,7 +141,7 @@ public class TipoProductoService {
         return TipoProdList;
     }
 
-    public Long generate() {
+    public Long generateAll() {
         oAuthService.OnlyAdmins();
         List<TipoproductoEntity> ListaTipoProd = generateAllTipoProductoList();
         for (int i = 0; i < ListaTipoProd.size(); i++) {

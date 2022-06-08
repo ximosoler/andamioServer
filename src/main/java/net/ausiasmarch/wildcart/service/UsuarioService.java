@@ -8,6 +8,7 @@ import net.ausiasmarch.wildcart.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
+import net.ausiasmarch.wildcart.exception.CannotPerformOperationException;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
@@ -203,16 +204,20 @@ public class UsuarioService {
     }
 
     public UsuarioEntity getRandomUsuario() {
-        UsuarioEntity oUsuarioEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
-        Pageable oPageable = PageRequest.of(iPosicion, 1);
-        Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
-        List<UsuarioEntity> usuarioList = usuarioPage.getContent();
-        oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
-        return oUsuarioEntity;
+        if (count() > 0) {
+            UsuarioEntity oUsuarioEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
+            List<UsuarioEntity> usuarioList = usuarioPage.getContent();
+            oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
+            return oUsuarioEntity;
+        } else {
+            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
+        }
     }
 
-    public UsuarioEntity generateOne() {
+    public UsuarioEntity generate() {
         oAuthService.OnlyAdmins();
         return oUsuarioRepository.save(generateRandomUser());
     }

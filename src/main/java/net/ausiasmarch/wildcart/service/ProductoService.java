@@ -93,17 +93,17 @@ public class ProductoService {
         return id;
     }
 
-    public Long genera(int amount) {
+    public Long generateSome(int amount) {
         oAuthService.OnlyAdmins();
         for (int i = 0; i < amount; i++) {
             ProductoEntity oProductoEntity;
-            oProductoEntity = generateRandomProduct();
+            oProductoEntity = generate();
             oProductoRepository.save(oProductoEntity);
         }
         return oProductoRepository.count();
     }
 
-    public ProductoEntity generateRandomProduct() {
+    public ProductoEntity generate() {
         ProductoEntity oProductoEntity = new ProductoEntity();
         oProductoEntity.setCodigo(Integer.toString(RandomHelper.getRandomInt(1, 100000)) + LETTERS_CODE[RandomHelper.getRandomInt(0, 25)]);
         oProductoEntity.setNombre(generateProduct());

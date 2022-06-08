@@ -60,8 +60,13 @@ public class FacturaController {
         return new ResponseEntity<Long>(oFacturaService.delete(id), HttpStatus.OK);
     }
 
+     @PostMapping("/generate")
+    public ResponseEntity<FacturaEntity> generate() {
+        return new ResponseEntity<FacturaEntity>(oFacturaService.generateRandomFactura(), HttpStatus.OK);
+    }       
+    
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<Long> generate(@PathVariable(value = "amount") int amount) {
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
         return new ResponseEntity<Long>(oFacturaService.generate(amount), HttpStatus.OK);
     }
 

@@ -64,7 +64,7 @@ public class UsuarioController {
 
     @PostMapping("/generate")
     public ResponseEntity<UsuarioEntity> generate() {
-        return new ResponseEntity<UsuarioEntity>(oUsuarioService.generateOne(), HttpStatus.OK);
+        return new ResponseEntity<UsuarioEntity>(oUsuarioService.generate(), HttpStatus.OK);
     }
 
     @PostMapping("/generate/{amount}")

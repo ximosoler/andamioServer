@@ -65,9 +65,16 @@ public class ProductoController {
         return new ResponseEntity<Long>(oProductoService.delete(id), HttpStatus.OK);
     }
 
+    @PostMapping("/generate")
+    public ResponseEntity<ProductoEntity> generate() {
+        return new ResponseEntity<ProductoEntity>(oProductoService.generate(), HttpStatus.OK);
+    }    
+    
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<Long> genera(@PathVariable(value = "amount") int amount) {
-        return new ResponseEntity<>(oProductoService.genera(amount), HttpStatus.OK);
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
+        return new ResponseEntity<>(oProductoService.generateSome(amount), HttpStatus.OK);
     }
+    
+    
 
 }

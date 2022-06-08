@@ -58,14 +58,14 @@ public class TipoProductoController {
         return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.update(oTipoProductoEntity.getId(), oTipoProductoEntity), HttpStatus.OK);
     }
 
-    @PostMapping("/generate/{amount}")
-    public ResponseEntity<Long> generateAmount(@PathVariable(value = "amount") int amount) {
-        return new ResponseEntity<Long>(oTipoproductoService.generateAmount(amount), HttpStatus.OK);
+    @PostMapping("/generate")
+    public ResponseEntity<TipoproductoEntity> generate() {
+        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.generate(), HttpStatus.OK);
     }
 
-    @PostMapping("/generate")
-    public ResponseEntity<?> generate() {
-        return new ResponseEntity<>(oTipoproductoService.count(), HttpStatus.OK);
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
+        return new ResponseEntity<Long>(oTipoproductoService.generateSome(amount), HttpStatus.OK);
     }
 
 }
