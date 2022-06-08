@@ -2,9 +2,8 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
-import net.ausiasmarch.wildcart.Exception.ResourceNotModifiedException;
-import net.ausiasmarch.wildcart.Exception.ValidationException;
+import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.exception.ResourceNotModifiedException;
 import net.ausiasmarch.wildcart.entity.TipoproductoEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;

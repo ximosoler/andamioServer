@@ -2,9 +2,9 @@ package net.ausiasmarch.wildcart.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
-import net.ausiasmarch.wildcart.entity.ProductoEntity;
+import net.ausiasmarch.wildcart.exception.CannotPerformOperationException;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
@@ -27,6 +27,9 @@ public class FacturaService {
     @Autowired
     UsuarioService oUsuarioService;
 
+    @Autowired
+    AuthService oAuthService;
+
     public void validate(Long id) {
         if (!oFacturaRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
@@ -34,15 +37,75 @@ public class FacturaService {
     }
 
     public void validate(FacturaEntity oFacturaEntity) {
-//            
         ValidationHelper.validateDate(oFacturaEntity.getFecha(), LocalDateTime.of(1990, 01, 01, 00, 00, 00), LocalDateTime.of(2025, 01, 01, 00, 00, 00), "campo fecha de factura");
+        ValidationHelper.validateRange(oFacturaEntity.getIva(), 0, 30, "campo iva de factura");
+        oUsuarioService.validate(oFacturaEntity.getUsuario().getId());
+    }
 
+    public FacturaEntity get(Long id) {
+        validate(id);
+        FacturaEntity oFactura = oFacturaRepository.getById(id);
+        oAuthService.OnlyAdminsOrOwnUsersData(oFactura.getUsuario().getId());
+        return oFacturaRepository.getById(id);
+    }
+
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oFacturaRepository.count();
+    }
+
+    public Page<FacturaEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
+        oAuthService.OnlyAdminsOrUsers();
+        if (oAuthService.isAdmin()) {
+            if (strFilter.equalsIgnoreCase("")) {
+                return oFacturaRepository.findAll(oPageable);
+            } else {
+                return oFacturaRepository.findByIvaOrFecha(strFilter, strFilter, oPageable);
+            }
+        } else {
+            if (strFilter.equalsIgnoreCase("")) {
+                return oFacturaRepository.findByFacturaXUsuario(oAuthService.getUserID(), oPageable);
+            } else {
+                return oFacturaRepository.findByUsuarioIdAndIvaOrFecha(oAuthService.getUserID(), strFilter, strFilter, oPageable);
+            }
+        }
+    }
+
+    public FacturaEntity create(FacturaEntity oFacturaEntity) {
+        oAuthService.OnlyAdminsOrOwnUsersData(oFacturaEntity.getUsuario().getId());
+        validate(oFacturaEntity);
+        return oFacturaRepository.save(oFacturaEntity);
+    }
+
+    public FacturaEntity update(FacturaEntity oFacturaEntity) {
+        validate(oFacturaEntity.getId());
+        oAuthService.OnlyAdminsOrOwnUsersData(get(oFacturaEntity.getId()).getUsuario().getId());
+        validate(oFacturaEntity);
+        return oFacturaRepository.save(oFacturaEntity);
+    }
+
+    public Long delete(Long id) {
+        validate(id);
+        oAuthService.OnlyAdminsOrOwnUsersData(get(id).getUsuario().getId());
+        oFacturaRepository.deleteById(id);
+        return id;
+    }
+
+    public Long generate(int amount) {
+        if (oUsuarioService.count() > 0) {
+            for (int i = 0; i < amount; i++) {
+                FacturaEntity oFacturaEntity = generateRandomFactura();
+                oFacturaRepository.save(oFacturaEntity);
+            }
+            return oFacturaRepository.count();
+        } else {
+            throw new CannotPerformOperationException("no hay usuarios en la base de datos");
+        }
     }
 
     public FacturaEntity generateRandomFactura() {
         if (oUsuarioRepository.count() > 0) {
             int[] ivas = {4, 10, 21};
-
             int iva = ivas[(int) (Math.floor(Math.random() * ((ivas.length - 1) - 0 + 1) + 0))];
             FacturaEntity oFacturaEntity = new FacturaEntity();
             oFacturaEntity.setFecha(RandomHelper.getRadomDateTime());
@@ -59,7 +122,6 @@ public class FacturaService {
         } else {
             return null;
         }
-
     }
 
     public FacturaEntity getRandomFactura() {

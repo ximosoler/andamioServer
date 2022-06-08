@@ -2,7 +2,7 @@ package net.ausiasmarch.wildcart.helper;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import net.ausiasmarch.wildcart.Exception.ValidationException;
+import net.ausiasmarch.wildcart.exception.ValidationException;
 
 public class ValidationHelper {
 

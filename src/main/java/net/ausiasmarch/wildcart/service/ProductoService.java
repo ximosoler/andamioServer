@@ -1,8 +1,7 @@
 package net.ausiasmarch.wildcart.service;
 
 import java.util.List;
-import net.ausiasmarch.wildcart.Exception.ResourceNotFoundException;
-import net.ausiasmarch.wildcart.Exception.ResourceNotModifiedException;
+import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
@@ -47,11 +46,8 @@ public class ProductoService {
     }
 
     public ProductoEntity get(Long id) {
-        if (oProductoRepository.existsById(id)) {
-            return oProductoRepository.getById(id);
-        } else {
-            throw new ResourceNotFoundException("id " + id + " not exist");
-        }
+        validate(id);
+        return oProductoRepository.getById(id);
     }
 
     public Long count() {
@@ -92,16 +88,9 @@ public class ProductoService {
 
     public Long delete(Long id) {
         oAuthService.OnlyAdmins();
-        if (oProductoRepository.existsById(id)) {
-            oProductoRepository.deleteById(id);
-            if (oProductoRepository.existsById(id)) {
-                throw new ResourceNotModifiedException("can't remove register " + id);
-            } else {
-                return id;
-            }
-        } else {
-            throw new ResourceNotModifiedException("id " + id + " not exist");
-        }
+        validate(id);
+        oProductoRepository.deleteById(id);
+        return id;
     }
 
     public Long genera(int amount) {

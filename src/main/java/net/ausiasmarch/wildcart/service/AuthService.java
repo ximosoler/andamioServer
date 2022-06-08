@@ -1,7 +1,7 @@
 package net.ausiasmarch.wildcart.service;
 
 import javax.servlet.http.HttpSession;
-import net.ausiasmarch.wildcart.Exception.UnauthorizedException;
+import net.ausiasmarch.wildcart.exception.UnauthorizedException;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,15 @@ public class AuthService {
 
     @Autowired
     HttpSession oHttpSession;
+
+    public Long getUserID() {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity != null) {
+            return oUsuarioSessionEntity.getTipousuario().getId();
+        } else {
+            throw new UnauthorizedException("this request is only allowed to auth users");
+        }
+    }
 
     public boolean isAdmin() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");

@@ -1,4 +1,4 @@
-package net.ausiasmarch.wildcart.Exception;
+package net.ausiasmarch.wildcart.exception;
 
 public class ValidationException extends RuntimeException {
 
