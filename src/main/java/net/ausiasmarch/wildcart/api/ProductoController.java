@@ -49,19 +49,19 @@ public class ProductoController {
 
     // producto/
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody ProductoEntity oProductoEntity) {
+    public ResponseEntity<ProductoEntity> create(@RequestBody ProductoEntity oProductoEntity) {
         return new ResponseEntity<ProductoEntity>(oProductoService.create(oProductoEntity), HttpStatus.OK);
     }
 
     //producto/
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody ProductoEntity oProductoEntity) {
+    public ResponseEntity<ProductoEntity> update(@RequestBody ProductoEntity oProductoEntity) {
         return new ResponseEntity<ProductoEntity>(oProductoService.update(oProductoEntity), HttpStatus.OK);
     }
 
     // producto/id
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Long>(oProductoService.delete(id), HttpStatus.OK);
     }
 

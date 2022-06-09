@@ -72,9 +72,9 @@ public class CompraService {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> count() {
+    public Long count() {
         oAuthService.OnlyAdmins();
-        return new ResponseEntity<Long>(oCompraRepository.count(), HttpStatus.OK);
+        return oCompraRepository.count();
     }
 
     public Page<CompraEntity> getPage(Pageable oPageable, String strFilter, Long lFactura, Long lProducto) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
+import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.CompraRepository;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,189 +44,40 @@ public class CompraController {
     CompraService oCompraService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompraEntity> view(@PathVariable(value = "id") Long id) {
-        CompraEntity oCompraEntity = oCompraRepository.getById(id);
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
-            if (oCompraRepository.existsById(id)) {
-                return new ResponseEntity<CompraEntity>(oCompraRepository.getById(id), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-        } else if (oCompraRepository.existsById(id) && oUsuarioEntity.getId() == oCompraEntity.getFactura().getUsuario().getId()) {
-
-            return new ResponseEntity<CompraEntity>(oCompraRepository.findByCompraIdUsuarioView(oUsuarioEntity.getId(), oCompraRepository.getById(id).getId()), HttpStatus.OK);
-
-        } else if (oCompraRepository.existsById(id) && oUsuarioEntity.getId() != oCompraEntity.getFactura().getUsuario().getId()) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<CompraEntity> get(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<CompraEntity>(oCompraService.get(id), HttpStatus.OK);
     }
 
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        CompraEntity oCompraEntity = null;
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
+        return new ResponseEntity<Long>(oCompraService.count(), HttpStatus.OK);
+    }
 
-            return new ResponseEntity<Long>(oCompraRepository.count(), HttpStatus.OK);
-
-        } else {
-
-            return new ResponseEntity<Long>(oCompraRepository.findByCompraIdUsuarioCount(oUsuarioEntity.getId()), HttpStatus.OK);
-        }
+    @GetMapping("")
+    public ResponseEntity<?> getPage(
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter,
+            @RequestParam(name = "lFactura", required = false) Long lFactura,
+            @RequestParam(name = "lProducto", required = false) Long lProducto) {
+        return new ResponseEntity<Page<CompraEntity>>(oCompraService.getPage(oPageable, strFilter, lFactura, lProducto), HttpStatus.OK);
 
     }
 
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody CompraEntity oCompraEntity) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                oCompraEntity.setId(null);
-                return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraEntity), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+    public ResponseEntity<CompraEntity> create(@RequestBody CompraEntity oCompraEntity) {
+        return new ResponseEntity<CompraEntity>(oCompraService.create(oCompraEntity), HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody CompraEntity oCompraEntity) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                if (oCompraRepository.existsById(oCompraEntity.getId())) {
-                    return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraEntity), HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+    public ResponseEntity<CompraEntity> update(@RequestBody CompraEntity oCompraEntity) {
+        return new ResponseEntity<CompraEntity>(oCompraService.update(oCompraEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-
-                if (oCompraRepository.existsById(id)) {
-                    oCompraRepository.deleteById(id);
-                    if (oCompraRepository.existsById(id)) {
-                        return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                    } else {
-                        return new ResponseEntity<Long>(id, HttpStatus.OK);
-                    }
-                } else {
-                    return new ResponseEntity<Long>(0L, HttpStatus.NOT_MODIFIED);
-                }
-            } else {
-                return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-            }
-        }
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<Long>(oCompraService.delete(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/page")
-//    public ResponseEntity<Page<CompraEntity>> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable oPageable) {
-//
-//        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-//        if (oUsuarioEntity == null) {
-//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-//        } else if (oUsuarioEntity.getTipousuario().getId() == 1) {
-//            Page<CompraEntity> oPage = null;
-//            oPage = oCompraRepository.findAll(oPageable);
-//            return new ResponseEntity<>(oPage, HttpStatus.OK);
-//        } else {
-//            Page<CompraEntity> oPage = null;
-//            oPage = oCompraRepository.findByCompraIdUsuarioPage(oUsuarioEntity.getId(), oPageable);
-//            return new ResponseEntity<>(oPage, HttpStatus.OK);
-//        }
-//    }
-    @GetMapping("")
-    public ResponseEntity<?> getPage(@PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "filter", required = false) String strFilter, @RequestParam(name = "factura", required = false) Long lFactura, @RequestParam(name = "producto", required = false) Long lProducto) {
-        Page<CompraEntity> oPage = null;
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                if (lFactura != null) {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                    } else {
-                        oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
-                    }
-                } else if (lProducto != null) {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                    } else {
-                        oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
-                    }
-                } else {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                    } else {
-                        oPage = oCompraRepository.findAll(oPageable);
-                    }
-                }
-                return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
-            } else {
-                if (lFactura != null) {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter,oUsuarioEntity.getId(), oPageable);
-                    } else {
-                        oPage = oCompraRepository.findByFacturaIdUsuario(lFactura, oUsuarioEntity.getId(), oPageable);
-                    }
-                } else if (lProducto != null) {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter,oUsuarioEntity.getId(), oPageable);
-                    } else {
-                        oPage = oCompraRepository.findByProductoIdUsuario(lProducto,oUsuarioEntity.getId(), oPageable);
-                    }
-                } else {
-                    if (strFilter != null) {
-                        oPage = oCompraRepository.findByIdContainUsuario(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oUsuarioEntity.getId(),oPageable);
-                    } else {
-                        oPage = oCompraRepository.findAllUsuario(oUsuarioEntity.getId(),oPageable);
-                    }
-                }
-                return new ResponseEntity<Page<CompraEntity>>(oPage, HttpStatus.OK);
-
-            }
-        }
-
-    }
-
-//    @PostMapping("/generate")
-//    public ResponseEntity<?> generate() {
-//        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-//        if (oUsuarioEntity == null) {
-//            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-//        } else {
-//            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-//                return new ResponseEntity<CompraEntity>(oCompraRepository.save(oCompraService.generateRandomCompra()),
-//                        HttpStatus.OK);
-//            }
-//
-//            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-//        }
-//    }
     @PostMapping("/generate/{amount}")
     public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {
         UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
