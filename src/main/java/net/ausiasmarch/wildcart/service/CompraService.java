@@ -124,6 +124,27 @@ public class CompraService {
         return oPage;
     }
 
+    public CompraEntity create(CompraEntity oCompraEntity) {
+        oAuthService.OnlyAdmins(); //users must use buy/purchase option          
+        validate(oCompraEntity);
+        oCompraEntity.setId(null);
+        return oCompraRepository.save(oCompraEntity);
+    }
+
+    public CompraEntity update(CompraEntity oCompraEntity) {
+        oAuthService.OnlyAdmins(); //users must use buy/purchase option          
+        validate(oCompraEntity.getId());
+        validate(oCompraEntity);
+        return oCompraRepository.save(oCompraEntity);
+    }
+
+    public Long delete(Long id) {
+        oAuthService.OnlyAdmins();
+        validate(id);
+        oCompraRepository.deleteById(id);
+        return id;
+    }
+
     public CompraEntity generateRandomCompra() {
         CompraEntity oCompraEntity = new CompraEntity();
         oCompraEntity.setCantidad(generateCantidad(1, 200));
