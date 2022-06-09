@@ -1,13 +1,6 @@
 package net.ausiasmarch.wildcart.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
-import net.ausiasmarch.wildcart.entity.ProductoEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.repository.CompraRepository;
-import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,15 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/compra")
 public class CompraController {
-
-    @Autowired
-    HttpSession oHttpSession;
-
-    @Autowired
-    CompraRepository oCompraRepository;
-
-    @Autowired
-    FacturaRepository oFacturaRepository;
 
     @Autowired
     CompraService oCompraService;
@@ -60,7 +43,6 @@ public class CompraController {
             @RequestParam(name = "lFactura", required = false) Long lFactura,
             @RequestParam(name = "lProducto", required = false) Long lProducto) {
         return new ResponseEntity<Page<CompraEntity>>(oCompraService.getPage(oPageable, strFilter, lFactura, lProducto), HttpStatus.OK);
-
     }
 
     @PostMapping("")
@@ -78,23 +60,13 @@ public class CompraController {
         return new ResponseEntity<Long>(oCompraService.delete(id), HttpStatus.OK);
     }
 
+    @PostMapping("/generate")
+    public ResponseEntity<CompraEntity> generate() {
+        return new ResponseEntity<CompraEntity>(oCompraService.generate(), HttpStatus.OK);
+    }        
+
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<?> generateAmount(@PathVariable(value = "amount") Integer amount) {
-        UsuarioEntity oUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-
-        List<CompraEntity> compraList = new ArrayList<>();
-
-        if (oUsuarioEntity == null) {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        } else {
-            if (oUsuarioEntity.getTipousuario().getId() == 1) {
-                for (int i = 0; i < amount; i++) {
-                    CompraEntity oCompraEntity = oCompraService.generateRandomCompra();
-                    oCompraRepository.save(oCompraEntity);
-                    compraList.add(oCompraEntity);
-                }
-            }
-            return new ResponseEntity<>(oCompraRepository.count(), HttpStatus.OK);
-        }
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") Integer amount) {
+        return new ResponseEntity<Long>(oCompraService.count(), HttpStatus.OK);
     }
 }

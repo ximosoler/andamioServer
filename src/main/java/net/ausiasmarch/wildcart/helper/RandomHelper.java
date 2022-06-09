@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
 import java.time.ZoneId;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomHelper {
 
@@ -29,6 +30,10 @@ public class RandomHelper {
         return randomNum;
     }
 
+    public static int getRandomInt2(int minValue, int maxValue) {
+        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+    }
+
     public static LocalDateTime getRadomDateTime() {
         return RandomHelper.getRadomDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
@@ -43,6 +48,12 @@ public class RandomHelper {
         return date;
     }
 
+    public static LocalDateTime getRadomDate2() {
+        int randomSeconds = new Random().nextInt(3600 * 24);
+        LocalDateTime anyTime = LocalDateTime.now().minusSeconds(randomSeconds);
+        return anyTime;
+    }
+
     public static char getRadomChar() {
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'a');
@@ -52,5 +63,9 @@ public class RandomHelper {
     public static double getRadomDouble(int rangeMin, int rangeMax) {
         Random r = new Random();
         return rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+    }
+
+    public static double getRadomDouble(double minValue, double maxValue) {
+        return Math.round(ThreadLocalRandom.current().nextDouble(minValue, maxValue) * 100d) / 100d;
     }
 }

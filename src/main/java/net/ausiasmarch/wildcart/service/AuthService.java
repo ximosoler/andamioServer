@@ -1,17 +1,48 @@
 package net.ausiasmarch.wildcart.service;
 
 import javax.servlet.http.HttpSession;
+import net.ausiasmarch.wildcart.bean.UsuarioBean;
 import net.ausiasmarch.wildcart.exception.UnauthorizedException;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
+import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class AuthService {
 
     @Autowired
     HttpSession oHttpSession;
+
+    @Autowired
+    UsuarioRepository oUsuarioRepository;
+
+    public UsuarioEntity login(@RequestBody UsuarioBean oUsuarioBean) {
+        if (oUsuarioBean.getPassword() != null) {
+            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(), oUsuarioBean.getPassword());
+            if (oUsuarioEntity != null) {
+                oHttpSession.setAttribute("usuario", oUsuarioEntity);
+                return oUsuarioEntity;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public void logout() {
+        oHttpSession.invalidate();
+    }
+
+    public UsuarioEntity check() {
+        return (UsuarioEntity) oHttpSession.getAttribute("usuario");
+    }
 
     public Long getUserID() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");

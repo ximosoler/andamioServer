@@ -1,14 +1,9 @@
 package net.ausiasmarch.wildcart.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
-import net.ausiasmarch.wildcart.entity.FacturaEntity;
-import net.ausiasmarch.wildcart.entity.ProductoEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
+import net.ausiasmarch.wildcart.helper.RandomHelper;
 import net.ausiasmarch.wildcart.helper.ValidationHelper;
 import net.ausiasmarch.wildcart.repository.CompraRepository;
 import net.ausiasmarch.wildcart.repository.FacturaRepository;
@@ -16,14 +11,8 @@ import net.ausiasmarch.wildcart.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class CompraService {
@@ -125,14 +114,14 @@ public class CompraService {
     }
 
     public CompraEntity create(CompraEntity oCompraEntity) {
-        oAuthService.OnlyAdmins(); //users must use buy/purchase option          
+        oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity);
         oCompraEntity.setId(null);
         return oCompraRepository.save(oCompraEntity);
     }
 
     public CompraEntity update(CompraEntity oCompraEntity) {
-        oAuthService.OnlyAdmins(); //users must use buy/purchase option          
+        oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity.getId());
         validate(oCompraEntity);
         return oCompraRepository.save(oCompraEntity);
@@ -145,61 +134,31 @@ public class CompraService {
         return id;
     }
 
-    public CompraEntity generateRandomCompra() {
+    public CompraEntity generateOneRandom() {
         CompraEntity oCompraEntity = new CompraEntity();
-        oCompraEntity.setCantidad(generateCantidad(1, 200));
-        oCompraEntity.setPrecio(generatePrecio(0.99, 99.99));
-        oCompraEntity.setFecha(getRadomDate());
-        oCompraEntity.setDescuento_usuario(generateDescuentoUsuario(1, 10));
-        oCompraEntity.setDescuento_producto(generateDescuentoProducto(1, 60));
-        //oCompraEntity.setFactura(generateFactura());
-        //oCompraEntity.setProducto(generateProducto());
-        oCompraEntity.setFactura(oFacturaService.getRandomFactura());
-        oCompraEntity.setProducto(oProductoService.getRandomProducto());
-
+        oCompraEntity.setCantidad(RandomHelper.getRandomInt(1, 200));
+        oCompraEntity.setPrecio(RandomHelper.getRadomDouble(0.99, 399.99));
+        oCompraEntity.setFecha(RandomHelper.getRadomDate2());
+        oCompraEntity.setDescuento_usuario(RandomHelper.getRandomInt2(0, 10));
+        oCompraEntity.setDescuento_producto(RandomHelper.getRandomInt2(0, 60));
+        oCompraEntity.setFactura(oFacturaService.getOneRandom());
+        oCompraEntity.setProducto(oProductoService.getOneRandom());
         return oCompraEntity;
     }
 
-    private int generateCantidad(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+    public Long generateSome(Integer amount) {
+        oAuthService.OnlyAdmins();
+        CompraEntity oCompraEntity = null;
+        for (int i = 0; i < amount; i++) {
+            oCompraEntity = generateOneRandom();
+            oCompraRepository.save(oCompraEntity);
+        }
+        return oCompraRepository.count();
     }
 
-    private double generatePrecio(double minValue, double maxValue) {
-        return Math.round(ThreadLocalRandom.current().nextDouble(minValue, maxValue) * 100d) / 100d;
-    }
-
-    private LocalDateTime getRadomDate() {
-        int randomSeconds = new Random().nextInt(3600 * 24);
-        LocalDateTime anyTime = LocalDateTime.now().minusSeconds(randomSeconds);
-        return anyTime;
-    }
-
-    private int generateDescuentoUsuario(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
-    }
-
-    private int generateDescuentoProducto(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
-    }
-
-    private FacturaEntity generateFactura() {
-        List<FacturaEntity> list = oFacturaRepository.findAll();
-
-        int randomNumber = generateNumber(0, list.size());
-        FacturaEntity value = list.get(randomNumber);
-        return value;
-    }
-
-    private ProductoEntity generateProducto() {
-        List<ProductoEntity> list = oProductoRepository.findAll();
-
-        int randomNumber = generateNumber(0, list.size());
-        ProductoEntity value = list.get(randomNumber);
-        return value;
-    }
-
-    private int generateNumber(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+    public CompraEntity generate() {
+        oAuthService.OnlyAdmins();
+        return generateOneRandom();
     }
 
 }

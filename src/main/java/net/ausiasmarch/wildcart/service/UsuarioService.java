@@ -153,7 +153,37 @@ public class UsuarioService {
         }
     }
 
-    public UsuarioEntity generateRandomUser() {
+    public UsuarioEntity generate() {
+        oAuthService.OnlyAdmins();
+        return generateRandomUser();
+    }
+
+    public Long generateSome(Integer amount) {
+        oAuthService.OnlyAdmins();
+        List<UsuarioEntity> userList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            UsuarioEntity oUsuarioEntity = generateRandomUser();
+            oUsuarioRepository.save(oUsuarioEntity);
+            userList.add(oUsuarioEntity);
+        }
+        return oUsuarioRepository.count();
+    }
+
+    public UsuarioEntity getOneRandom() {
+        if (count() > 0) {
+            UsuarioEntity oUsuarioEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
+            List<UsuarioEntity> usuarioList = usuarioPage.getContent();
+            oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
+            return oUsuarioEntity;
+        } else {
+            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
+        }
+    }
+
+    private UsuarioEntity generateRandomUser() {
         UsuarioEntity oUserEntity = new UsuarioEntity();
         oUserEntity.setDni(generateDNI());
         oUserEntity.setNombre(generateName());
@@ -170,7 +200,6 @@ public class UsuarioService {
         }
         oUserEntity.setValidado(false);
         oUserEntity.setActivo(false);
-
         return oUserEntity;
     }
 
@@ -201,36 +230,6 @@ public class UsuarioService {
         String value = list.get(randomNumber);
         list.remove(randomNumber);
         return value;
-    }
-
-    public UsuarioEntity getRandomUsuario() {
-        if (count() > 0) {
-            UsuarioEntity oUsuarioEntity = null;
-            int iPosicion = RandomHelper.getRandomInt(0, (int) oUsuarioRepository.count() - 1);
-            Pageable oPageable = PageRequest.of(iPosicion, 1);
-            Page<UsuarioEntity> usuarioPage = oUsuarioRepository.findAll(oPageable);
-            List<UsuarioEntity> usuarioList = usuarioPage.getContent();
-            oUsuarioEntity = oUsuarioRepository.getById(usuarioList.get(0).getId());
-            return oUsuarioEntity;
-        } else {
-            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
-        }
-    }
-
-    public UsuarioEntity generate() {
-        oAuthService.OnlyAdmins();
-        return oUsuarioRepository.save(generateRandomUser());
-    }
-
-    public Long generateSome(Integer amount) {
-        oAuthService.OnlyAdmins();
-        List<UsuarioEntity> userList = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            UsuarioEntity oUsuarioEntity = generateRandomUser();
-            oUsuarioRepository.save(oUsuarioEntity);
-            userList.add(oUsuarioEntity);
-        }
-        return oUsuarioRepository.count();
     }
 
 }

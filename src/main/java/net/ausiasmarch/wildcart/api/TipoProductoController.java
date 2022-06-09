@@ -1,6 +1,5 @@
 package net.ausiasmarch.wildcart.api;
 
-import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.TipoproductoEntity;
 import net.ausiasmarch.wildcart.service.TipoProductoService;
 import org.springframework.beans.factory.annotation.Autowired;

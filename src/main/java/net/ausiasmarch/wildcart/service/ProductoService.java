@@ -113,7 +113,7 @@ public class ProductoService {
         oProductoEntity.setImagen(1L);
         oProductoEntity.setDescuento(RandomHelper.getRandomInt(0, 51));
         //oProductoEntity.setTipoproducto(oTipoProductoRepository.getById((long) RandomHelper.getRandomInt(1, (int) oTipoProductoRepository.count())));
-        oProductoEntity.setTipoproducto(oTipoproductoService.getRandomTipoProducto());
+        oProductoEntity.setTipoproducto(oTipoproductoService.getOneRandom());
         return oProductoEntity;
     }
 
@@ -125,7 +125,7 @@ public class ProductoService {
         return name + " de " + material + " de color " + color + " de tamaño " + tamanyo;
     }
 
-    public ProductoEntity getRandomProducto() {
+    public ProductoEntity getOneRandom() {
         ProductoEntity oProductoEntity = null;
         int iPosicion = RandomHelper.getRandomInt(0, (int) oProductoRepository.count() - 1);
         Pageable oPageable = PageRequest.of(iPosicion, 1);

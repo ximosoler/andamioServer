@@ -57,8 +57,8 @@ public class CarritoService {
             for (int o = 0; o < rowsPerUser; o++) {
                 randomCantidad = RandomHelper.getRandomInt(1, 10);
                 CarritoEntity row = new CarritoEntity();
-                row.setUsuario(oUsuarioService.getRandomUsuario());
-                row.setProducto(oProductoService.getRandomProducto());
+                row.setUsuario(oUsuarioService.getOneRandom());
+                row.setProducto(oProductoService.getOneRandom());
                 row.setCantidad(randomCantidad);
                 rows.add(row);
             }

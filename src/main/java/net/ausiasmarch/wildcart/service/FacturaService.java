@@ -91,10 +91,10 @@ public class FacturaService {
         return id;
     }
 
-    public Long generate(int amount) {
+    public Long generateSome(int amount) {
         if (oUsuarioService.count() > 0) {
             for (int i = 0; i < amount; i++) {
-                FacturaEntity oFacturaEntity = generateRandomFactura();
+                FacturaEntity oFacturaEntity = generate();
                 oFacturaRepository.save(oFacturaEntity);
             }
             return oFacturaRepository.count();
@@ -103,16 +103,14 @@ public class FacturaService {
         }
     }
 
-    public FacturaEntity generateRandomFactura() {
+    public FacturaEntity generate() {
         if (oUsuarioRepository.count() > 0) {
             int[] ivas = {4, 10, 21};
             int iva = ivas[(int) (Math.floor(Math.random() * ((ivas.length - 1) - 0 + 1) + 0))];
             FacturaEntity oFacturaEntity = new FacturaEntity();
             oFacturaEntity.setFecha(RandomHelper.getRadomDateTime());
             oFacturaEntity.setIva(iva);
-
-            oFacturaEntity.setUsuario(oUsuarioService.getRandomUsuario());
-
+            oFacturaEntity.setUsuario(oUsuarioService.getOneRandom());
             if (RandomHelper.getRandomInt(0, 1) == 0) {
                 oFacturaEntity.setPagado(true);
             } else {
@@ -124,7 +122,7 @@ public class FacturaService {
         }
     }
 
-    public FacturaEntity getRandomFactura() {
+    public FacturaEntity getOneRandom() {
         FacturaEntity oFacturaEntity = null;
         int iPosicion = RandomHelper.getRandomInt(0, (int) oFacturaRepository.count() - 1);
         Pageable oPageable = PageRequest.of(iPosicion, 1);

@@ -103,23 +103,6 @@ public class TipoProductoService {
         return oTipoProductoEntity;
     }
 
-    private TipoproductoEntity generateTipoProducto(int i, int j, int k) {
-        String nombre = TIPO[i] + " " + CARATERISTICA[j] + " " + UTILIDAD[k];
-        TipoproductoEntity oTipoProductoEntity = new TipoproductoEntity();
-        oTipoProductoEntity.setNombre(nombre);
-        return oTipoProductoEntity;
-    }
-
-    public TipoproductoEntity getRandomTipoProducto() {
-        TipoproductoEntity oTipoProductoEntity = null;
-        int iPosicion = RandomHelper.getRandomInt(0, (int) oTipoproductoRepository.count() - 1);
-        Pageable oPageable = PageRequest.of(iPosicion, 1);
-        Page<TipoproductoEntity> tipoProductoPage = oTipoproductoRepository.findAll(oPageable);
-        List<TipoproductoEntity> tipoProductoList = tipoProductoPage.getContent();
-        oTipoProductoEntity = oTipoproductoRepository.getById(tipoProductoList.get(0).getId());
-        return oTipoProductoEntity;
-    }
-
     public Long generateSome(@PathVariable(value = "amount") int amount) {
         oAuthService.OnlyAdmins();
         for (int i = 0; i < amount; i++) {
@@ -129,7 +112,24 @@ public class TipoProductoService {
         return oTipoproductoRepository.count();
     }
 
-    public List<TipoproductoEntity> generateAllTipoProductoList() {
+    public TipoproductoEntity getOneRandom() {
+        TipoproductoEntity oTipoProductoEntity = null;
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oTipoproductoRepository.count() - 1);
+        Pageable oPageable = PageRequest.of(iPosicion, 1);
+        Page<TipoproductoEntity> tipoProductoPage = oTipoproductoRepository.findAll(oPageable);
+        List<TipoproductoEntity> tipoProductoList = tipoProductoPage.getContent();
+        oTipoProductoEntity = oTipoproductoRepository.getById(tipoProductoList.get(0).getId());
+        return oTipoProductoEntity;
+    }
+
+    private TipoproductoEntity generateTipoProducto(int i, int j, int k) {
+        String nombre = TIPO[i] + " " + CARATERISTICA[j] + " " + UTILIDAD[k];
+        TipoproductoEntity oTipoProductoEntity = new TipoproductoEntity();
+        oTipoProductoEntity.setNombre(nombre);
+        return oTipoProductoEntity;
+    }
+
+    private List<TipoproductoEntity> generateAllTipoProductoList() {
         List<TipoproductoEntity> TipoProdList = new ArrayList<>();
         for (int i = 0; i < TIPO.length; i++) {
             for (int j = 0; j < CARATERISTICA.length; j++) {

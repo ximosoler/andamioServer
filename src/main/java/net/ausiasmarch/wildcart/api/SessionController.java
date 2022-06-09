@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.bean.UsuarioBean;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
+import net.ausiasmarch.wildcart.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,45 +25,22 @@ public class SessionController {
     @Autowired
     UsuarioRepository oUsuarioRepository;
 
+    @Autowired
+    AuthService oAuthService;
+
     @GetMapping("")
     public ResponseEntity<UsuarioEntity> check() {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity != null) {
-            return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
-//        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-//        try {
-//            oSessionUsuarioEntity = oUsuarioRepository.findById(oSessionUsuarioEntity.getId()).get();
-//        } catch (Exception ex) {
-//            oSessionUsuarioEntity = null;
-//        }
-//        if (oSessionUsuarioEntity == null) {
-//            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-//        } else {
-//            return new ResponseEntity<UsuarioEntity>(oSessionUsuarioEntity, HttpStatus.OK);
-//        }
+        return new ResponseEntity<UsuarioEntity>(oAuthService.check(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
-        if (oUsuarioBean.getPassword() != null) {
-            UsuarioEntity oUsuarioEntity = oUsuarioRepository.findByLoginAndPassword(oUsuarioBean.getLogin(), oUsuarioBean.getPassword());
-            if (oUsuarioEntity != null) {
-                oHttpSession.setAttribute("usuario", oUsuarioEntity);
-                return new ResponseEntity<UsuarioEntity>(oUsuarioEntity, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            }
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
+        return new ResponseEntity<UsuarioEntity>(oAuthService.login(oUsuarioBean), HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<?> logout() {
-        oHttpSession.invalidate();
+        oAuthService.logout();
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
