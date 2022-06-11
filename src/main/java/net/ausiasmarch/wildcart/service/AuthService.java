@@ -74,6 +74,17 @@ public class AuthService {
         }
     }
 
+    public void OnlyUsers() {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity == null) {
+            throw new UnauthorizedException("this request is only allowed to user role");
+        } else {
+            if (!oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.USER)) {
+                throw new UnauthorizedException("this request is only allowed to user role");
+            }
+        }
+    }
+
     public void OnlyAdminsOrUsers() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity == null) {

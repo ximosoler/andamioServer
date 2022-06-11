@@ -60,13 +60,13 @@ public class CompraService {
         return oCompraRepository.getById(id);
     }
 
-    @GetMapping("/count")
     public Long count() {
         oAuthService.OnlyAdmins();
         return oCompraRepository.count();
     }
 
     public Page<CompraEntity> getPage(Pageable oPageable, String strFilter, Long lFactura, Long lProducto) {
+        oAuthService.OnlyAdminsOrUsers();
         Page<CompraEntity> oPage = null;
         if (oAuthService.isAdmin()) {
             if (lFactura != null) {

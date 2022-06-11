@@ -196,20 +196,10 @@ public class CarritoController {
     // return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     // }
     // }
+    
     @PutMapping("/comprar")
-    public ResponseEntity<?> comprarCarrito() {
-        UsuarioEntity oSessionUsuarioEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oSessionUsuarioEntity != null) {
-            try {
-                oCarritoService.compra();
-            } catch (Exception e) {
-                return new ResponseEntity<>(0L, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<Long>(0L, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Long>(0L, HttpStatus.UNAUTHORIZED);
-        }
-
+    public ResponseEntity<Long> buy() {        
+        return new ResponseEntity<Long>(oCarritoService.purchase(), HttpStatus.OK);
     }
 
     @PutMapping
