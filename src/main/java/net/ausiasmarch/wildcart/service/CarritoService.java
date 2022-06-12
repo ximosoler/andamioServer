@@ -88,50 +88,19 @@ public class CarritoService {
         return oCarritoRepository.count();
     }
 
-    public Page<CarritoEntity> getPage(Pageable oPageable, String strFilter, Long lUsuario, Long lProducto) {
+    public Page<CarritoEntity> getPage(Pageable oPageable, Long lUsuario, Long lProducto) {
         oAuthService.OnlyAdminsOrUsers();
         Page<CarritoEntity> oPage = null;
         if (oAuthService.isAdmin()) {
             if (lUsuario != null) {
-                if (strFilter != null) {
-                    oPage = oCarritoRepository.findByUsuarioIdAndCantidad(lUsuario, strFilter, oPageable);
-                } else {
-                    oPage = oCarritoRepository.findByUsuarioId(lUsuario, oPageable);
-                }
+                oPage = oCarritoRepository.findByUsuarioId(lUsuario, oPageable);
             } else if (lProducto != null) {
-//                if (strFilter != null) {
-//                    oPage = oCarritoRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-//                } else {
-//                    oPage = oCarritoRepository.findByProductoId(lProducto, oPageable);
-//                }
-//            } else {
-//                if (strFilter != null) {
-//                    oPage = oCarritoRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-//                } else {
-//                    oPage = oCarritoRepository.findAll(oPageable);
-//                }
+                oPage = oCarritoRepository.findByProductoId(lProducto, oPageable);
+            } else {
+                oPage = oCarritoRepository.findAll(oPageable);
             }
         } else {
-//            if (lProducto != null) {
-//                if (strFilter != null) {
-//                    oPage = oCarritoRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
-//                } else {
-//                    oPage = oCarritoRepository.findByFacturaIdUsuario(lFactura, oAuthService.getUserID(), oPageable);
-//                }
-//            } else if (lProducto != null) {
-//                if (strFilter != null) {
-//                    oPage = oCarritoRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
-//                } else {
-//                    oPage = oCarritoRepository.findByProductoIdUsuario(lProducto, oAuthService.getUserID(), oPageable);
-//                }
-//            } else {
-//                if (strFilter != null) {
-//                    oPage = oCarritoRepository.findByIdContainUsuario(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
-//                } else {
-//                    oPage = oCarritoRepository.findAllUsuario(oAuthService.getUserID(), oPageable);
-//                }
-//            }
-
+            oPage = oCarritoRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
         }
         return oPage;
     }
@@ -157,12 +126,20 @@ public class CarritoService {
         return id;
     }
 
-    public ArrayList<CarritoEntity> generate(int rowsPerUser) {
+    public Long generate(int amount) {
+        ArrayList<CarritoEntity> carritos = generateAL(amount);
+        for (int i = 0; i < carritos.size(); i++) {
+            oCarritoRepository.save(carritos.get(i));
+        }
+        return oCarritoRepository.count();
+    }
+
+    private ArrayList<CarritoEntity> generateAL(int rowsPerUser) {
         ArrayList<CarritoEntity> rows = new ArrayList<>();
         List users = oUsuarioRepository.findAll();
         int randomCantidad = 0;
         for (int i = 0; i < users.size(); i++) {
-            for (int o = 0; o < rowsPerUser; o++) {
+            for (int j = 0; j < rowsPerUser; j++) {
                 randomCantidad = RandomHelper.getRandomInt(1, 10);
                 CarritoEntity row = new CarritoEntity();
                 row.setUsuario(oUsuarioService.getOneRandom());
@@ -175,6 +152,44 @@ public class CarritoService {
     }
 
 // users services    
+    @Transactional
+    public ResponseEntity<?> add(ProductoEntity oProducto, int amount) {
+        oAuthService.OnlyUsers();
+        oProductoService.validate(oProducto.getId());
+        if (amount > 0 && amount <= 1000) {
+            if (oCarritoRepository.countByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId()) == 0) {
+                CarritoEntity oCarritoEntity = new CarritoEntity();
+                oCarritoEntity.setId(null);
+                oCarritoEntity.setProducto(oProductoService.get(oProducto.getId()));
+                oCarritoEntity.setUsuario(oUsuarioService.get(oAuthService.getUserID()));
+                oCarritoEntity.setCantidad(amount);
+                oCarritoRepository.save(oCarritoEntity);
+            } else {
+                List<CarritoEntity> oCarritoEntityList = oCarritoRepository.findByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
+                if (oCarritoEntityList.size() == 1) {
+                    CarritoEntity oCarritoEntity = oCarritoEntityList.get(0);
+                    oCarritoEntity.setCantidad(oCarritoEntity.getCantidad() + amount);
+                    oCarritoRepository.save(oCarritoEntity);
+                } else {
+                    Long sum = 0L;
+                    for (int i = 0; i < oCarritoEntityList.size(); i++) {
+                        sum = sum + oCarritoEntityList.get(i).getCantidad();
+                    }
+                    oCarritoRepository.deleteByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
+                    CarritoEntity oCarritoEntity = new CarritoEntity();
+                    oCarritoEntity.setId(null);
+                    oCarritoEntity.setProducto(oProductoService.get(oProducto.getId()));
+                    oCarritoEntity.setUsuario(oUsuarioService.get(oAuthService.getUserID()));
+                    oCarritoEntity.setCantidad((int) (sum + amount));
+                    oCarritoRepository.save(oCarritoEntity);
+                }
+            }
+        } else {
+            throw new CannotPerformOperationException("amount must be between 1 and 1000");
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     @Transactional
     public Long purchase() throws FaltaCantidadDeProductoEnCompraException, UnauthorizedException, CarritoVacioEnCompraException {
         oAuthService.OnlyUsers();

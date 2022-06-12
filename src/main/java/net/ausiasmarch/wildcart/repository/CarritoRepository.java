@@ -16,8 +16,14 @@ public interface CarritoRepository extends JpaRepository<CarritoEntity, Long> {
 
     Page<CarritoEntity> findByUsuarioId(Long id_Usuario, Pageable oPageable);
 
-    List<CarritoEntity> findByUsuarioId(Long id_Usuario);
+    Long countByUsuarioIdAndProductoId(Long id_usuario, Long id_producto);
 
+    List<CarritoEntity> findByUsuarioId(Long id_usuario);
+
+    List<CarritoEntity> findByUsuarioIdAndProductoId(Long id_usuario, Long id_producto);
+
+     long deleteByUsuarioIdAndProductoId(Long id_usuario, Long id_producto);
+    
     long countByUsuarioId(Long id_Usuario);
 
     Page<CarritoEntity> findAllByUsuario(UsuarioEntity usuario, Pageable oPageable);
