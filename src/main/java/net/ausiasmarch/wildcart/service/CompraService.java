@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class CompraService {
@@ -71,19 +70,19 @@ public class CompraService {
         if (oAuthService.isAdmin()) {
             if (lFactura != null) {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    oPage = oCompraRepository.findByFacturaIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
                     oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
                 }
             } else if (lProducto != null) {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProducto(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    oPage = oCompraRepository.findByProductoIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
                     oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
                 }
             } else {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByIdContain(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
+                    oPage = oCompraRepository.findByIdContainingOrCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
                     oPage = oCompraRepository.findAll(oPageable);
                 }
@@ -91,21 +90,21 @@ public class CompraService {
         } else {
             if (lFactura != null) {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByFacturaIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByFacturaIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
-                    oPage = oCompraRepository.findByFacturaIdUsuario(lFactura, oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByFacturaIdAndUsuarioId(lFactura, oAuthService.getUserID(), oPageable);
                 }
             } else if (lProducto != null) {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByProductoIdAndCantidadOrPrecioOrFechaOrDescuentoUsuarioOrDescuentoProductoUsuario(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByProductoIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
-                    oPage = oCompraRepository.findByProductoIdUsuario(lProducto, oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByProductoIdAndUsuarioId(lProducto, oAuthService.getUserID(), oPageable);
                 }
             } else {
                 if (strFilter != null) {
-                    oPage = oCompraRepository.findByIdContainUsuario(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 } else {
-                    oPage = oCompraRepository.findAllUsuario(oAuthService.getUserID(), oPageable);
+                    oPage = oCompraRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
                 }
             }
 
