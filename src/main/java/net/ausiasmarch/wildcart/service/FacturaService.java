@@ -60,13 +60,13 @@ public class FacturaService {
             if (strFilter.equalsIgnoreCase("")) {
                 return oFacturaRepository.findAll(oPageable);
             } else {
-                return oFacturaRepository.findByIvaOrFecha(strFilter, strFilter, oPageable);
+                return oFacturaRepository.findByIvaContainingOrFechaContaining(strFilter, strFilter, oPageable);
             }
         } else {
             if (strFilter.equalsIgnoreCase("")) {
-                return oFacturaRepository.findByFacturaXUsuario(oAuthService.getUserID(), oPageable);
+                return oFacturaRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
             } else {
-                return oFacturaRepository.findByUsuarioIdAndIvaOrFecha(oAuthService.getUserID(), strFilter, strFilter, oPageable);
+                return oFacturaRepository.findByUsuarioIdAndIvaContainingOrFechaContaining(oAuthService.getUserID(), strFilter, strFilter, oPageable);
             }
         }
     }
