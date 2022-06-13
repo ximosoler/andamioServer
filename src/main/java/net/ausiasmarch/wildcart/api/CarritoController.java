@@ -81,7 +81,7 @@ public class CarritoController {
     }
 
     @PostMapping("/generate/{amount}")
-    public ResponseEntity<Long> generate(@PathVariable(value = "amount") int amount) {
+    public ResponseEntity<Long> generate(@PathVariable(value = "amount") Long amount) {
         return new ResponseEntity<Long>(oCarritoService.generate(amount), HttpStatus.OK);
     }
 

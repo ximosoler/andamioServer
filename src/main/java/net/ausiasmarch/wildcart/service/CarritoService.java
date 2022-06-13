@@ -26,12 +26,6 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @Service
 public class CarritoService {
@@ -44,9 +38,6 @@ public class CarritoService {
 
     @Autowired
     UsuarioService oUsuarioService;
-
-    @Autowired
-    HttpSession oHttpSession;
 
     @Autowired
     FacturaRepository oFacturaRepository;
@@ -126,29 +117,15 @@ public class CarritoService {
         return id;
     }
 
-    public Long generate(int amount) {
-        ArrayList<CarritoEntity> carritos = generateAL(amount);
-        for (int i = 0; i < carritos.size(); i++) {
-            oCarritoRepository.save(carritos.get(i));
+    public Long generate(Long amount) {
+        oAuthService.OnlyAdmins();
+        for (int i = 0; i < amount; i++) {
+            CarritoEntity oCarrito = new CarritoEntity();
+            oCarrito.setUsuario(oUsuarioService.getOneRandom());
+            oCarrito.setProducto(oProductoService.getOneRandom());
+            oCarrito.setCantidad(RandomHelper.getRandomInt(1, 10));
         }
-        return oCarritoRepository.count();
-    }
-
-    private ArrayList<CarritoEntity> generateAL(int rowsPerUser) {
-        ArrayList<CarritoEntity> rows = new ArrayList<>();
-        List users = oUsuarioRepository.findAll();
-        int randomCantidad = 0;
-        for (int i = 0; i < users.size(); i++) {
-            for (int j = 0; j < rowsPerUser; j++) {
-                randomCantidad = RandomHelper.getRandomInt(1, 10);
-                CarritoEntity row = new CarritoEntity();
-                row.setUsuario(oUsuarioService.getOneRandom());
-                row.setProducto(oProductoService.getOneRandom());
-                row.setCantidad(randomCantidad);
-                rows.add(row);
-            }
-        }
-        return rows;
+        return count();
     }
 
 // users services
@@ -277,9 +254,14 @@ public class CarritoService {
                 }
             }
             oFacturaRepository.save(oFacturaEntity);
-            oCarritoRepository.deleteAllByUsuario(oUsuarioEntity);
+            oCarritoRepository.deleteByUsuarioId(oUsuarioEntity.getId());
             return ((Integer) oCarritoList.size()).longValue();
         }
     }
+
+    
+    
+    
+    
 
 }
