@@ -77,7 +77,7 @@ public class CarritoService {
         oProductoService.validate(oCarritoEntity.getProducto().getId());
     }
 
-// admins services 
+// admins services
     public CarritoEntity get(Long id) {
         validate(id);
         return oCarritoRepository.getById(id);
@@ -120,8 +120,8 @@ public class CarritoService {
     }
 
     public Long delete(Long id) {
-        oAuthService.OnlyAdmins();
         validate(id);
+        oAuthService.OnlyAdminsOrOwnUsersData(oCarritoRepository.getById(id).getUsuario().getId());
         oCarritoRepository.deleteById(id);
         return id;
     }
@@ -151,10 +151,11 @@ public class CarritoService {
         return rows;
     }
 
-// users services    
+// users services
     @Transactional
-    public ResponseEntity<?> add(ProductoEntity oProducto, int amount) {
+    public Long add(Long id_producto, int amount) {
         oAuthService.OnlyUsers();
+        ProductoEntity oProducto = oProductoService.get(id_producto);
         oProductoService.validate(oProducto.getId());
         if (amount > 0 && amount <= 1000) {
             if (oCarritoRepository.countByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId()) == 0) {
@@ -187,23 +188,73 @@ public class CarritoService {
         } else {
             throw new CannotPerformOperationException("amount must be between 1 and 1000");
         }
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return oCarritoRepository.countByUsuarioId(oAuthService.getUserID());
+    }
+
+    @Transactional
+    public Long reduce(Long id_producto, int amount) {
+        oAuthService.OnlyUsers();
+        ProductoEntity oProducto = oProductoService.get(id_producto);
+        oProductoService.validate(oProducto.getId());
+        if (amount > 0 && amount <= 1000) {
+            if (oCarritoRepository.countByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId()) == 0) {
+                throw new CannotPerformOperationException("no exist that product in users cart");
+            } else {
+                List<CarritoEntity> oCarritoEntityList = oCarritoRepository.findByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
+                if (oCarritoEntityList.size() == 1) {
+                    CarritoEntity oCarritoEntity = oCarritoEntityList.get(0);
+                    if (oCarritoEntity.getCantidad() - amount < 0) {
+                        oCarritoEntity.setCantidad(0);
+                    } else {
+                        oCarritoEntity.setCantidad(oCarritoEntity.getCantidad() - amount);
+                    }
+                    oCarritoRepository.save(oCarritoEntity);
+                } else {
+                    Long sum = 0L;
+                    for (int i = 0; i < oCarritoEntityList.size(); i++) {
+                        sum = sum + oCarritoEntityList.get(i).getCantidad();
+                    }
+                    oCarritoRepository.deleteByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
+                    CarritoEntity oCarritoEntity = new CarritoEntity();
+                    oCarritoEntity.setId(null);
+                    oCarritoEntity.setProducto(oProductoService.get(oProducto.getId()));
+                    oCarritoEntity.setUsuario(oUsuarioService.get(oAuthService.getUserID()));
+                    if (oCarritoEntity.getCantidad() - amount < 0) {
+                        oCarritoEntity.setCantidad(0);
+                    } else {
+                        oCarritoEntity.setCantidad(oCarritoEntity.getCantidad() - amount);
+                    }
+                    oCarritoRepository.save(oCarritoEntity);
+                }
+            }
+        } else {
+            throw new CannotPerformOperationException("amount must be between 1 and 1000");
+        }
+        return oCarritoRepository.countByUsuarioId(oAuthService.getUserID());
+    }
+
+    @Transactional
+    public Long empty() {
+        oAuthService.OnlyUsers();
+        if (oCarritoRepository.countByUsuarioId(oAuthService.getUserID()) > 0) {
+            oCarritoRepository.deleteByUsuarioId(oAuthService.getUserID());
+        }
+        return oCarritoRepository.countByUsuarioId(oAuthService.getUserID());
     }
 
     @Transactional
     public Long purchase() throws FaltaCantidadDeProductoEnCompraException, UnauthorizedException, CarritoVacioEnCompraException {
         oAuthService.OnlyUsers();
-        FacturaEntity oFacturaEntity = new FacturaEntity();
-        oFacturaEntity.setIva(21);
-        oFacturaEntity.setFecha(LocalDateTime.now());
-        oFacturaEntity.setPagado(false);
-        UsuarioEntity oUsuarioEntity = new UsuarioEntity();
-        oUsuarioEntity.setId(oAuthService.getUserID());
-        oFacturaEntity.setUsuario(oUsuarioEntity);
         List<CarritoEntity> oCarritoList = oCarritoRepository.findByUsuarioId(oAuthService.getUserID());
         if (oCarritoList.isEmpty()) {
             throw new CarritoVacioEnCompraException();
         } else {
+            FacturaEntity oFacturaEntity = new FacturaEntity();
+            oFacturaEntity.setIva(21);
+            oFacturaEntity.setFecha(LocalDateTime.now());
+            oFacturaEntity.setPagado(false);
+            UsuarioEntity oUsuarioEntity = new UsuarioEntity(oAuthService.getUserID());
+            oFacturaEntity.setUsuario(oUsuarioEntity);
             CarritoEntity oCarritoEntity = null;
             for (int i = 0; i < oCarritoList.size(); i++) {
                 oCarritoEntity = oCarritoList.get(i);
@@ -225,10 +276,10 @@ public class CarritoService {
                             + oProductoEntity.getId() + "-" + oProductoEntity.getCodigo() + "-" + oProductoEntity.getNombre());
                 }
             }
+            oFacturaRepository.save(oFacturaEntity);
+            oCarritoRepository.deleteAllByUsuario(oUsuarioEntity);
+            return ((Integer) oCarritoList.size()).longValue();
         }
-        oFacturaRepository.save(oFacturaEntity);
-        oCarritoRepository.deleteAllByUsuario(oUsuarioEntity);
-        return ((Integer) oCarritoList.size()).longValue();
     }
 
 }
