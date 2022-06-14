@@ -54,13 +54,21 @@ public class FacturaService {
         return oFacturaRepository.count();
     }
 
-    public Page<FacturaEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
+    public Page<FacturaEntity> getPage(Pageable oPageable, String strFilter, Long lUsuario) {
         oAuthService.OnlyAdminsOrUsers();
         if (oAuthService.isAdmin()) {
-            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-                return oFacturaRepository.findAll(oPageable);
+            if (lUsuario != null) {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                    return oFacturaRepository.findByUsuarioId(lUsuario, oPageable);
+                } else {
+                    return oFacturaRepository.findByUsuarioIdAndIvaContainingOrFechaContaining(lUsuario, strFilter, strFilter, oPageable);
+                }
             } else {
-                return oFacturaRepository.findByIvaContainingOrFechaContaining(strFilter, strFilter, oPageable);
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                    return oFacturaRepository.findAll(oPageable);
+                } else {
+                    return oFacturaRepository.findByIvaContainingOrFechaContaining(strFilter, strFilter, oPageable);
+                }
             }
         } else {
             if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
