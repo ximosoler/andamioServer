@@ -69,45 +69,44 @@ public class CompraService {
         Page<CompraEntity> oPage = null;
         if (oAuthService.isAdmin()) {
             if (lFactura != null) {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByFacturaIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findByFacturaId(lFactura, oPageable);
+                } else {
+                    oPage = oCompraRepository.findByFacturaIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             } else if (lProducto != null) {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByProductoIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findByProductoId(lProducto, oPageable);
+                } else {
+                    oPage = oCompraRepository.findByProductoIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             } else {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByIdContainingOrCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findAll(oPageable);
+                } else {
+                    oPage = oCompraRepository.findByIdContainingOrCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(strFilter, strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             }
         } else {
             if (lFactura != null) {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByFacturaIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findByFacturaIdAndUsuarioId(lFactura, oAuthService.getUserID(), oPageable);
+                } else {
+                    oPage = oCompraRepository.findByFacturaIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lFactura, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             } else if (lProducto != null) {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByProductoIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findByProductoIdAndUsuarioId(lProducto, oAuthService.getUserID(), oPageable);
+                } else {
+                    oPage = oCompraRepository.findByProductoIdAndUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(lProducto, oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             } else {
-                if (strFilter != null) {
-                    oPage = oCompraRepository.findByUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
-                } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                     oPage = oCompraRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
+                } else {
+                    oPage = oCompraRepository.findByUsuarioIdAndCantidadContainingOrPrecioContainingOrFechaContainingOrDescuento_usuarioContainingOrDescuento_productoContaining(oAuthService.getUserID(), strFilter, strFilter, strFilter, strFilter, strFilter, oPageable);
                 }
             }
-
         }
         return oPage;
     }

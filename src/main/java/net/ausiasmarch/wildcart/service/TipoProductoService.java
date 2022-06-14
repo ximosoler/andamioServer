@@ -54,10 +54,10 @@ public class TipoProductoService {
 
     public Page<TipoproductoEntity> getPage(Pageable oPageable, String strFilter) {
         Page<TipoproductoEntity> oPage = null;
-        if (strFilter != null) {
-            oPage = oTipoproductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-        } else {
+        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
             oPage = oTipoproductoRepository.findAll(oPageable);
+        } else {
+            oPage = oTipoproductoRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
         }
         return oPage;
     }

@@ -1,9 +1,7 @@
 package net.ausiasmarch.wildcart.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.exception.CarritoVacioEnCompraException;
 import net.ausiasmarch.wildcart.exception.FaltaCantidadDeProductoEnCompraException;

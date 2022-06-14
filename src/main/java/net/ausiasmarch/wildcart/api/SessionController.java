@@ -34,7 +34,7 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
+    public ResponseEntity<UsuarioEntity> login(@RequestBody UsuarioBean oUsuarioBean) {
         return new ResponseEntity<UsuarioEntity>(oAuthService.login(oUsuarioBean), HttpStatus.OK);
     }
 

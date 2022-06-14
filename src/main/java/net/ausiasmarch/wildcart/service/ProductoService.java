@@ -56,17 +56,17 @@ public class ProductoService {
 
     public Page<ProductoEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
         Page<ProductoEntity> oPage = null;
-        if (lTipoProducto != null) {
-            if (strFilter != null) {
-                oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
+        if (lTipoProducto == null) {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oProductoRepository.findAll(oPageable);
             } else {
-                oPage = oProductoRepository.findByTipoproductoId(lTipoProducto, oPageable);
+                oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(strFilter, strFilter, oPageable);
             }
         } else {
-            if (strFilter != null) {
-                oPage = oProductoRepository.findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(strFilter, strFilter, oPageable);
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oProductoRepository.findByTipoproductoId(lTipoProducto, oPageable);
             } else {
-                oPage = oProductoRepository.findAll(oPageable);
+                oPage = oProductoRepository.findByTipoproductoIdAndNombreOrCodigo(lTipoProducto, strFilter, strFilter, oPageable);
             }
         }
         return oPage;

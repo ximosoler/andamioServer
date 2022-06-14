@@ -79,19 +79,19 @@ public class UsuarioService {
     public Page<UsuarioEntity> getPage(Pageable oPageable, String strFilter, Long lTipoUsuario) {
         oAuthService.OnlyAdmins();
         Page<UsuarioEntity> oPage = null;
-        if (lTipoUsuario != null) {
-            if (strFilter != null) {
-                oPage = oUsuarioRepository.findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
-                        lTipoUsuario, strFilter, strFilter, strFilter, strFilter, oPageable);
+        if (lTipoUsuario == null) {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oUsuarioRepository.findAll(oPageable);
             } else {
-                oPage = oUsuarioRepository.findByTipousuarioId(lTipoUsuario, oPageable);
-            }
-        } else {
-            if (strFilter != null) {
                 oPage = oUsuarioRepository.findByDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
                         strFilter, strFilter, strFilter, strFilter, oPageable);
+            }
+        } else {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oUsuarioRepository.findByTipousuarioId(lTipoUsuario, oPageable);
             } else {
-                oPage = oUsuarioRepository.findAll(oPageable);
+                oPage = oUsuarioRepository.findByTipousuarioIdAndDniIgnoreCaseContainingOrNombreIgnoreCaseContainingOrApellido1IgnoreCaseContainingOrApellido2IgnoreCaseContaining(
+                        lTipoUsuario, strFilter, strFilter, strFilter, strFilter, oPageable);
             }
         }
         return oPage;

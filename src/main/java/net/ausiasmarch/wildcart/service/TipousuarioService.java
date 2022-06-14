@@ -52,10 +52,10 @@ public class TipousuarioService {
 
     public Page<TipousuarioEntity> getPage(Pageable oPageable, String strFilter) {
         Page<TipousuarioEntity> oPage = null;
-        if (strFilter != null) {
-            oPage = oTipousuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
-        } else {
+        if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
             oPage = oTipousuarioRepository.findAll(oPageable);
+        } else {
+            oPage = oTipousuarioRepository.findByNombreIgnoreCaseContaining(strFilter, oPageable);
         }
         return oPage;
     }

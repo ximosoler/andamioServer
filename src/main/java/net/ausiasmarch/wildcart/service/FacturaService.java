@@ -57,13 +57,13 @@ public class FacturaService {
     public Page<FacturaEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
         oAuthService.OnlyAdminsOrUsers();
         if (oAuthService.isAdmin()) {
-            if (strFilter.equalsIgnoreCase("")) {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                 return oFacturaRepository.findAll(oPageable);
             } else {
                 return oFacturaRepository.findByIvaContainingOrFechaContaining(strFilter, strFilter, oPageable);
             }
         } else {
-            if (strFilter.equalsIgnoreCase("")) {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                 return oFacturaRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
             } else {
                 return oFacturaRepository.findByUsuarioIdAndIvaContainingOrFechaContaining(oAuthService.getUserID(), strFilter, strFilter, oPageable);

@@ -38,7 +38,7 @@ public class FacturaController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getPage(
+    public ResponseEntity<Page<FacturaEntity>> getPage(
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "usuario", required = false) Long lUsuario) {
@@ -46,17 +46,17 @@ public class FacturaController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody FacturaEntity oFacturaEntity) {
+    public ResponseEntity<FacturaEntity> create(@RequestBody FacturaEntity oFacturaEntity) {
         return new ResponseEntity<FacturaEntity>(oFacturaService.create(oFacturaEntity), HttpStatus.OK);
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody FacturaEntity oFacturaEntity) {
+    public ResponseEntity<FacturaEntity> update(@RequestBody FacturaEntity oFacturaEntity) {
         return new ResponseEntity<FacturaEntity>(oFacturaService.update(oFacturaEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Long>(oFacturaService.delete(id), HttpStatus.OK);
     }
 
