@@ -3,8 +3,6 @@ package net.ausiasmarch.wildcart.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
-import net.ausiasmarch.wildcart.exception.CarritoVacioEnCompraException;
-import net.ausiasmarch.wildcart.exception.FaltaCantidadDeProductoEnCompraException;
 import net.ausiasmarch.wildcart.exception.UnauthorizedException;
 import net.ausiasmarch.wildcart.entity.CarritoEntity;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
@@ -218,11 +216,11 @@ public class CarritoService {
     }
 
     @Transactional
-    public Long purchase() throws FaltaCantidadDeProductoEnCompraException, UnauthorizedException, CarritoVacioEnCompraException {
+    public Long purchase() throws CannotPerformOperationException, UnauthorizedException {
         oAuthService.OnlyUsers();
         List<CarritoEntity> oCarritoList = oCarritoRepository.findByUsuarioId(oAuthService.getUserID());
         if (oCarritoList.isEmpty()) {
-            throw new CarritoVacioEnCompraException();
+            throw new CannotPerformOperationException("Empty cart");
         } else {
             FacturaEntity oFacturaEntity = new FacturaEntity();
             oFacturaEntity.setIva(21);
@@ -256,10 +254,5 @@ public class CarritoService {
             return ((Integer) oCarritoList.size()).longValue();
         }
     }
-
-    
-    
-    
-    
 
 }
