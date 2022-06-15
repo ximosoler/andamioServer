@@ -1,7 +1,6 @@
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -24,29 +23,20 @@ public class ProductoEntity {
     @Column(name = "id")
     private Long id;
 
-    @Schema(example = "2039981-ASC")
     private String codigo;
-    @Schema(example = "Paraguas rojo automático con mango de madera")
     private String nombre;
-    @Schema(example = "8")
     private Integer existencias;
-    @Schema(example = "22")
     private Double precio;
-    @Schema(example = "1")
     private Long imagen;
-    @Schema(example = "0")
     private int descuento;
 
-    @Schema(example = "{\"id\": 2}")
     @ManyToOne
     @JoinColumn(name = "id_tipoproducto")
     private TipoproductoEntity tipoproducto;
 
-    @Schema(hidden = true)
     @OneToMany(mappedBy = "producto")
     private final List<CarritoEntity> carritos;
 
-    @Schema(hidden = true)
     @OneToMany(mappedBy = "producto")
     private final List<CompraEntity> compras;
 

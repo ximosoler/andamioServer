@@ -1,7 +1,6 @@
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,22 +16,17 @@ import javax.persistence.Table;
 
 public class CarritoEntity implements Serializable {
 
-    @Schema(example = "3")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Schema(example = "3")
     private int cantidad;
-    @Schema(example = "11.2")
     private double precio;
 
-    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private ProductoEntity producto;
 
-    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;

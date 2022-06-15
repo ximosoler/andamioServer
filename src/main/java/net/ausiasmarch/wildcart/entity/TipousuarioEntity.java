@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.OneToMany;
@@ -16,15 +15,12 @@ import javax.persistence.OneToMany;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipousuarioEntity {
     
-    @Schema(example = "3")
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(example = "Visitante")
     private String nombre;
 
-    @Schema(hidden = true)
     @OneToMany(mappedBy = "tipousuario")
     private final List<UsuarioEntity> usuarios;
 

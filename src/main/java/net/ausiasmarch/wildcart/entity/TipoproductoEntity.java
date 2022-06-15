@@ -1,7 +1,6 @@
 package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -15,23 +14,20 @@ import javax.persistence.Table;
 @Table(name = "tipoproducto")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipoproductoEntity {
-
-    @Schema(example = "3")    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)    
-    private Long id;
     
-    @Schema(example = "Productos del tipo AZ1")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nombre;
 
-    @Schema(hidden = true)
     @OneToMany(mappedBy = "tipoproducto")
     private final List<ProductoEntity> productos;
 
     public TipoproductoEntity() {
         this.productos = new ArrayList<>();
-    }   
-    
+    }
+
     public Long getId() {
         return id;
     }
