@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.ausiasmarch.wildcart.entity.TipousuarioEntity;
 import net.ausiasmarch.wildcart.service.TipousuarioService;
+import org.springdoc.api.annotations.ParameterObject;
 
 @RestController
 @RequestMapping("/tipousuario")
@@ -43,7 +44,7 @@ public class TipoUsuarioController {
 
     @GetMapping("")
     public ResponseEntity<Page<TipousuarioEntity>> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter) {
         return new ResponseEntity<Page<TipousuarioEntity>>(oTipousuarioService.getPage(oPageable, strFilter), HttpStatus.OK);
     }

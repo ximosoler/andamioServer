@@ -1,15 +1,12 @@
 package net.ausiasmarch.wildcart.api;
 
-import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CarritoEntity;
-import net.ausiasmarch.wildcart.entity.ProductoEntity;
-import net.ausiasmarch.wildcart.entity.UsuarioEntity;
-import net.ausiasmarch.wildcart.helper.TipoUsuarioHelper;
 import net.ausiasmarch.wildcart.repository.CarritoRepository;
 import net.ausiasmarch.wildcart.repository.ProductoRepository;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import net.ausiasmarch.wildcart.service.CarritoService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +56,7 @@ public class CarritoController {
 
     @GetMapping("")
     public ResponseEntity<Page<CarritoEntity>> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "idproducto", required = false) Long id_producto,
             @RequestParam(name = "idusuario", required = false) Long id_usuario) {
         return new ResponseEntity<Page<CarritoEntity>>(oCarritoService.getPage(oPageable, id_usuario, id_producto), HttpStatus.OK);

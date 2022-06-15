@@ -1,7 +1,5 @@
 package net.ausiasmarch.wildcart.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,22 +8,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.awt.image.BufferedImage;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.sql.Blob;
 
 @Entity
 @Table(name = "file")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class FileEntity implements Serializable {
+public class FileEntity {
 
-    private static final long serialVersionUID = 1L;
+    @Schema(example = "2")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Schema(example = "paraguas 3422S")
     @Column(name = "name")
     private String name;
+    @Schema(example = "jpg")
     @Column(name = "type")
     private String type;
 
@@ -71,7 +71,5 @@ public class FileEntity implements Serializable {
     public void setFile(Blob fileBlob) {
         this.file = fileBlob;
     }
-
-
 
 }

@@ -2,7 +2,7 @@ package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,28 +18,34 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "factura")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class FacturaEntity implements Serializable {
+public class FacturaEntity {
 
+    @Schema(example = "3")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Schema(example = "13/12/2022 09:45", format = "dd/MM/yyyy HH:mm")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
-    
+    @Schema(example = "21")
     private int iva;
+    @Schema(example = "true")
     private boolean pagado;
 
+    @Schema(hidden = true)
     @OneToMany(mappedBy = "factura")
-    private List<CompraEntity> compras = new ArrayList<>();
+    private final List<CompraEntity> compras;
 
+    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
 
     public FacturaEntity() {
-    }   
-    
+        this.compras = new ArrayList<>();
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,7 +77,6 @@ public class FacturaEntity implements Serializable {
     public void setPagado(boolean pagado) {
         this.pagado = pagado;
     }
-
 
     public int getCompras() {
         return compras.size();

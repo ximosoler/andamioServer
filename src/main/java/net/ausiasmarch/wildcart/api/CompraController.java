@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.api;
 
 import net.ausiasmarch.wildcart.entity.CompraEntity;
 import net.ausiasmarch.wildcart.service.CompraService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public class CompraController {
 
     @GetMapping("")
     public ResponseEntity<?> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "lFactura", required = false) Long lFactura,
             @RequestParam(name = "lProducto", required = false) Long lProducto) {

@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -17,23 +18,31 @@ import javax.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CompraEntity implements Serializable {
 
+    @Schema(example = "3")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(example = "3")
     private int cantidad;
+    @Schema(example = "12.30")
     private double precio;
 
+    @Schema(example = "14/11/2021 09:44", format = "dd/MM/yyyy HH:mm")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime fecha;
 
+    @Schema(example = "0")
     private int descuento_usuario;
+    @Schema(example = "0")
     private int descuento_producto;
 
+    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_factura")
     private FacturaEntity factura;
 
+    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private ProductoEntity producto;

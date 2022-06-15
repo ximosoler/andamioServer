@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.api;
 
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.service.ProductoService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class ProductoController {
     // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
     @GetMapping("")
     public ResponseEntity<Page<ProductoEntity>> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
         return new ResponseEntity<Page<ProductoEntity>>(oProductoService.getPage(oPageable, strFilter, lTipoProducto), HttpStatus.OK);

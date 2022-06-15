@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.api;
 
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
 import net.ausiasmarch.wildcart.service.FacturaService;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class FacturaController {
 
     @GetMapping("")
     public ResponseEntity<Page<FacturaEntity>> getPage(
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "usuario", required = false) Long lUsuario) {
         return new ResponseEntity<Page<FacturaEntity>>(oFacturaService.getPage(oPageable, strFilter, lUsuario), HttpStatus.OK);

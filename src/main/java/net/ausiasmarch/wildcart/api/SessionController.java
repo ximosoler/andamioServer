@@ -1,6 +1,12 @@
 package net.ausiasmarch.wildcart.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import net.ausiasmarch.wildcart.bean.UsuarioBean;
 import net.ausiasmarch.wildcart.entity.UsuarioEntity;
 import net.ausiasmarch.wildcart.repository.UsuarioRepository;
@@ -11,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,10 +40,19 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioEntity> login(@RequestBody UsuarioBean oUsuarioBean) {
+    public ResponseEntity<UsuarioEntity> login(@org.springframework.web.bind.annotation.RequestBody UsuarioBean oUsuarioBean) {
         return new ResponseEntity<UsuarioEntity>(oAuthService.login(oUsuarioBean), HttpStatus.OK);
     }
 
+//    @PostMapping(produces = "application/json", consumes = "application/json")
+//    public ResponseEntity<UsuarioEntity> login(
+//            @org.springframework.web.bind.annotation.RequestBody // Spring
+//            @io.swagger.v3.oas.annotations.parameters.RequestBody // Swagger
+//            @Valid // Bean validation to ensure if the incoming object is valid
+//            final UsuarioBean oUsuarioBean ) //            @RequestBody(description = "login endpoint", required = true, content = @Content(schema = @Schema(implementation = UsuarioEntity.class))) UsuarioBean oUsuarioBean) ,
+//    {
+//        return new ResponseEntity<UsuarioEntity>(oAuthService.login(oUsuarioBean), HttpStatus.OK);
+//    }
     @DeleteMapping("")
     public ResponseEntity<?> logout() {
         oAuthService.logout();

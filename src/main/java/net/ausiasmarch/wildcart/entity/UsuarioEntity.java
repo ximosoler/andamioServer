@@ -3,7 +3,7 @@ package net.ausiasmarch.wildcart.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -18,44 +18,61 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "usuario")
 @JsonIgnoreProperties({"hibernateLazyInitialize", "handler"})
-public class UsuarioEntity implements Serializable {
+public class UsuarioEntity {
 
+    @Schema(example = "3")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(example = "55996633M")
     private String dni;
+    @Schema(example = "Pedro")
     private String nombre;
+    @Schema(example = "Pérez")
     private String apellido1;
+    @Schema(example = "Gómez")
     private String apellido2;
+    @Schema(example = "pepergom")
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Schema(example = "pepego@ausias.net")
     private String email;
+    @Schema(example = "0")
     private int descuento;
 
     @JsonIgnore
     private String token;
 
+    @Schema(example = "false")
     private boolean validado;
+    @Schema(example = "false")
     private boolean activo;
 
+    @Schema(example = "{\"id\": 1}")
     @ManyToOne
     @JoinColumn(name = "id_tipousuario")
     private TipousuarioEntity tipousuario;
 
+    @Schema(hidden = true)
     @OneToMany(mappedBy = "usuario")
-    private List<CarritoEntity> carritos = new ArrayList<>();
+    private final List<CarritoEntity> carritos;
 
+    @Schema(hidden = true)
     @OneToMany(mappedBy = "usuario")
-    private List<FacturaEntity> facturas = new ArrayList<>();
+    private final List<FacturaEntity> facturas;
 
     public UsuarioEntity() {
+        this.facturas = new ArrayList<>();
+        this.carritos = new ArrayList<>();
     }
 
     public UsuarioEntity(Long id) {
+        this.facturas = new ArrayList<>();
+        this.carritos = new ArrayList<>();
         this.id = id;
     }
 

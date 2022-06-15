@@ -6,42 +6,48 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "tipousuario")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipousuarioEntity {
+    
+    @Schema(example = "3")
+    @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Schema(example = "Visitante")
+    private String nombre;
 
-	private String nombre;
+    @Schema(hidden = true)
+    @OneToMany(mappedBy = "tipousuario")
+    private final List<UsuarioEntity> usuarios;
 
-	@OneToMany(mappedBy = "tipousuario")
-	private List<UsuarioEntity> usuarios = new ArrayList<>();
+    public TipousuarioEntity() {
+        this.usuarios = new ArrayList<>();
+    }
 
-	public TipousuarioEntity() {
-	}
+    public TipousuarioEntity(Long id, String nombre) {
+        this.usuarios = new ArrayList<>();
+        this.id = id;
+        this.nombre = nombre;
+    }
 
-	public TipousuarioEntity(Long id, String nombre) {
-		this.id = id;
-		this.nombre = nombre;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public Long getId() {
-		return this.id;
-	}
+    public String getNombre() {
+        return this.nombre;
+    }
 
-	public String getNombre() {
-		return this.nombre;
-	}
-
-	public int getUsuarios() {
-		return usuarios.size();
-	}
+    public int getUsuarios() {
+        return usuarios.size();
+    }
 
 }
