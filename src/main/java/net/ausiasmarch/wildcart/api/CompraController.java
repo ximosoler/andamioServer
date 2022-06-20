@@ -41,8 +41,8 @@ public class CompraController {
     public ResponseEntity<?> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
-            @RequestParam(name = "lFactura", required = false) Long lFactura,
-            @RequestParam(name = "lProducto", required = false) Long lProducto) {
+            @RequestParam(name = "factura", required = false) Long lFactura,
+            @RequestParam(name = "producto", required = false) Long lProducto) {
         return new ResponseEntity<Page<CompraEntity>>(oCompraService.getPage(oPageable, strFilter, lFactura, lProducto), HttpStatus.OK);
     }
 

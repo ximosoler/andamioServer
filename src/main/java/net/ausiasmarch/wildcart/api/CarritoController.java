@@ -57,8 +57,8 @@ public class CarritoController {
     @GetMapping("")
     public ResponseEntity<Page<CarritoEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(name = "idproducto", required = false) Long id_producto,
-            @RequestParam(name = "idusuario", required = false) Long id_usuario) {
+            @RequestParam(name = "producto", required = false) Long id_producto,
+            @RequestParam(name = "usuario", required = false) Long id_usuario) {
         return new ResponseEntity<Page<CarritoEntity>>(oCarritoService.getPage(oPageable, id_usuario, id_producto), HttpStatus.OK);
     }
 
