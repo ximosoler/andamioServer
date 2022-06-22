@@ -47,13 +47,13 @@ public class CompraController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CompraEntity> create(@RequestBody CompraEntity oCompraEntity) {
-        return new ResponseEntity<CompraEntity>(oCompraService.create(oCompraEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody CompraEntity oCompraEntity) {
+        return new ResponseEntity<Long>(oCompraService.create(oCompraEntity), HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<CompraEntity> update(@RequestBody CompraEntity oCompraEntity) {
-        return new ResponseEntity<CompraEntity>(oCompraService.update(oCompraEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody CompraEntity oCompraEntity) {
+        return new ResponseEntity<Long>(oCompraService.update(oCompraEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -60,11 +60,11 @@ public class TipousuarioService {
         return oPage;
     }
 
-    public TipousuarioEntity update(TipousuarioEntity oTipoUsuarioEntity) {
+    public Long update(TipousuarioEntity oTipoUsuarioEntity) {
         oAuthService.OnlyAdmins();
         validate(oTipoUsuarioEntity.getId());
         validate(oTipoUsuarioEntity);
-        return oTipousuarioRepository.save(oTipoUsuarioEntity);
+        return oTipousuarioRepository.save(oTipoUsuarioEntity).getId();
     }
 
     public Long generate() {

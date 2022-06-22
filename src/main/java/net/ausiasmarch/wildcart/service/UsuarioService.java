@@ -97,23 +97,23 @@ public class UsuarioService {
         return oPage;
     }
 
-    public UsuarioEntity create(UsuarioEntity oNewUsuarioEntity) {
+    public Long create(UsuarioEntity oNewUsuarioEntity) {
         oAuthService.OnlyAdmins();
         validate(oNewUsuarioEntity);
         oNewUsuarioEntity.setId(0L);
         oNewUsuarioEntity.setPassword(WILDCART_DEFAULT_PASSWORD); //wildcart
         oNewUsuarioEntity.setToken(RandomHelper.getToken(100));
-        return oUsuarioRepository.save(oNewUsuarioEntity);
+        return oUsuarioRepository.save(oNewUsuarioEntity).getId();
     }
 
-    public UsuarioEntity update(Long id, UsuarioEntity oUsuarioEntity) {
+    public Long update(Long id, UsuarioEntity oUsuarioEntity) {
         oAuthService.OnlyAdminsOrOwnUsersData(id);
         validate(oUsuarioEntity.getId());
         validate(oUsuarioEntity);
         if (oAuthService.isAdmin()) {
-            return update4Admins(id, oUsuarioEntity);
+            return update4Admins(id, oUsuarioEntity).getId();
         } else {
-            return update4Users(id, oUsuarioEntity);
+            return update4Users(id, oUsuarioEntity).getId();
         }
     }
 

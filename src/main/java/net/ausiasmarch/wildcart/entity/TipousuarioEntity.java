@@ -8,20 +8,21 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "tipousuario")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipousuarioEntity {
-    
+
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;
 
-    @OneToMany(mappedBy = "tipousuario")
+    @OneToMany(mappedBy = "tipousuario", fetch = FetchType.LAZY)
     private final List<UsuarioEntity> usuarios;
 
     public TipousuarioEntity() {

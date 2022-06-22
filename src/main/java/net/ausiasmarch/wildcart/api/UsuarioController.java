@@ -1,14 +1,5 @@
 package net.ausiasmarch.wildcart.api;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -56,15 +47,15 @@ public class UsuarioController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UsuarioEntity> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
-        return new ResponseEntity<UsuarioEntity>(oUsuarioService.create(oNewUsuarioEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody UsuarioEntity oNewUsuarioEntity) {
+        return new ResponseEntity<Long>(oUsuarioService.create(oNewUsuarioEntity), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioEntity> update(
+    public ResponseEntity<Long> update(
             @PathVariable(value = "id") Long id,
             @RequestBody UsuarioEntity oUsuarioEntity) {
-        return new ResponseEntity<UsuarioEntity>(oUsuarioService.update(id, oUsuarioEntity), HttpStatus.OK);
+        return new ResponseEntity<Long>(oUsuarioService.update(id, oUsuarioEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

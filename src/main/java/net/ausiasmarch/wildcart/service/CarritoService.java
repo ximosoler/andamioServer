@@ -92,18 +92,18 @@ public class CarritoService {
         return oPage;
     }
 
-    public CarritoEntity create(CarritoEntity oCarritoEntity) {
+    public Long create(CarritoEntity oCarritoEntity) {
         oAuthService.OnlyAdmins(); //users must use add option
         validate(oCarritoEntity);
         oCarritoEntity.setId(null);
-        return oCarritoRepository.save(oCarritoEntity);
+        return oCarritoRepository.save(oCarritoEntity).getId();
     }
 
-    public CarritoEntity update(CarritoEntity oCarritoEntity) {
+    public Long update(CarritoEntity oCarritoEntity) {
         oAuthService.OnlyAdmins();
         validate(oCarritoEntity.getId());
         validate(oCarritoEntity);
-        return oCarritoRepository.save(oCarritoEntity);
+        return oCarritoRepository.save(oCarritoEntity).getId();
     }
 
     public Long delete(Long id) {

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,10 +29,10 @@ public class FacturaEntity {
     private int iva;
     private boolean pagado;
 
-    @OneToMany(mappedBy = "factura")
+    @OneToMany(mappedBy = "factura", fetch = FetchType.LAZY)
     private final List<CompraEntity> compras;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private UsuarioEntity usuario;
 

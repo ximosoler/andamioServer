@@ -63,20 +63,20 @@ public class TipoProductoService {
     }
 
     @PostMapping("/")
-    public TipoproductoEntity create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
+    public Long create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
         oAuthService.OnlyAdmins();
-        oTipoProductoEntity.setId(null);
         validate(oTipoProductoEntity);
-        return oTipoproductoRepository.save(oTipoProductoEntity);
+        oTipoProductoEntity.setId(null);
+        return oTipoproductoRepository.save(oTipoProductoEntity).getId();
     }
 
-    public TipoproductoEntity update(Long id, TipoproductoEntity oTipoproductoEntity) {
+    public Long update(Long id, TipoproductoEntity oTipoproductoEntity) {
         oAuthService.OnlyAdmins();
         oTipoproductoEntity.setId(id);
         validate(id);
         validate(oTipoproductoEntity);
         if (oTipoproductoRepository.existsById(id)) {
-            return oTipoproductoRepository.save(oTipoproductoEntity);
+            return oTipoproductoRepository.save(oTipoproductoEntity).getId();
         } else {
             throw new ResourceNotFoundException("id not found");
         }

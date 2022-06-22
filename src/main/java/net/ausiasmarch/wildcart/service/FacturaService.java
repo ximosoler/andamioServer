@@ -17,43 +17,43 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FacturaService {
-
+    
     @Autowired
     UsuarioRepository oUsuarioRepository;
-
+    
     @Autowired
     FacturaRepository oFacturaRepository;
-
+    
     @Autowired
     UsuarioService oUsuarioService;
-
+    
     @Autowired
     AuthService oAuthService;
-
+    
     public void validate(Long id) {
         if (!oFacturaRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
     }
-
+    
     public void validate(FacturaEntity oFacturaEntity) {
         ValidationHelper.validateDate(oFacturaEntity.getFecha(), LocalDateTime.of(1990, 01, 01, 00, 00, 00), LocalDateTime.of(2025, 01, 01, 00, 00, 00), "campo fecha de factura");
         ValidationHelper.validateRange(oFacturaEntity.getIva(), 0, 30, "campo iva de factura");
         oUsuarioService.validate(oFacturaEntity.getUsuario().getId());
     }
-
+    
     public FacturaEntity get(Long id) {
         validate(id);
         FacturaEntity oFactura = oFacturaRepository.getById(id);
         oAuthService.OnlyAdminsOrOwnUsersData(oFactura.getUsuario().getId());
         return oFacturaRepository.getById(id);
     }
-
+    
     public Long count() {
         oAuthService.OnlyAdmins();
         return oFacturaRepository.count();
     }
-
+    
     public Page<FacturaEntity> getPage(Pageable oPageable, String strFilter, Long lUsuario) {
         oAuthService.OnlyAdminsOrUsers();
         if (oAuthService.isAdmin()) {
@@ -78,27 +78,28 @@ public class FacturaService {
             }
         }
     }
-
-    public FacturaEntity create(FacturaEntity oFacturaEntity) {
+    
+    public Long create(FacturaEntity oFacturaEntity) {
         oAuthService.OnlyAdminsOrOwnUsersData(oFacturaEntity.getUsuario().getId());
         validate(oFacturaEntity);
-        return oFacturaRepository.save(oFacturaEntity);
+        oFacturaEntity.setId(0L);
+        return oFacturaRepository.save(oFacturaEntity).getId();
     }
-
-    public FacturaEntity update(FacturaEntity oFacturaEntity) {
+    
+    public Long update(FacturaEntity oFacturaEntity) {
         validate(oFacturaEntity.getId());
         oAuthService.OnlyAdminsOrOwnUsersData(get(oFacturaEntity.getId()).getUsuario().getId());
         validate(oFacturaEntity);
-        return oFacturaRepository.save(oFacturaEntity);
+        return oFacturaRepository.save(oFacturaEntity).getId();
     }
-
+    
     public Long delete(Long id) {
         validate(id);
         oAuthService.OnlyAdminsOrOwnUsersData(get(id).getUsuario().getId());
         oFacturaRepository.deleteById(id);
         return id;
     }
-
+    
     public Long generateSome(int amount) {
         if (oUsuarioService.count() > 0) {
             for (int i = 0; i < amount; i++) {
@@ -110,7 +111,7 @@ public class FacturaService {
             throw new CannotPerformOperationException("no hay usuarios en la base de datos");
         }
     }
-
+    
     public FacturaEntity generate() {
         if (oUsuarioRepository.count() > 0) {
             int[] ivas = {4, 10, 21};
@@ -129,7 +130,7 @@ public class FacturaService {
             return null;
         }
     }
-
+    
     public FacturaEntity getOneRandom() {
         FacturaEntity oFacturaEntity = null;
         int iPosicion = RandomHelper.getRandomInt(0, (int) oFacturaRepository.count() - 1);
@@ -139,5 +140,5 @@ public class FacturaService {
         oFacturaEntity = oFacturaRepository.getById(facturaList.get(0).getId());
         return oFacturaEntity;
     }
-
+    
 }

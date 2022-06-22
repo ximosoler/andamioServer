@@ -72,18 +72,18 @@ public class ProductoService {
         return oPage;
     }
 
-    public ProductoEntity create(ProductoEntity oProductoEntity) {
+    public Long create(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
         validate(oProductoEntity);
         oProductoEntity.setId(null);
-        return oProductoRepository.save(oProductoEntity);
+        return ((ProductoEntity) oProductoRepository.save(oProductoEntity)).getId();
     }
 
-    public ProductoEntity update(ProductoEntity oProductoEntity) {
+    public Long update(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
         validate(oProductoEntity.getId());
         validate(oProductoEntity);
-        return oProductoRepository.save(oProductoEntity);
+        return oProductoRepository.save(oProductoEntity).getId();
     }
 
     public Long delete(Long id) {

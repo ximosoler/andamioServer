@@ -50,14 +50,14 @@ public class ProductoController {
 
     // producto/
     @PostMapping("/")
-    public ResponseEntity<ProductoEntity> create(@RequestBody ProductoEntity oProductoEntity) {
-        return new ResponseEntity<ProductoEntity>(oProductoService.create(oProductoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody ProductoEntity oProductoEntity) {
+        return new ResponseEntity<Long>(oProductoService.create(oProductoEntity), HttpStatus.OK);
     }
 
     //producto/
     @PutMapping("/")
-    public ResponseEntity<ProductoEntity> update(@RequestBody ProductoEntity oProductoEntity) {
-        return new ResponseEntity<ProductoEntity>(oProductoService.update(oProductoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody ProductoEntity oProductoEntity) {
+        return new ResponseEntity<Long>(oProductoService.update(oProductoEntity), HttpStatus.OK);
     }
 
     // producto/id

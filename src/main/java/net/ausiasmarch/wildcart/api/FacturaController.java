@@ -47,13 +47,13 @@ public class FacturaController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<FacturaEntity> create(@RequestBody FacturaEntity oFacturaEntity) {
-        return new ResponseEntity<FacturaEntity>(oFacturaService.create(oFacturaEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody FacturaEntity oFacturaEntity) {
+        return new ResponseEntity<Long>(oFacturaService.create(oFacturaEntity), HttpStatus.OK);
     }
 
     @PutMapping("/")
-    public ResponseEntity<FacturaEntity> update(@RequestBody FacturaEntity oFacturaEntity) {
-        return new ResponseEntity<FacturaEntity>(oFacturaService.update(oFacturaEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody FacturaEntity oFacturaEntity) {
+        return new ResponseEntity<Long>(oFacturaService.update(oFacturaEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

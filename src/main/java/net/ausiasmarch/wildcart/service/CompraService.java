@@ -111,18 +111,18 @@ public class CompraService {
         return oPage;
     }
 
-    public CompraEntity create(CompraEntity oCompraEntity) {
+    public Long create(CompraEntity oCompraEntity) {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity);
         oCompraEntity.setId(null);
-        return oCompraRepository.save(oCompraEntity);
+        return oCompraRepository.save(oCompraEntity).getId();
     }
 
-    public CompraEntity update(CompraEntity oCompraEntity) {
+    public Long update(CompraEntity oCompraEntity) {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity.getId());
         validate(oCompraEntity);
-        return oCompraRepository.save(oCompraEntity);
+        return oCompraRepository.save(oCompraEntity).getId();
     }
 
     public Long delete(Long id) {

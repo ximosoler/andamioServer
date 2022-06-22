@@ -50,8 +50,8 @@ public class TipoUsuarioController {
     }
 
     @PutMapping("")
-    public ResponseEntity<TipousuarioEntity> update(@RequestBody TipousuarioEntity oTipoUsuarioEntity) {
-        return new ResponseEntity<TipousuarioEntity>(oTipousuarioService.update(oTipoUsuarioEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody TipousuarioEntity oTipoUsuarioEntity) {
+        return new ResponseEntity<Long>(oTipousuarioService.update(oTipoUsuarioEntity), HttpStatus.OK);
     }
 
     @PostMapping("/generate")

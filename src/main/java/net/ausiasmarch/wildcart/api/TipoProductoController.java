@@ -50,13 +50,13 @@ public class TipoProductoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
-        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.create(oTipoProductoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
+        return new ResponseEntity<Long>(oTipoproductoService.create(oTipoProductoEntity), HttpStatus.OK);
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> update(@RequestBody TipoproductoEntity oTipoProductoEntity) {
-        return new ResponseEntity<TipoproductoEntity>(oTipoproductoService.update(oTipoProductoEntity.getId(), oTipoProductoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody TipoproductoEntity oTipoProductoEntity) {
+        return new ResponseEntity<Long>(oTipoproductoService.update(oTipoProductoEntity.getId(), oTipoProductoEntity), HttpStatus.OK);
     }
 
     @PostMapping("/generate")

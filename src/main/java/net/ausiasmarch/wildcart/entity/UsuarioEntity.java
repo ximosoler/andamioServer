@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,9 +25,9 @@ public class UsuarioEntity {
     private Long id;
 
     private String dni;
-    private String nombre;   
+    private String nombre;
     private String apellido1;
-    private String apellido2;   
+    private String apellido2;
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -41,14 +42,14 @@ public class UsuarioEntity {
     private boolean validado;
     private boolean activo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipousuario")
     private TipousuarioEntity tipousuario;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private final List<CarritoEntity> carritos;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private final List<FacturaEntity> facturas;
 
     public UsuarioEntity() {

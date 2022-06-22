@@ -63,13 +63,13 @@ public class CarritoController {
     }
 
     @PostMapping
-    public ResponseEntity<CarritoEntity> create(@RequestBody CarritoEntity carritoEntity) {
-        return new ResponseEntity<CarritoEntity>(oCarritoService.create(carritoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> create(@RequestBody CarritoEntity carritoEntity) {
+        return new ResponseEntity<Long>(oCarritoService.create(carritoEntity), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody CarritoEntity carritoEntity) {
-        return new ResponseEntity<CarritoEntity>(oCarritoService.update(carritoEntity), HttpStatus.OK);
+    public ResponseEntity<Long> update(@RequestBody CarritoEntity carritoEntity) {
+        return new ResponseEntity<Long>(oCarritoService.update(carritoEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
