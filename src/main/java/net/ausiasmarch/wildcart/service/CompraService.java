@@ -1,6 +1,7 @@
 package net.ausiasmarch.wildcart.service;
 
 import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.entity.CompraEntity;
 import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
@@ -111,6 +112,7 @@ public class CompraService {
         return oPage;
     }
 
+    @Transactional
     public Long create(CompraEntity oCompraEntity) {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity);
@@ -118,10 +120,11 @@ public class CompraService {
         oProductoService.validate(oCompraEntity.getProducto().getId());
         oCompraEntity.setProducto(oProductoService.get(oCompraEntity.getProducto().getId()));
         oFacturaService.validate(oCompraEntity.getFactura().getId());
-        oCompraEntity.setFactura(oFacturaService.get(oCompraEntity.getFactura().getId()));        
+        oCompraEntity.setFactura(oFacturaService.get(oCompraEntity.getFactura().getId()));
         return oCompraRepository.save(oCompraEntity).getId();
     }
 
+    @Transactional
     public Long update(CompraEntity oCompraEntity) {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity.getId());

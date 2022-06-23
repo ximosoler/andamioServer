@@ -92,6 +92,7 @@ public class CarritoService {
         return oPage;
     }
 
+    @Transactional
     public Long create(CarritoEntity oCarritoEntity) {
         oAuthService.OnlyAdmins(); //users must use add option
         validate(oCarritoEntity);
@@ -103,6 +104,7 @@ public class CarritoService {
         return oCarritoRepository.save(oCarritoEntity).getId();
     }
 
+    @Transactional
     public Long update(CarritoEntity oCarritoEntity) {
         oAuthService.OnlyAdmins();
         validate(oCarritoEntity.getId());

@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.entity.FacturaEntity;
 import net.ausiasmarch.wildcart.exception.CannotPerformOperationException;
@@ -79,6 +80,7 @@ public class FacturaService {
         }
     }
 
+    @Transactional
     public Long create(FacturaEntity oFacturaEntity) {
         oAuthService.OnlyAdminsOrOwnUsersData(oFacturaEntity.getUsuario().getId());
         validate(oFacturaEntity);
@@ -90,6 +92,7 @@ public class FacturaService {
         return oFacturaRepository.save(oFacturaEntity).getId();
     }
 
+    @Transactional
     public Long update(FacturaEntity oFacturaEntity) {
         validate(oFacturaEntity.getId());
         oAuthService.OnlyAdminsOrOwnUsersData(get(oFacturaEntity.getId()).getUsuario().getId());
