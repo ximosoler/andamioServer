@@ -96,6 +96,10 @@ public class CarritoService {
         oAuthService.OnlyAdmins(); //users must use add option
         validate(oCarritoEntity);
         oCarritoEntity.setId(null);
+        oProductoService.validate(oCarritoEntity.getProducto().getId());
+        oCarritoEntity.setProducto(oProductoService.get(oCarritoEntity.getProducto().getId()));
+        oUsuarioService.validate(oCarritoEntity.getUsuario().getId());
+        oCarritoEntity.setUsuario(oUsuarioService.get(oCarritoEntity.getUsuario().getId()));        
         return oCarritoRepository.save(oCarritoEntity).getId();
     }
 
@@ -103,6 +107,10 @@ public class CarritoService {
         oAuthService.OnlyAdmins();
         validate(oCarritoEntity.getId());
         validate(oCarritoEntity);
+        oProductoService.validate(oCarritoEntity.getProducto().getId());
+        oCarritoEntity.setProducto(oProductoService.get(oCarritoEntity.getProducto().getId()));
+        oUsuarioService.validate(oCarritoEntity.getUsuario().getId());
+        oCarritoEntity.setUsuario(oUsuarioService.get(oCarritoEntity.getUsuario().getId()));
         return oCarritoRepository.save(oCarritoEntity).getId();
     }
 

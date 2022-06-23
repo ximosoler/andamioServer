@@ -115,6 +115,10 @@ public class CompraService {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity);
         oCompraEntity.setId(null);
+        oProductoService.validate(oCompraEntity.getProducto().getId());
+        oCompraEntity.setProducto(oProductoService.get(oCompraEntity.getProducto().getId()));
+        oFacturaService.validate(oCompraEntity.getFactura().getId());
+        oCompraEntity.setFactura(oFacturaService.get(oCompraEntity.getFactura().getId()));        
         return oCompraRepository.save(oCompraEntity).getId();
     }
 
@@ -122,6 +126,10 @@ public class CompraService {
         oAuthService.OnlyAdmins(); //users must use buy/purchase option
         validate(oCompraEntity.getId());
         validate(oCompraEntity);
+        oProductoService.validate(oCompraEntity.getProducto().getId());
+        oCompraEntity.setProducto(oProductoService.get(oCompraEntity.getProducto().getId()));
+        oFacturaService.validate(oCompraEntity.getFactura().getId());
+        oCompraEntity.setFactura(oFacturaService.get(oCompraEntity.getFactura().getId()));
         return oCompraRepository.save(oCompraEntity).getId();
     }
 
