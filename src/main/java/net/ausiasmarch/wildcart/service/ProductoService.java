@@ -1,6 +1,7 @@
 package net.ausiasmarch.wildcart.service;
 
 import java.util.List;
+import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import net.ausiasmarch.wildcart.helper.RandomHelper;
@@ -72,17 +73,23 @@ public class ProductoService {
         return oPage;
     }
 
+    @Transactional
     public Long create(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
         validate(oProductoEntity);
+        oTipoproductoService.validate(oProductoEntity.getTipoproducto().getId());
+        oProductoEntity.setTipoproducto(oTipoproductoService.get(oProductoEntity.getTipoproducto().getId()));        
         oProductoEntity.setId(null);
         return ((ProductoEntity) oProductoRepository.save(oProductoEntity)).getId();
     }
 
+    @Transactional
     public Long update(ProductoEntity oProductoEntity) {
         oAuthService.OnlyAdmins();
         validate(oProductoEntity.getId());
         validate(oProductoEntity);
+        oTipoproductoService.validate(oProductoEntity.getTipoproducto().getId());
+        oProductoEntity.setTipoproducto(oTipoproductoService.get(oProductoEntity.getTipoproducto().getId()));
         return oProductoRepository.save(oProductoEntity).getId();
     }
 

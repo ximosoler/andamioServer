@@ -34,8 +34,8 @@ public class ValidationHelper {
     public static void validateDNI(String itDNI, String error) {
         String strDNI = itDNI.trim().replaceAll(" ", "");
         if (strDNI.length() == 9) {
-            if (isNumeric(strDNI.substring(0, 7))) {
-                int intPartDNI = Integer.parseInt(strDNI.substring(0, 7));
+            if (isNumeric(strDNI.substring(0, 8))) {
+                int intPartDNI = Integer.parseInt(strDNI.substring(0, 8));
                 char cLetraDNI = strDNI.charAt(8);
                 int valNumDni = intPartDNI % 23;
                 if ("TRWAGMYFPDXBNJZSQVHLCKE".charAt(valNumDni) != cLetraDNI) {

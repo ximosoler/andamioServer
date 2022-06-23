@@ -2,6 +2,7 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
 import net.ausiasmarch.wildcart.exception.ResourceNotFoundException;
 import net.ausiasmarch.wildcart.exception.ResourceNotModifiedException;
 import net.ausiasmarch.wildcart.exception.ValidationException;
@@ -106,37 +107,45 @@ public class UsuarioService {
         return oUsuarioRepository.save(oNewUsuarioEntity).getId();
     }
 
-    public Long update(Long id, UsuarioEntity oUsuarioEntity) {
-        oAuthService.OnlyAdminsOrOwnUsersData(id);
+    @Transactional //pte
+    public Long update(UsuarioEntity oUsuarioEntity) {
         validate(oUsuarioEntity.getId());
+        oAuthService.OnlyAdminsOrOwnUsersData(oUsuarioEntity.getId());
         validate(oUsuarioEntity);
+        oTipousuarioService.validate(oUsuarioEntity.getTipousuario().getId());       
         if (oAuthService.isAdmin()) {
-            return update4Admins(id, oUsuarioEntity).getId();
+            return update4Admins(oUsuarioEntity).getId();
         } else {
-            return update4Users(id, oUsuarioEntity).getId();
+            return update4Users(oUsuarioEntity).getId();
         }
     }
 
-    private UsuarioEntity update4Admins(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
-        oUpdatedUsuarioEntity.setId(id);
-        validate(oUpdatedUsuarioEntity);
-        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
-        oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
-        oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
-        return oUsuarioRepository.save(oUpdatedUsuarioEntity);
+    @Transactional
+    private UsuarioEntity update4Admins(UsuarioEntity oUpdatedUsuarioEntity) {
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(oUpdatedUsuarioEntity.getId()).get();
+        //keeping login password token & validado 
+        oUsuarioEntity.setDni(oUpdatedUsuarioEntity.getDni());
+        oUsuarioEntity.setNombre(oUpdatedUsuarioEntity.getNombre());
+        oUsuarioEntity.setApellido1(oUpdatedUsuarioEntity.getApellido1());
+        oUsuarioEntity.setApellido2(oUpdatedUsuarioEntity.getApellido2());
+        oUsuarioEntity.setEmail(oUpdatedUsuarioEntity.getEmail());
+        oUsuarioEntity.setDescuento(oUpdatedUsuarioEntity.getDescuento());
+        oUsuarioEntity.setActivo(oUpdatedUsuarioEntity.isActivo());
+        oUsuarioEntity.setTipousuario(oTipousuarioService.get(oUpdatedUsuarioEntity.getTipousuario().getId()));
+        return oUsuarioRepository.save(oUsuarioEntity);
     }
 
-    private UsuarioEntity update4Users(Long id, UsuarioEntity oUpdatedUsuarioEntity) {
-        oUpdatedUsuarioEntity.setId(id);
-        validate(oUpdatedUsuarioEntity);
-        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(id).get();
-        oUpdatedUsuarioEntity.setPassword(oUsuarioEntity.getPassword());
-        oUpdatedUsuarioEntity.setToken(oUsuarioEntity.getToken());
-        oUpdatedUsuarioEntity.setTipousuario(oUsuarioEntity.getTipousuario());
-        oUpdatedUsuarioEntity.setActivo(oUsuarioEntity.isActivo());
-        oUpdatedUsuarioEntity.setValidado(oUsuarioEntity.isValidado());
-        oUpdatedUsuarioEntity.setDescuento(oUsuarioEntity.getDescuento());
-        return oUsuarioRepository.save(oUpdatedUsuarioEntity);
+    @Transactional
+    private UsuarioEntity update4Users(UsuarioEntity oUpdatedUsuarioEntity) {
+        UsuarioEntity oUsuarioEntity = oUsuarioRepository.findById(oUpdatedUsuarioEntity.getId()).get();
+        //keeping login password token & validado descuento activo tipousuario
+        oUsuarioEntity.setDni(oUpdatedUsuarioEntity.getDni());
+        oUsuarioEntity.setNombre(oUpdatedUsuarioEntity.getNombre());
+        oUsuarioEntity.setApellido1(oUpdatedUsuarioEntity.getApellido1());
+        oUsuarioEntity.setApellido2(oUpdatedUsuarioEntity.getApellido2());
+        oUsuarioEntity.setEmail(oUpdatedUsuarioEntity.getEmail());
+        oUsuarioEntity.setTipousuario(oTipousuarioService.get(2L));
+        return oUsuarioRepository.save(oUsuarioEntity);
     }
 
     public Long delete(Long id) {

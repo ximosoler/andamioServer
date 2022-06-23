@@ -62,7 +62,6 @@ public class TipoProductoService {
         return oPage;
     }
 
-    @PostMapping("/")
     public Long create(@RequestBody TipoproductoEntity oTipoProductoEntity) {
         oAuthService.OnlyAdmins();
         validate(oTipoProductoEntity);
@@ -75,11 +74,7 @@ public class TipoProductoService {
         oTipoproductoEntity.setId(id);
         validate(id);
         validate(oTipoproductoEntity);
-        if (oTipoproductoRepository.existsById(id)) {
-            return oTipoproductoRepository.save(oTipoproductoEntity).getId();
-        } else {
-            throw new ResourceNotFoundException("id not found");
-        }
+        return oTipoproductoRepository.save(oTipoproductoEntity).getId();
     }
 
     public Long delete(@PathVariable(value = "id") Long id) {

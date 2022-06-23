@@ -51,11 +51,9 @@ public class UsuarioController {
         return new ResponseEntity<Long>(oUsuarioService.create(oNewUsuarioEntity), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Long> update(
-            @PathVariable(value = "id") Long id,
-            @RequestBody UsuarioEntity oUsuarioEntity) {
-        return new ResponseEntity<Long>(oUsuarioService.update(id, oUsuarioEntity), HttpStatus.OK);
+    @PutMapping("/")
+    public ResponseEntity<Long> update(@RequestBody UsuarioEntity oUsuarioEntity) {
+        return new ResponseEntity<Long>(oUsuarioService.update(oUsuarioEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
