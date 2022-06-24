@@ -1,0 +1,1209 @@
+{
+	"info": {
+		"_postman_id": "384dbf4e-08e1-4504-a573-b61ff0556246",
+		"name": "wildcart 2021",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "logout",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN USUARIO ADMIN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"login\":\"admin\",\n\"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN USUARIO FERNANDO 278",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\":\"fernando\",\n    \"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/session/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"session",
+						""
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "trolleyes",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "da8ab09ab4889c6208116a675cad0b13e335943bd7fc418782d054b32fdfba04",
+							"disabled": true
+						}
+					]
+				},
+				"description": "login post"
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN USUARIO CARLA 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\":\"carla\",\n    \"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/session/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"session",
+						""
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "trolleyes",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "da8ab09ab4889c6208116a675cad0b13e335943bd7fc418782d054b32fdfba04",
+							"disabled": true
+						}
+					]
+				},
+				"description": "login post"
+			},
+			"response": []
+		},
+		{
+			"name": "generate usuario 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/usuario/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate tipoproducto 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/tipoproducto/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tipoproducto",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate producto 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/producto/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate compra 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/compra/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"compra",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate factura 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"amount\":10\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/factura/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate carrito 10",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"amount\":10\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/carrito/generate/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"generate",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO GET",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/producto/383",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto",
+						"383"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/1280",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"1280"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO NEW",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"codigo\": \"1111Q677754sdftt911\",\n    \"precio\": 331.01,\n    \"imagen\": 1,\n    \"nombre\": \"tornzzzill55gfgfo flojoo3366666663\",\n    \"descuento\": 3,\n    \"existencias\": 110,\n    \"tipoproducto\": {\n        \"id\": 2\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/producto/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 383,\n    \"codigo\": \"QWERTY911\",\n    \"precio\": 331.01,\n    \"imagen\": 1,\n    \"nombre\": \"tornillo flojoo333\",\n    \"descuento\": 3,\n    \"existencias\": 110,\n    \"tipoproducto\": {\n        \"id\": 1\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/producto/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO NEW",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dni\":\"12345678Z\",\n    \"nombre\":\"pepoe\",\n    \"apellido1\":\"poleo\",\n    \"apellido2\":\"moloni\",\n    \"login\":\"prpepe\",\n    \"email\":\"pepe@pepe112.com\",\n    \"descuento\":0,\n    \"tipousuario\":{\n        \"id\":2\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1279,\n    \"dni\": \"12345678Z\",\n    \"nombre\": \"pelopossnesooooo\",\n    \"apellido1\": \"poleo\",\n    \"apellido2\": \"moloni\",\n    \"login\": \"prpep11244eqqq\",\n    \"email\": \"pepe@pepe112.com\",\n    \"descuento\": 0,\n    \"tipousuario\": {\n        \"id\": 2\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO GET",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/1280",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"1280"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/1280",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"1280"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/producto?page=2&size=11&sort=codigo,asc&sort=id,desc&filter=me",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "codigo,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "filter",
+							"value": "me"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO-PAGE X TIPOPRODUCTO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/producto?page=0&size=51&sort=codigo,asc&sort=id,desc&filter=me&tipoproducto=130",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "51"
+						},
+						{
+							"key": "sort",
+							"value": "codigo,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "filter",
+							"value": "me"
+						},
+						{
+							"key": "tipoproducto",
+							"value": "130"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTO-PAGE X COMPRA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/producto?page=0&size=51&sort=codigo,asc&sort=id,desc&compra=1&filter=mad",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"producto"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "51"
+						},
+						{
+							"key": "sort",
+							"value": "codigo,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "compra",
+							"value": "1"
+						},
+						{
+							"key": "filter",
+							"value": "mad"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/usuario?page=2&size=11&sort=nombre,asc&sort=id,desc&filter=pri",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "filter",
+							"value": "pri"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO-PAGE X TIPOUSUARIO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/usuario?page=0&size=11&sort=nombre,asc&sort=id,desc&filter=pri&tipousuario=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "filter",
+							"value": "pri"
+						},
+						{
+							"key": "tipousuario",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO-PAGE X FACTURA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/usuario?page=0&size=11&sort=nombre,asc&sort=id,desc&factura=1&filter=aa",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "factura",
+							"value": "1"
+						},
+						{
+							"key": "filter",
+							"value": "aa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TIPOUSUARIO-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/tipousuario?page=0&size=11&sort=nombre,asc&sort=id,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tipousuario"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TIPOPRODUCTO-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/tipoproducto?page=1&size=11&sort=nombre,asc&sort=id,desc&filter=ju",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tipoproducto"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "11"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "filter",
+							"value": "ju"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/factura?page=0&size=3&sort=fecha,asc&sort=id,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "fecha,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA-PAGE X USUARIO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/factura?page=0&size=3&sort=fecha,asc&sort=id,desc&usuario=1044&filter=21",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "fecha,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "usuario",
+							"value": "1044"
+						},
+						{
+							"key": "filter",
+							"value": "21"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "COMPRA-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/compra?page=0&size=3&sort=fecha,asc&sort=id,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"compra"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "fecha,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "COMPRA-PAGE X FACTURA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/compra?page=0&size=3&sort=fecha,asc&sort=id,desc&factura=7",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"compra"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "fecha,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "factura",
+							"value": "7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "COMPRA-PAGE X PRODUCTO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/compra?page=0&size=3&sort=fecha,asc&sort=id,desc&factura=7",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"compra"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "fecha,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "factura",
+							"value": "7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CARRITO-PAGE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito?page=0&size=13&sort=cantidad,asc&sort=id,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "13"
+						},
+						{
+							"key": "sort",
+							"value": "cantidad,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CARRITO-PAGE X PRODUCTO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito?page=0&size=3&sort=cantidad,asc&sort=id,desc&producto=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "cantidad,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "producto",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CARRITO-PAGE X USUARIO",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito?page=0&size=3&sort=cantidad,asc&sort=id,desc&producto=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "cantidad,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						},
+						{
+							"key": "producto",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
