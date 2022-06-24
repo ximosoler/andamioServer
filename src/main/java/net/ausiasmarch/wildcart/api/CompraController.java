@@ -68,6 +68,6 @@ public class CompraController {
 
     @PostMapping("/generate/{amount}")
     public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") Integer amount) {
-        return new ResponseEntity<Long>(oCompraService.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oCompraService.generateSome(amount), HttpStatus.OK);
     }
 }

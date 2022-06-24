@@ -130,6 +130,7 @@ public class CarritoService {
             oCarrito.setUsuario(oUsuarioService.getOneRandom());
             oCarrito.setProducto(oProductoService.getOneRandom());
             oCarrito.setCantidad(RandomHelper.getRandomInt(1, 10));
+            oCarritoRepository.save(oCarrito);
         }
         return count();
     }
