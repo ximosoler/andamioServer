@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "384dbf4e-08e1-4504-a573-b61ff0556246",
+		"_postman_id": "51a23740-a4c0-454b-88db-10508984686a",
 		"name": "wildcart 2021",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -363,6 +363,37 @@
 			"response": []
 		},
 		{
+			"name": "PRODUCTO COUNT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "PRODUCTO DELETE",
 			"request": {
 				"method": "DELETE",
@@ -520,14 +551,45 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8082/usuario/1280",
+					"raw": "localhost:8082/factura/31",
 					"host": [
 						"localhost"
 					],
 					"port": "8082",
 					"path": [
-						"usuario",
-						"1280"
+						"factura",
+						"31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO COUNT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/factura/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						"count"
 					]
 				}
 			},
@@ -548,13 +610,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8082/usuario/1280",
+					"raw": "localhost:8082/factura/1280",
 					"host": [
 						"localhost"
 					],
 					"port": "8082",
 					"path": [
-						"usuario",
+						"factura",
 						"1280"
 					]
 				}
@@ -596,6 +658,152 @@
 							"key": "filter",
 							"value": "me"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA GET",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/factura/40",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA COUNT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/factura/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 3,\n    \"fecha\": \"03/12/2020 00:00\",\n    \"iva\": 12,\n    \"pagado\": false,\n    \"usuario\": {\n        \"id\": 4\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/factura/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA NEW",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fecha\": \"03/12/2020 00:00\",\n    \"iva\": 12,\n    \"pagado\": false,\n    \"usuario\": {\n        \"id\": 4\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/factura/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"factura",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FACTURA DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/usuario/32",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"usuario",
+						"32"
 					]
 				}
 			},
