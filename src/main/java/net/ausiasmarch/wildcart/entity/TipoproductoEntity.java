@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "tipoproducto")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TipoproductoEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
