@@ -127,7 +127,7 @@ public class AuthService {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity != null) {
             if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.USER)) {
-                if (oUsuarioSessionEntity.getId().equals(id)) {
+                if (!oUsuarioSessionEntity.getId().equals(id)) {
                     throw new UnauthorizedException("this request is only allowed for your own data");
                 }
             }
