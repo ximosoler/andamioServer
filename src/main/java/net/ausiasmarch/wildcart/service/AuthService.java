@@ -58,10 +58,10 @@ public class AuthService {
                 oHttpSession.setAttribute("usuario", oUsuarioEntity);
                 return oUsuarioEntity;
             } else {
-                return null;
+                throw new UnauthorizedException("login or password incorrect");
             }
         } else {
-            return null;
+            throw new UnauthorizedException("wrong password");
         }
     }
 
