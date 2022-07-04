@@ -50,13 +50,8 @@ import org.springframework.stereotype.Service;
 public class CompraService {
 
     @Autowired
-    ProductoRepository oProductoRepository;
-
-    @Autowired
-    FacturaRepository oFacturaRepository;
-
-    @Autowired
     FacturaService oFacturaService;
+
     @Autowired
     UsuarioService oUsuarioService;
 

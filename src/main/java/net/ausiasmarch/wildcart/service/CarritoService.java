@@ -51,15 +51,11 @@ import net.ausiasmarch.wildcart.repository.FacturaRepository;
 import net.ausiasmarch.wildcart.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @Service
 public class CarritoService {
-
-    @Autowired
-    UsuarioRepository oUsuarioRepository;
 
     @Autowired
     ProductoService oProductoService;

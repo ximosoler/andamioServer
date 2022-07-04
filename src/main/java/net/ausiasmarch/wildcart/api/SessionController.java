@@ -51,12 +51,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SessionController {
 
     @Autowired
-    HttpSession oHttpSession;
-
-    @Autowired
-    UsuarioRepository oUsuarioRepository;
-
-    @Autowired
     AuthService oAuthService;
 
     @GetMapping("")
