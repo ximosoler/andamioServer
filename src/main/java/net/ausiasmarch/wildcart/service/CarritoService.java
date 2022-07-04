@@ -103,8 +103,12 @@ public class CarritoService {
     }
 
     public Long count() {
-        oAuthService.OnlyAdmins();
-        return oCarritoRepository.count();
+        oAuthService.OnlyAdminsOrUsers();
+        if (oAuthService.isAdmin()) {
+            return oCarritoRepository.count();
+        } else {
+            return oCarritoRepository.countByUsuarioId(oAuthService.getUserID());
+        }
     }
 
     public Page<CarritoEntity> getPage(Pageable oPageable, Long lUsuario, Long lProducto) {
@@ -259,6 +263,15 @@ public class CarritoService {
     }
 
     @Transactional
+    public Long empty(long id_producto) {
+        oAuthService.OnlyUsers();
+        if (oCarritoRepository.countByUsuarioId(oAuthService.getUserID()) > 0) {
+            oCarritoRepository.deleteByUsuarioIdAndProductoId(oAuthService.getUserID(), id_producto);
+        }
+        return oCarritoRepository.countByUsuarioId(oAuthService.getUserID());
+    }
+
+    @Transactional
     public Long purchase() throws CannotPerformOperationException, UnauthorizedException {
         oAuthService.OnlyUsers();
         List<CarritoEntity> oCarritoList = oCarritoRepository.findByUsuarioId(oAuthService.getUserID());
@@ -292,9 +305,11 @@ public class CarritoService {
                             + oProductoEntity.getId() + "-" + oProductoEntity.getCodigo() + "-" + oProductoEntity.getNombre());
                 }
             }
-            oFacturaRepository.save(oFacturaEntity);
+            oFacturaEntity = oFacturaRepository.save(oFacturaEntity);
+            oFacturaRepository.flush();
             oCarritoRepository.deleteByUsuarioId(oUsuarioEntity.getId());
-            return ((Integer) oCarritoList.size()).longValue();
+            //return ((Integer) oCarritoList.size()).longValue();
+            return oFacturaEntity.getId();
         }
     }
 

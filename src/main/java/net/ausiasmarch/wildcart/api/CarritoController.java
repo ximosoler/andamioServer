@@ -32,11 +32,7 @@
  */
 package net.ausiasmarch.wildcart.api;
 
-import javax.servlet.http.HttpSession;
 import net.ausiasmarch.wildcart.entity.CarritoEntity;
-import net.ausiasmarch.wildcart.repository.CarritoRepository;
-import net.ausiasmarch.wildcart.repository.ProductoRepository;
-import net.ausiasmarch.wildcart.repository.UsuarioRepository;
 import net.ausiasmarch.wildcart.service.CarritoService;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,18 +55,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/carrito")
 public class CarritoController {
-
-    @Autowired
-    HttpSession oHttpSession;
-
-    @Autowired
-    CarritoRepository oCarritoRepository;
-
-    @Autowired
-    UsuarioRepository oUsuarioRepository;
-
-    @Autowired
-    ProductoRepository oProductoRepository;
 
     @Autowired
     CarritoService oCarritoService;
@@ -120,7 +104,7 @@ public class CarritoController {
         return new ResponseEntity<>(oCarritoService.add(id, amount), HttpStatus.OK);
     }
 
-    @PutMapping("/comprar")
+    @PutMapping("/buy")
     public ResponseEntity<Long> buy() {
         return new ResponseEntity<Long>(oCarritoService.purchase(), HttpStatus.OK);
     }
@@ -128,6 +112,12 @@ public class CarritoController {
     @DeleteMapping("")
     public ResponseEntity<Long> empty() {
         return new ResponseEntity<Long>(oCarritoService.empty(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id_producto}")
+    public ResponseEntity<Long> empty(
+            @PathVariable(value = "id_producto") long id_producto) {
+        return new ResponseEntity<Long>(oCarritoService.empty(id_producto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id_producto}/{amount}")

@@ -70,7 +70,12 @@ public class AuthService {
     }
 
     public UsuarioEntity check() {
-        return (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity != null) {
+            return oUsuarioSessionEntity;
+        } else {
+            throw new UnauthorizedException("no active session");
+        }
     }
 
     public Long getUserID() {

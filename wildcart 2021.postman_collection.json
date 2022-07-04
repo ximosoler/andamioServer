@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fee2b2cb-db19-48ee-a2b4-5641fe0f8802",
+		"_postman_id": "4e7823f6-35d4-4538-b0ca-12e7a9346dc4",
 		"name": "wildcart 2021",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -34,13 +34,13 @@
 			"response": []
 		},
 		{
-			"name": "LOGIN USUARIO fernando 278",
+			"name": "LOGIN USUARIO carla 2",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"login\":\"fernando\",\n    \"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n    }",
+					"raw": "{\n\"login\":\"carla\",\n\"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -48,26 +48,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8082/session/",
+					"raw": "http://localhost:8082/session",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8082",
 					"path": [
-						"session",
-						""
-					],
-					"query": [
-						{
-							"key": "login",
-							"value": "trolleyes",
-							"disabled": true
-						},
-						{
-							"key": "password",
-							"value": "da8ab09ab4889c6208116a675cad0b13e335943bd7fc418782d054b32fdfba04",
-							"disabled": true
-						}
+						"session"
 					]
 				},
 				"description": "login post"
@@ -75,13 +63,13 @@
 			"response": []
 		},
 		{
-			"name": "LOGIN USUARIO carla 2",
+			"name": "LOGIN USUARIO rafa 3",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"login\":\"carla\",\n    \"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n    }",
+					"raw": "{\n    \"login\":\"rafa\",\n    \"password\":\"4298f843f830fb3cc13ecdfe1b2cf10f51f929df056d644d1bca73228c5e8f64\"\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1908,6 +1896,170 @@
 							"key": "producto",
 							"value": "2"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADD CARRITO 4 USER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito/3/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"3",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CARRITO COUNT 4 USER",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8082/carrito/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CARRITO-PAGE 4 USER",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito?page=0&size=13&sort=cantidad,asc&sort=id,desc",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "13"
+						},
+						{
+							"key": "sort",
+							"value": "cantidad,asc"
+						},
+						{
+							"key": "sort",
+							"value": "id,desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REDUCE CARRITO 4 USER",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito/1/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"1",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EMPTY PRODUCTO CARRITO 4 USER",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EMPTY CARRITO 4 USER",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito/",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BUY 4 USER",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/carrito/buy",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"carrito",
+						"buy"
 					]
 				}
 			},
