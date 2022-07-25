@@ -45,6 +45,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -207,4 +208,9 @@ public class UsuarioEntity {
         return facturas.size();
     }
 
+    @PreRemove
+    public void nullify() {
+        this.facturas.forEach(c -> c.setUsuario(null));
+        this.carritos.forEach(c -> c.setUsuario(null));
+    }
 }

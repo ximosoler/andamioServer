@@ -43,6 +43,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -154,4 +155,9 @@ public class ProductoEntity {
         this.tipoproducto = tipoproducto;
     }
 
+    @PreRemove
+    public void nullify() {
+        this.carritos.forEach(c -> c.setProducto(null));
+        this.compras.forEach(c -> c.setProducto(null));
+    }
 }

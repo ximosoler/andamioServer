@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -47,5 +48,10 @@ public class TipoproductoEntity {
 
     public int getProductos() {
         return productos.size();
+    }
+
+    @PreRemove
+    public void nullify() {
+        this.productos.forEach(c -> c.setTipoproducto(null));
     }
 }

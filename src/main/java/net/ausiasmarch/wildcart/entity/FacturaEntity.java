@@ -45,6 +45,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -55,13 +56,14 @@ public class FacturaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime fecha;
-    
+
     private int iva;
     private boolean pagado;
 
+    //@OneToMany(mappedBy = "factura", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @OneToMany(mappedBy = "factura", fetch = FetchType.LAZY)
     private final List<CompraEntity> compras;
 
@@ -115,5 +117,10 @@ public class FacturaEntity {
 
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
+    }
+
+    @PreRemove
+    public void nullify() {
+        this.compras.forEach(c -> c.setFactura(null));
     }
 }

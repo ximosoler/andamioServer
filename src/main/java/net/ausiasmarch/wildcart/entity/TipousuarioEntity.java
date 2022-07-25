@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 
 @Entity
 @Table(name = "tipousuario")
@@ -77,6 +78,11 @@ public class TipousuarioEntity {
 
     public int getUsuarios() {
         return usuarios.size();
+    }
+
+    @PreRemove
+    public void nullify() {
+        this.usuarios.forEach(c -> c.setTipousuario(null));
     }
 
 }

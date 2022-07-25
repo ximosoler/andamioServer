@@ -64,7 +64,7 @@ public class CompraEntity implements Serializable {
     private int descuento_producto;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_factura")
+    @JoinColumn(name = "id_factura")          
     private FacturaEntity factura;
 
     @ManyToOne(fetch = FetchType.EAGER)
