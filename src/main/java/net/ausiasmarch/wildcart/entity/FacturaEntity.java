@@ -55,9 +55,10 @@ public class FacturaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime fecha;
+    
     private int iva;
     private boolean pagado;
 
