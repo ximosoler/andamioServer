@@ -81,7 +81,7 @@ public class AuthService {
     public Long getUserID() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity != null) {
-            return oUsuarioSessionEntity.getTipousuario().getId();
+            return oUsuarioSessionEntity.getId();
         } else {
             throw new UnauthorizedException("this request is only allowed to auth users");
         }
