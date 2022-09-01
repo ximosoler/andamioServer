@@ -114,13 +114,13 @@ public class CarritoController {
         return new ResponseEntity<Long>(oCarritoService.empty(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id_producto}")
+    @DeleteMapping("/producto/{id_producto}")
     public ResponseEntity<Long> empty(
             @PathVariable(value = "id_producto") long id_producto) {
         return new ResponseEntity<Long>(oCarritoService.empty(id_producto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id_producto}/{amount}")
+    @DeleteMapping("/producto/{id_producto}/{amount}")
     public ResponseEntity<Long> reduce(
             @PathVariable(value = "id_producto") long id_producto,
             @PathVariable(value = "amount") int amount) {
