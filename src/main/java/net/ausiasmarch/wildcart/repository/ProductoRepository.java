@@ -46,4 +46,9 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     @Query(value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
     Page<ProductoEntity> findByTipoproductoIdAndNombreOrCodigo(long id_tipoproducto, String nombre, String codigo, Pageable oPageable);
+    
+    // Preparing select to show products with carrito number for a autenticated user
+    // Must create a view and a new entity -> https://stackoverflow.com/questions/61332063/how-do-i-fetch-derived-calculated-column-from-database-view-or-procedure-in-spri
+    // SELECT *,(SELECT SUM(c.cantidad) FROM producto p LEFT JOIN carrito c ON c.id_producto = p.id WHERE pt.id=p.id GROUP BY p.id) as cnt FROM producto pt
+    
 }

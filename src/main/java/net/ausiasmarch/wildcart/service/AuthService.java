@@ -97,6 +97,16 @@ public class AuthService {
         return false;
     }
 
+    public boolean isUser() {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity != null) {
+            if (oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.USER)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void OnlyAdmins() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity == null) {
