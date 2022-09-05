@@ -45,14 +45,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import org.hibernate.annotations.Subselect;
+
+import org.springframework.data.annotation.Immutable;
 
 @Entity
-@Table(name = "producto")
+@Table(name = "producto_carrito")
+@Immutable
+//@Subselect("SELECT p.id,p.codigo,p.nombre,p.existencias,p.precio,p.imagen,p.descuento,p.id_tipoproducto, c.cantidad, c.id_usuario FROM producto p LEFT JOIN carrito c ON c.id_producto = p.id order by p.id asc")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProductoCarritoViewEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String codigo;
@@ -61,7 +66,7 @@ public class ProductoCarritoViewEntity {
     private Double precio;
     private Long imagen;
     private int descuento;
-    private int cantidad;
+    private Integer cantidad;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipoproducto")
@@ -166,11 +171,11 @@ public class ProductoCarritoViewEntity {
         this.compras.forEach(c -> c.setProducto(null));
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 

@@ -50,6 +50,9 @@ public class ProductoCarritoViewService {
     ProductoCarritoViewRepository oProductoCarritoViewRepository;
 
     @Autowired
+    ProductoService oProductoService;
+
+    @Autowired
     AuthService oAuthService;
 
     public void validate(Long id) {
@@ -64,14 +67,14 @@ public class ProductoCarritoViewService {
     }
 
     public Long count() {
-        return oProductoCarritoViewRepository.count();
+        return oProductoService.count();
     }
 
     public Page<ProductoCarritoViewEntity> getPage(Pageable oPageable, String strFilter, Long lTipoProducto) {
         Page<ProductoCarritoViewEntity> oPage = null;
         if (lTipoProducto == null) {
             if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
-                oPage = oProductoCarritoViewRepository.findByUsuarioId(oAuthService.getUserID(), oPageable);
+                oPage = oProductoCarritoViewRepository.findByUsuarioIdOrUsuarioIdIsNull(oAuthService.getUserID(), oPageable);
             } else {
                 oPage = oProductoCarritoViewRepository.findByUsuarioIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(oAuthService.getUserID(), strFilter, strFilter, oPageable);
             }

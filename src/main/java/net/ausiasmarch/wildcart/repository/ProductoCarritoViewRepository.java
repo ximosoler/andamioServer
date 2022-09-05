@@ -40,13 +40,15 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProductoCarritoViewRepository extends JpaRepository<ProductoCarritoViewEntity, Long> {
 
-    Page<ProductoCarritoViewEntity> findByUsuarioId(Long id_usuario, Pageable oPageable);
-
+    Page<ProductoCarritoViewEntity> findByUsuarioId(Long id_usuario, Pageable oPageable);    
+    
+    Page<ProductoCarritoViewEntity> findByUsuarioIdOrUsuarioIdIsNull(long id_usuario, Pageable oPageable);   
+    
     Page<ProductoCarritoViewEntity> findByUsuarioIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(Long id_usuario, String nombre, String codigo, Pageable oPageable);
 
     Page<ProductoCarritoViewEntity> findByUsuarioIdAndTipoproductoId(Long id_usuario, Long id_tipoproducto, Pageable oPageable);
 
-    @Query(value = "SELECT * FROM producto WHERE id_usuario = ?1 AND id_tipoproducto = ?2 AND (nombre LIKE  %?3% OR codigo LIKE %?4%)", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto_carrito WHERE id_usuario = ?1 AND id_tipoproducto = ?2 AND (nombre LIKE  %?3% OR codigo LIKE %?4%)", nativeQuery = true)
     Page<ProductoCarritoViewEntity> findByUsuarioIdAndTipoproductoIdAndNombreOrCodigo(Long id_usuario, long id_tipoproducto, String nombre, String codigo, Pageable oPageable);
 
     // Preparing select to show products with carrito number for a autenticated user

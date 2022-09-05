@@ -78,6 +78,15 @@ public class AuthService {
         }
     }
 
+    public boolean isLoggedIn() {
+        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
+        if (oUsuarioSessionEntity == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public Long getUserID() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
         if (oUsuarioSessionEntity != null) {
