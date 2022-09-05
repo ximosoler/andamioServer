@@ -32,7 +32,9 @@
  */
 package net.ausiasmarch.wildcart.api;
 
+import net.ausiasmarch.wildcart.entity.ProductoCarritoViewEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
+import net.ausiasmarch.wildcart.service.ProductoCarritoViewService;
 import net.ausiasmarch.wildcart.service.ProductoService;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,27 +55,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductoCarritoViewController {
 
     @Autowired
-    ProductoService oProductoService;
+    ProductoCarritoViewService oProductoCarritoViewService;
 
     // /producto/3
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoEntity> get(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<ProductoEntity>(oProductoService.get(id), HttpStatus.OK);
+    public ResponseEntity<ProductoCarritoViewEntity> get(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<ProductoCarritoViewEntity>(oProductoCarritoViewService.get(id), HttpStatus.OK);
     }
 
     // producto/count
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
-        return new ResponseEntity<Long>(oProductoService.count(), HttpStatus.OK);
+        return new ResponseEntity<Long>(oProductoCarritoViewService.count(), HttpStatus.OK);
     }
 
     // /producto?page=0&size=10&sort=precio,desc&filter=verde&tipoproducto=2
     @GetMapping("")
-    public ResponseEntity<Page<ProductoEntity>> getPage(
+    public ResponseEntity<Page<ProductoCarritoViewEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "filter", required = false) String strFilter,
             @RequestParam(name = "tipoproducto", required = false) Long lTipoProducto) {
-        return new ResponseEntity<Page<ProductoEntity>>(oProductoService.getPage(oPageable, strFilter, lTipoProducto), HttpStatus.OK);
+        return new ResponseEntity<Page<ProductoCarritoViewEntity>>(oProductoCarritoViewService.getPage(oPageable, strFilter, lTipoProducto), HttpStatus.OK);
     }
 
 
