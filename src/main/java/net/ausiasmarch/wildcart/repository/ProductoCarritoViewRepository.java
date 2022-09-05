@@ -51,6 +51,5 @@ public interface ProductoCarritoViewRepository extends JpaRepository<ProductoCar
 
     // Preparing select to show products with carrito number for a autenticated user
     // Must create a view and a new entity -> https://stackoverflow.com/questions/61332063/how-do-i-fetch-derived-calculated-column-from-database-view-or-procedure-in-spri
-    // SELECT *, c.cantidad, c.id_usuario FROM producto p LEFT JOIN carrito c ON c.id_producto = p.id order by p.id asc
-    // CREATE VIEW AS ...
+    // CREATE VIEW producto_carrito as SELECT p.id,p.codigo,p.nombre,p.existencias,p.precio,p.imagen,p.descuento,p.id_tipoproducto, c.cantidad, c.id_usuario FROM producto p LEFT JOIN carrito c ON c.id_producto = p.id order by p.id asc
 }
