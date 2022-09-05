@@ -32,20 +32,25 @@
  */
 package net.ausiasmarch.wildcart.repository;
 
-import net.ausiasmarch.wildcart.entity.ProductoEntity;
+import net.ausiasmarch.wildcart.entity.ProductoCarritoViewEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> {
+public interface ProductoCarritoViewRepository extends JpaRepository<ProductoCarritoViewEntity, Long> {
 
-    Page<ProductoEntity> findByNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(String nombre, String codigo, Pageable oPageable);
+    Page<ProductoCarritoViewEntity> findByUsuarioId(Long id_usuario, Pageable oPageable);
 
-    Page<ProductoEntity> findByTipoproductoId(Long id_tipoproducto, Pageable oPageable);
+    Page<ProductoCarritoViewEntity> findByUsuarioIdAndNombreIgnoreCaseContainingOrCodigoIgnoreCaseContaining(Long id_usuario, String nombre, String codigo, Pageable oPageable);
 
-    @Query(value = "SELECT * FROM producto WHERE id_tipoproducto = ?1 AND (nombre LIKE  %?2% OR codigo LIKE %?3%)", nativeQuery = true)
-    Page<ProductoEntity> findByTipoproductoIdAndNombreOrCodigo(long id_tipoproducto, String nombre, String codigo, Pageable oPageable);
-    
-    
+    Page<ProductoCarritoViewEntity> findByUsuarioIdAndTipoproductoId(Long id_usuario, Long id_tipoproducto, Pageable oPageable);
+
+    @Query(value = "SELECT * FROM producto WHERE id_usuario = ?1 AND id_tipoproducto = ?2 AND (nombre LIKE  %?3% OR codigo LIKE %?4%)", nativeQuery = true)
+    Page<ProductoCarritoViewEntity> findByUsuarioIdAndTipoproductoIdAndNombreOrCodigo(Long id_usuario, long id_tipoproducto, String nombre, String codigo, Pageable oPageable);
+
+    // Preparing select to show products with carrito number for a autenticated user
+    // Must create a view and a new entity -> https://stackoverflow.com/questions/61332063/how-do-i-fetch-derived-calculated-column-from-database-view-or-procedure-in-spri
+    // SELECT *, c.cantidad, c.id_usuario FROM producto p LEFT JOIN carrito c ON c.id_producto = p.id order by p.id asc
+    // CREATE VIEW AS ...
 }
