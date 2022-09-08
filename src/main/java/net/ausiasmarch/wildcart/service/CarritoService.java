@@ -219,12 +219,12 @@ public class CarritoService {
                 List<CarritoEntity> oCarritoEntityList = oCarritoRepository.findByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
                 if (oCarritoEntityList.size() == 1) {
                     CarritoEntity oCarritoEntity = oCarritoEntityList.get(0);
-                    if (oCarritoEntity.getCantidad() - amount < 0) {
-                        oCarritoEntity.setCantidad(0);
+                    if (oCarritoEntity.getCantidad() - amount <= 0) {
+                        oCarritoRepository.deleteByUsuarioIdAndProductoId(oAuthService.getUserID(), oProducto.getId());
                     } else {
                         oCarritoEntity.setCantidad(oCarritoEntity.getCantidad() - amount);
-                    }
-                    oCarritoRepository.save(oCarritoEntity);
+                        oCarritoRepository.save(oCarritoEntity);
+                    }                    
                 } else {
                     Long sum = 0L;
                     for (int i = 0; i < oCarritoEntityList.size(); i++) {

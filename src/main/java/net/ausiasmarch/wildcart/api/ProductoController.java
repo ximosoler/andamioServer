@@ -32,7 +32,10 @@
  */
 package net.ausiasmarch.wildcart.api;
 
+import net.ausiasmarch.wildcart.entity.ProductoCarritoViewEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
+import net.ausiasmarch.wildcart.service.AuthService;
+import net.ausiasmarch.wildcart.service.ProductoCarritoViewService;
 import net.ausiasmarch.wildcart.service.ProductoService;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +62,20 @@ public class ProductoController {
     @Autowired
     ProductoService oProductoService;
 
+    @Autowired
+    ProductoCarritoViewService oProductoCarritoViewService;
+
+    @Autowired
+    AuthService oAuthService;
+
     // /producto/3
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoEntity> get(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<ProductoEntity>(oProductoService.get(id), HttpStatus.OK);
+    public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
+        if (oAuthService.isUser()) {
+            return new ResponseEntity<ProductoCarritoViewEntity>(oProductoCarritoViewService.get(id), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<ProductoEntity>(oProductoService.get(id), HttpStatus.OK);
+        }
     }
 
     // producto/count
