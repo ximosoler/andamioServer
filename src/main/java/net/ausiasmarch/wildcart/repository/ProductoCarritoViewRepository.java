@@ -40,7 +40,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProductoCarritoViewRepository extends JpaRepository<ProductoCarritoViewEntity, Long> {
     
-    @Query(value = "SELECT * FROM producto_carrito WHERE id = ?1 AND id_usuario = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto_carrito WHERE id = ?1 AND (id_usuario = ?2 OR id_usuario IS NULL)", nativeQuery = true)
     ProductoCarritoViewEntity findByIdAndUsuarioId(Long id, Long id_usuario);
 
     Page<ProductoCarritoViewEntity> findByUsuarioId(Long id_usuario, Pageable oPageable);
