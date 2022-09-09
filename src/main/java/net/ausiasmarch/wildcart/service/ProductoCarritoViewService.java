@@ -62,8 +62,9 @@ public class ProductoCarritoViewService {
     }
 
     public ProductoCarritoViewEntity get(Long id) {
-        validate(id);
-        return oProductoCarritoViewRepository.getById(id);
+        //validate(id); //da problemas posiblemente por ids repetidos ya que es una vista... pte solucionar!
+        //System.out.println("ProductoCarritoViewEntity petición: get: producto:" + id + " usuario: " + oAuthService.getUserID());
+        return oProductoCarritoViewRepository.findByIdAndUsuarioId(id, oAuthService.getUserID());
     }
 
     public Long count() {

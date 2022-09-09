@@ -71,6 +71,7 @@ public class ProductoController {
     // /producto/3
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable(value = "id") Long id) {
+        //System.out.println("ProductoController petición: get: producto:" + id + " usuario: " + oAuthService.getUserID() + " is uaser: " + oAuthService.isUser());
         if (oAuthService.isUser()) {
             return new ResponseEntity<ProductoCarritoViewEntity>(oProductoCarritoViewService.get(id), HttpStatus.OK);
         } else {
