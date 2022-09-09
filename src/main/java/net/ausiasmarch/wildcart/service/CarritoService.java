@@ -92,6 +92,11 @@ public class CarritoService {
         oProductoService.validate(oCarritoEntity.getProducto().getId());
     }
 
+    public Double getTotal() {
+        oAuthService.OnlyUsers();
+        return oCarritoRepository.getTotalByUser(oAuthService.getUserID());
+    }    
+    
 // admins services
     public CarritoEntity get(Long id) {
         validate(id);

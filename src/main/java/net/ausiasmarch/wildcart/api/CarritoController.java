@@ -126,5 +126,10 @@ public class CarritoController {
             @PathVariable(value = "amount") int amount) {
         return new ResponseEntity<Long>(oCarritoService.reduce(id_producto, amount), HttpStatus.OK);
     }
+    
+    @GetMapping("/total")
+    public ResponseEntity<Double> total() {
+        return new ResponseEntity<Double>(oCarritoService.getTotal(), HttpStatus.OK);
+    }
 
 }

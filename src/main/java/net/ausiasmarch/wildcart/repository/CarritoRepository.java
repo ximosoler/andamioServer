@@ -37,6 +37,7 @@ import net.ausiasmarch.wildcart.entity.CarritoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface CarritoRepository extends JpaRepository<CarritoEntity, Long> {
 
@@ -55,5 +56,8 @@ public interface CarritoRepository extends JpaRepository<CarritoEntity, Long> {
     long deleteByUsuarioId(Long id_usuario);
 
     long deleteByUsuarioIdAndProductoId(Long id_usuario, Long id_producto);
+    
+    @Query(value = "SELECT SUM(((p.precio - (p.precio * p.descuento/100)) - (p.precio * u.descuento/100 )) * c.cantidad) as total FROM carrito c, producto p, usuario u WHERE u.id=c.id_usuario and c.id_producto=p.id and c.id_usuario = ?1 group by c.id_usuario", nativeQuery = true)
+    Double getTotalByUser(Long id_usuario);
 
 }
