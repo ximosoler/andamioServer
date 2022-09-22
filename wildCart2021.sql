@@ -140,6 +140,15 @@ CREATE TABLE `usuario` (
   `activo` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `producto_carrito`
+--
+DROP TABLE IF EXISTS `producto_carrito`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `producto_carrito`  AS  select `p`.`id` AS `id`,`p`.`codigo` AS `codigo`,`p`.`nombre` AS `nombre`,`p`.`existencias` AS `existencias`,`p`.`precio` AS `precio`,`p`.`imagen` AS `imagen`,`p`.`descuento` AS `descuento`,`p`.`id_tipoproducto` AS `id_tipoproducto`,`c`.`cantidad` AS `cantidad`,`c`.`id_usuario` AS `id_usuario` from (`producto` `p` left join `carrito` `c` on((`c`.`id_producto` = `p`.`id`))) order by `p`.`id` ;
+
 --
 -- Índices para tablas volcadas
 --
