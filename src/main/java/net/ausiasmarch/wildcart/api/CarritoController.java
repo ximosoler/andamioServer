@@ -55,9 +55,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/carrito")
 public class CarritoController {
+    
+    CarritoService oCarritoService;
 
     @Autowired
-    CarritoService oCarritoService;
+    public CarritoController(CarritoService oCarritoService) {
+        this.oCarritoService = oCarritoService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CarritoEntity> get(@PathVariable(value = "id") Long id) {
@@ -75,7 +79,8 @@ public class CarritoController {
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
             @RequestParam(name = "producto", required = false) Long id_producto,
             @RequestParam(name = "usuario", required = false) Long id_usuario) {
-        return new ResponseEntity<Page<CarritoEntity>>(oCarritoService.getPage(oPageable, id_usuario, id_producto), HttpStatus.OK);
+        return new ResponseEntity<Page<CarritoEntity>>(oCarritoService.getPage(oPageable, id_usuario, id_producto),
+                HttpStatus.OK);
     }
 
     @PostMapping
@@ -126,7 +131,7 @@ public class CarritoController {
             @PathVariable(value = "amount") int amount) {
         return new ResponseEntity<Long>(oCarritoService.reduce(id_producto, amount), HttpStatus.OK);
     }
-    
+
     @GetMapping("/total")
     public ResponseEntity<Double> total() {
         return new ResponseEntity<Double>(oCarritoService.getTotal(), HttpStatus.OK);
