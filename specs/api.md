@@ -1,5 +1,5 @@
 # Wildcart API
-## Entity carrito
+## Entity producto
 ### Producto get (USER)
 * Entity: producto
 * Operation: get
