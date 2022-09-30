@@ -1,5 +1,6 @@
-# Carrito API
-## Carrito get
+# Wildcart API
+## Entity carrito
+### Carrito get (USER)
 * Entity: carrito
 * Operation: get
 * Arguments: id
