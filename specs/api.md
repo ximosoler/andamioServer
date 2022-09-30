@@ -3,11 +3,11 @@
 ### Producto get (USER)
 * Entity: producto
 * Operation: get
+* Profile: user 
 * URL: http://127.0.0.1:8082/producto/3
 * Method: GET
 * Arguments: id
 * Payload: none
-* Profile: user
 * Description: Returns one producto row
 * Process: none
 * JSON Return example:
