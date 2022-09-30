@@ -1,7 +1,7 @@
 # Wildcart API
 ## Entity carrito
-### Carrito get (USER)
-* Entity: carrito
+### Producto get (USER)
+* Entity: producto
 * Operation: get
 * URL: http://127.0.0.1:8082/producto/3
 * Method: GET
