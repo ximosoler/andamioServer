@@ -517,10 +517,17 @@
                         <td>localhost:8082/tipousuario/</td>
                         <td>PUT</td>
                         <td></td>
-                        <td></td>
+                        <!-- TO-DO : error en implementacion -->
+                        <td> <pre>
+{
+    "id":2,
+    "nombre":"lucas"
+}
+                            
+                        </pre></td>
                         <td>user (2)</td>
                         <td>Put allows modify info of the types of user.</td>
-                        <td>Only admins can modify this info.</td>
+                        <td>TO-DO : Error! users can also modify it , they shouldnt be able to , use put .</td>
                         <td>The info of the types of users its all obtained from the db.</td>
                         <td>
 
@@ -534,46 +541,8 @@
                                 <div class="card card-body">
                                     <pre>
 {
-
-"content":[
-{
-"id":1,
-"nombre":"administrador",
-"usuarios":1
-},
-{
-"id":2,
-"nombre":"usuario",
-"usuarios":10
-}
-],
-"pageable":{
-"sort":{
-"empty":true,
-"sorted":false,
-"unsorted":true
-},
-"offset":0,
-"pageNumber":0,
-"pageSize":10,
-"paged":true,
-"unpaged":false
-},
-"totalPages":1,
-"totalElements":2,
-"last":true,
-"size":10,
-"number":0,
-"sort":{
-"empty":true,
-"sorted":false,
-"unsorted":true
-},
-"first":true,
-"numberOfElements":2,
-"empty":false
-                    
-}                                                                    
+     2
+}                           
                                                     </pre>
                                 </div>
                             </div>
@@ -611,10 +580,15 @@
                         <td>localhost:8082/tipousuario/</td>
                         <td>PUT</td>
                         <td></td>
-                        <td></td>
+                        <td><pre>
+{
+    "id":2,
+    "nombre":"Jose"
+}
+                        </pre></td>
                         <td>administrador (1)</td>
                         <td>Put allows modify info of the types of user.</td>
-                        <td>Only admins can modify this info.</td>
+                        <td>Only admins can modify this info , now user can modify it too ,so it is badly done.</td>
                         <td>The info of the types of users its all obtained from the db.</td>
                         <td>
 
@@ -628,46 +602,8 @@
                                 <div class="card card-body">
                                     <pre>
 {
-
-    "content":[
-                {
-                    "id":1,
-                    "nombre":"administrador",
-                    "usuarios":1
-                },
-                {
-                    "id":2,
-                    "nombre":"usuario",
-                    "usuarios":10
-                }
-            ],
-            "pageable":{
-                "sort":{
-                        "empty":true,
-                        "sorted":false,
-                        "unsorted":true
-                    },
-                    "offset":0,
-                    "pageNumber":0,
-                    "pageSize":10,
-                    "paged":true,
-                    "unpaged":false
-                    },
-                    "totalPages":1,
-                    "totalElements":2,
-                    "last":true,
-                    "size":10,
-                    "number":0,
-                    "sort":{
-                            "empty":true,
-                            "sorted":false,
-                            "unsorted":true
-                    },
-                    "first":true,
-                    "numberOfElements":2,
-                    "empty":false
-                                                
-                }                                                                    
+    2
+}                                                                                                         
                                                                                 </pre>
                                 </div>
                             </div>
