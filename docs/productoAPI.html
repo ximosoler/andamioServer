@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildCart API Specification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="container" style="font-size: smaller;">
+        <div class="row">
+            <div class="col-12">
+                <h1>WildCart API Specification</h1>
+                <h2>Endpoints</h2>
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Entity</th>
+                            <th>Operation</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Arguments</th>
+                            <th>Payload</th>
+                            <th>Profile</th>
+                            <th>Description</th>
+                            <th>Security</th>
+                            <th>Process</th>
+                            <th>Response example</th>
+                            <th>Error response example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto/{id}</td>
+                            <td>GET</td>
+                            <td>id</td>
+                            <td></td>
+                            <td>admin (1)</td>
+                            <td>Get info of a product</td>
+                            <td>Nothing</td>
+                            <td>Admin can see all the details of a product</td>
+                            <td>
+
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProductoGet"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoGet">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoGet">
+                                    <div class="card card-body">
+                                        <pre>{
+"nombre": "Silla de cristal de color rojo de tamaño extra grande",
+"existencias": 45,
+"precio": 83.88,
+"imagen": 1,
+"descuento": 28,
+"cantidad": 35,
+"tipoproducto": {
+"id": 33,
+"nombre": "Manufacturas de lujo para colegios",
+"productos": 7
+},
+"carritos": 0,
+"compras": 0,
+"usuario": null
+                                        }                                                                 
+                                                                            </pre>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                            <td>
+                               Not error 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto/{id}</td>
+                            <td>GET</td>
+                            <td>id</td>
+                            <td></td>
+                            <td>user (2)</td>
+                            <td>Get the info of a product</td>
+                            <td>Nothing</td>
+                            <td>For a user are some details that are hidden</td>
+                            <td>
+
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProductoGetUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcutoGetUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoUser">
+                                    <div class="card card-body">
+                                        <pre>
+"nombre": "Silla de cristal de color rojo de tamaño extra grande",
+"existencias": 45,
+"precio": 83.88,
+"imagen": 1,
+"descuento": 28,
+"cantidad": null,
+"tipoproducto": {
+"id": 33,
+"nombre": "Manufacturas de lujo para colegios",
+"productos": 7
+},
+"carritos": 0,
+"compras": 0,
+"usuario": null
+                                        }                                                                 
+                                                                            </pre>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                            <td>
+                               Not error
+                            </td>
+                        </tr>
+                        <!--producto count-->
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto/count</td>
+                            <td>GET</td>
+                            <td></td>
+                            <td></td>
+                            <td>admin (1)</td>
+                            <td>Get info of  products</td>
+                            <td>Nothing</td>
+                            <td>Admin can see all the details of a product</td>
+                            <td>
+
+                                1029
+                            </td>
+                            <td>
+                                Not error
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto/count</td>
+                            <td>GET</td>
+                            <td></td>
+                            <td></td>
+                            <td>user (2)</td>
+                            <td>Get the info of products</td>
+                            <td>Nothing</td>
+                            <td>User can see how many products there are</td>
+                            <td>
+
+                                1029
+                            </td>
+                            <td>
+                                Not error
+                            </td>
+                        </tr>
+                        <!--producto getpage-->
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto?page=2&size=11&sort=codigo,asc&sort=id,desc&filter=me</td>
+                            <td>GET</td>
+                            <td>?page=2&size=11&sort=codigo,asc&sort=id,desc&filter=me</td>
+                            <td></td>
+                            <td>admin (1)</td>
+                            <td>Get info of a product page</td>
+                            <td>Nothing</td>
+                            <td>Admin can see all the details of a product page</td>
+                            <td>
+
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProductoGetPage"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoGetPage">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcutoGetPage">
+                                    <div class="card card-body">
+                                        <pre>
+{
+    "content": [
+        {
+            "id": 473,
+            "codigo": "14269N",
+            "nombre": "Sillón de plastico de color naranja de tamaño mediano",
+            "existencias": 95,
+            "precio": 37.94,
+            "imagen": 1,
+            "descuento": 10,
+            "tipoproducto": {
+                "id": 57,
+                "nombre": "Herramientas de gran tonelage para prisiones",
+                "productos": 11
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 940,
+            "codigo": "14365M",
+            "nombre": "Silla de mármol de color morado de tamaño mediano",
+            "existencias": 60,
+            "precio": 9.63,
+            "imagen": 1,
+            "descuento": 1,
+            "tipoproducto": {
+                "id": 1,
+                "nombre": "Herramientas retro para prisiones",
+                "productos": 12
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 904,
+            "codigo": "14377P",
+            "nombre": "Marco de mármol de color blanco de tamaño mediano",
+            "existencias": 38,
+            "precio": 9.79,
+            "imagen": 1,
+            "descuento": 3,
+            "tipoproducto": {
+                "id": 37,
+                "nombre": "Artículos artesanos para la restauracion",
+                "productos": 10
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 458,
+            "codigo": "14502T",
+            "nombre": "Sofá de metal de color rojo de tamaño mediano",
+            "existencias": 53,
+            "precio": 61.06,
+            "imagen": 1,
+            "descuento": 4,
+            "tipoproducto": {
+                "id": 67,
+                "nombre": "Artículos artesanos para hospitales",
+                "productos": 15
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 498,
+            "codigo": "14788W",
+            "nombre": "Sofá de cristal de color blanco de tamaño mediano",
+            "existencias": 45,
+            "precio": 69.89,
+            "imagen": 1,
+            "descuento": 22,
+            "tipoproducto": {
+                "id": 85,
+                "nombre": "Manufacturas económicos para prisiones",
+                "productos": 14
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 625,
+            "codigo": "15091N",
+            "nombre": "Mesa de cristal de color blanco de tamaño grade",
+            "existencias": 12,
+            "precio": 39.51,
+            "imagen": 1,
+            "descuento": 48,
+            "tipoproducto": {
+                "id": 65,
+                "nombre": "Manufacturas de gran tonelage para el jardin",
+                "productos": 10
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 750,
+            "codigo": "15220H",
+            "nombre": "Mesita de cristal de color naranja de tamaño extra grande",
+            "existencias": 57,
+            "precio": 18.41,
+            "imagen": 1,
+            "descuento": 43,
+            "tipoproducto": {
+                "id": 86,
+                "nombre": "Herramientas de gran tonelage para prisiones",
+                "productos": 7
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 595,
+            "codigo": "15287Z",
+            "nombre": "Silla de metal de color blanco de tamaño pequeño",
+            "existencias": 33,
+            "precio": 96.01,
+            "imagen": 1,
+            "descuento": 39,
+            "tipoproducto": {
+                "id": 87,
+                "nombre": "Productos retro para cines y teatros",
+                "productos": 17
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 474,
+            "codigo": "15453J",
+            "nombre": "Lampara de plastico de color rojo de tamaño mediano",
+            "existencias": 8,
+            "precio": 8.05,
+            "imagen": 1,
+            "descuento": 11,
+            "tipoproducto": {
+                "id": 44,
+                "nombre": "Utilidades plegables para hospitales",
+                "productos": 8
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 34,
+            "codigo": "15709S",
+            "nombre": "Mesa de mármol de color verde de tamaño pequeño",
+            "existencias": 34,
+            "precio": 57.98,
+            "imagen": 1,
+            "descuento": 45,
+            "tipoproducto": {
+                "id": 21,
+                "nombre": "Artículos retro para cines y teatros",
+                "productos": 10
+            },
+            "carritos": 0,
+            "compras": 0
+        },
+        {
+            "id": 86,
+            "codigo": "16251P",
+            "nombre": "Mesita de plastico de color marron de tamaño mediano",
+            "existencias": 14,
+            "precio": 71.72,
+            "imagen": 1,
+            "descuento": 3,
+            "tipoproducto": {
+                "id": 59,
+                "nombre": "Herramientas de gran tonelage para el camping",
+                "productos": 10
+            },
+            "carritos": 0,
+            "compras": 0
+        }
+    ],
+    "pageable": {
+        "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+        },
+        "offset": 22,
+        "pageNumber": 2,
+        "pageSize": 11,
+        "paged": true,
+        "unpaged": false
+    },
+    "totalPages": 42,
+    "totalElements": 459,
+    "last": false,
+    "number": 2,
+    "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+    },
+    "size": 11,
+    "first": false,
+    "numberOfElements": 11,
+    "empty": false
+}                                                             
+                                                                            </pre>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                            <td>
+                                Not error
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>producto</td>
+                            <td>get</td>
+                            <td>localhost:8082/producto?page=2&size=11&sort=codigo,asc&sort=id,desc&filter=me</td>
+                            <td>GET</td>
+                            <td>?page=2&size=11&sort=codigo,asc&sort=id,desc&filter=me</td>
+                            <td></td>
+                            <td>user (2)</td>
+                            <td>Get info of a product page</td>
+                            <td>Nothing</td>
+                            <td>User can see all the details of a product page</td>
+                            <td>
+
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProductoGetPageUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoGetPageUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoGetPageUser">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"content": [
+{
+"id": 473,
+"codigo": "14269N",
+"nombre": "Sillón de plastico de color naranja de tamaño mediano",
+"existencias": 95,
+"precio": 37.94,
+"imagen": 1,
+"descuento": 10,
+"tipoproducto": {
+"id": 57,
+"nombre": "Herramientas de gran tonelage para prisiones",
+"productos": 11
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 940,
+"codigo": "14365M",
+"nombre": "Silla de mármol de color morado de tamaño mediano",
+"existencias": 60,
+"precio": 9.63,
+"imagen": 1,
+"descuento": 1,
+"tipoproducto": {
+"id": 1,
+"nombre": "Herramientas retro para prisiones",
+"productos": 12
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 904,
+"codigo": "14377P",
+"nombre": "Marco de mármol de color blanco de tamaño mediano",
+"existencias": 38,
+"precio": 9.79,
+"imagen": 1,
+"descuento": 3,
+"tipoproducto": {
+"id": 37,
+"nombre": "Artículos artesanos para la restauracion",
+"productos": 10
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 458,
+"codigo": "14502T",
+"nombre": "Sofá de metal de color rojo de tamaño mediano",
+"existencias": 53,
+"precio": 61.06,
+"imagen": 1,
+"descuento": 4,
+"tipoproducto": {
+"id": 67,
+"nombre": "Artículos artesanos para hospitales",
+"productos": 15
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 498,
+"codigo": "14788W",
+"nombre": "Sofá de cristal de color blanco de tamaño mediano",
+"existencias": 45,
+"precio": 69.89,
+"imagen": 1,
+"descuento": 22,
+"tipoproducto": {
+"id": 85,
+"nombre": "Manufacturas económicos para prisiones",
+"productos": 14
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 625,
+"codigo": "15091N",
+"nombre": "Mesa de cristal de color blanco de tamaño grade",
+"existencias": 12,
+"precio": 39.51,
+"imagen": 1,
+"descuento": 48,
+"tipoproducto": {
+"id": 65,
+"nombre": "Manufacturas de gran tonelage para el jardin",
+"productos": 10
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 750,
+"codigo": "15220H",
+"nombre": "Mesita de cristal de color naranja de tamaño extra grande",
+"existencias": 57,
+"precio": 18.41,
+"imagen": 1,
+"descuento": 43,
+"tipoproducto": {
+"id": 86,
+"nombre": "Herramientas de gran tonelage para prisiones",
+"productos": 7
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 595,
+"codigo": "15287Z",
+"nombre": "Silla de metal de color blanco de tamaño pequeño",
+"existencias": 33,
+"precio": 96.01,
+"imagen": 1,
+"descuento": 39,
+"tipoproducto": {
+"id": 87,
+"nombre": "Productos retro para cines y teatros",
+"productos": 17
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 474,
+"codigo": "15453J",
+"nombre": "Lampara de plastico de color rojo de tamaño mediano",
+"existencias": 8,
+"precio": 8.05,
+"imagen": 1,
+"descuento": 11,
+"tipoproducto": {
+"id": 44,
+"nombre": "Utilidades plegables para hospitales",
+"productos": 8
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 34,
+"codigo": "15709S",
+"nombre": "Mesa de mármol de color verde de tamaño pequeño",
+"existencias": 34,
+"precio": 57.98,
+"imagen": 1,
+"descuento": 45,
+"tipoproducto": {
+"id": 21,
+"nombre": "Artículos retro para cines y teatros",
+"productos": 10
+},
+"carritos": 0,
+"compras": 0
+},
+{
+"id": 86,
+"codigo": "16251P",
+"nombre": "Mesita de plastico de color marron de tamaño mediano",
+"existencias": 14,
+"precio": 71.72,
+"imagen": 1,
+"descuento": 3,
+"tipoproducto": {
+"id": 59,
+"nombre": "Herramientas de gran tonelage para el camping",
+"productos": 10
+},
+"carritos": 0,
+"compras": 0
+}
+],
+"pageable": {
+"sort": {
+"empty": false,
+"sorted": true,
+"unsorted": false
+},
+"offset": 22,
+"pageNumber": 2,
+"pageSize": 11,
+"paged": true,
+"unpaged": false
+},
+"totalPages": 42,
+"totalElements": 459,
+"last": false,
+"number": 2,
+"sort": {
+"empty": false,
+"sorted": true,
+"unsorted": false
+},
+"size": 11,
+"first": false,
+"numberOfElements": 11,
+"empty": false
+}                                                             
+                                                                            </pre>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                            <td>
+                                Not error
+                        </tr>
+                        <!--producto postpage-->
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/</td>
+                            <td>post</td>
+                            <td></td>
+                            <td>{
+                                "codigo": "1111Q677754sdftt911",
+                                "precio": 331.01,
+                                "imagen": 1,
+                                "nombre": "tornzzzill55gfgfo flojoo3366666663",
+                                "descuento": 3,
+                                "existencias": 110,
+                                "tipoproducto": {
+                                    "id": 2
+                                }
+                            }
+                            </td>
+                            <td>admin (1)</td>
+                            <td>Post a product</td>
+                            <td>Only admin can do it</td>
+                            <td></td>
+                            <td>1032</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProductoPostError"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoPostError">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoPostError">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T14:42:00.751+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/"
+} 
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/</td>
+                            <td>post</td>
+                            <td></td>
+<td>{
+"codigo": "1111Q677754sdftt911",
+"precio": 331.01,
+"imagen": 1,
+"nombre": "tornzzzill55gfgfo flojoo3366666663",
+"descuento": 3,
+"existencias": 110,
+"tipoproducto": {
+"id": 2
+}
+}
+                            </td>
+                            <td>user (2)</td>
+                            <td>Post a product</td>
+                            <td>User can not do it</td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProductoPostErrorUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoPostErrorUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoPostErrorUser">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T14:42:00.751+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/"
+} 
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!---->
+                        <tr>
+                            <td>product</td>
+                            <td>put</td>
+                            <td>localhost:8082/producto/</td>
+                            <td>put</td>
+                            <td></td>
+<td>{
+"id": 383,
+"codigo": "QWERTY911",
+"precio": 331.01,
+"imagen": 1,
+"nombre": "tornillo flojoo333",
+"descuento": 3,
+"existencias": 110,
+"tipoproducto": {
+"id": 1
+}
+}
+                            </td>
+                            <td>admin (1)</td>
+                            <td>Update attributes from a product</td>
+                            <td>Only the admin can update a product attributes</td>
+                            <td>The product attributes is obtained from the database</td>
+                            <td>383</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProductoPut"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoPut">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoPut">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-13T19:22:09.593+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/"
+
+
+}   
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>put</td>
+                            <td>localhost:8082/producto/</td>
+                            <td>put</td>
+                            <td></td>
+<td>{
+"id": 383,
+"codigo": "QWERTY911",
+"precio": 331.01,
+"imagen": 1,
+"nombre": "tornillo flojoo333",
+"descuento": 3,
+"existencias": 110,
+"tipoproducto": {
+"id": 1
+}
+}
+                            </td>
+                            <td>user (2)</td>
+                            <td>Update attributes from a product</td>
+                            <td>Only the admin can update a product attributes</td>
+                            <td>The product attributes is obtained from the database</td>
+                            <td></td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProductoPutErrorUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProductoPutErrorUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProductoPutErrorUser">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T13:20:16.296+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/usuario/1280"
+}
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>product</td>
+                            <td>delete</td>
+                            <td>localhost:8082/producto/{id}</td>
+                            <td>delete</td>
+                            <td>id</td>
+                            <td></td>
+                            <td>admin (1)</td>
+                            <td>Delete a product from card</td>
+                            <td>Only the admin can delete a product from card</td>
+                            <td>The product is obtained from the database</td>
+                            <td>1010</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcutoDeleteError"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcutoDeleteError">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcutoDeleteError">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-13T19:14:58.347+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/1018"
+
+}   
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>delete</td>
+                            <td>localhost:8082/producto/{id}</td>
+                            <td>delete</td>
+                            <td>id</td>
+                            <td></td>
+                            <td>user (2)</td>
+                            <td>Delete a product from card</td>
+                            <td>Only the admin can delete a product from card</td>
+                            <td>The product is obtained from the database</td>
+                            <td></td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcutoDeleteErrorUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcutoDeleteErrorUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcutoDeleteErrorUser">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T13:21:09.932+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/1018"
+}
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/generate</td>
+                            <td>post</td>
+                            <td></td>
+<td>{
+"codigo": "1111Q677754sdftt911",
+"precio": 331.01,
+"imagen": 1,
+"nombre": "tornzzzill55gfgfo flojoo3366666663",
+"descuento": 3,
+"existencias": 110,
+"tipoproducto": {
+"id": 2
+}
+}
+                            </td>
+                            <td>admin (1)</td>
+                            <td>Generate a new product in database</td>
+                            <td>Only the admin can generate</td>
+                            <td>The product is generated in database</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerate"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerate">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerate">
+                                    <div class="card card-body">
+{
+"id": null,
+"codigo": "99417Z",
+"nombre": "Sillón de bambú de color blanco de tamaño pequeño",
+"existencias": 96,
+"precio": 76.92105005771029,
+"imagen": 1,
+"descuento": 23,
+"tipoproducto": {
+"id": 64,
+"nombre": "Manufacturas ortopédicos para el camping",
+"productos": 6
+},
+"carritos": 0,
+"compras": 0
+}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerateError"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerateError">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerateError">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-13T19:14:58.347+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/1018"
+
+}   
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/generate</td>
+                            <td>post</td>
+                            <td></td>
+                            <td>
+{
+"codigo": "1111Q677754sdftt911",
+"precio": 331.01,
+"imagen": 1,
+"nombre": "tornzzzill55gfgfo flojoo3366666663",
+"descuento": 3,
+"existencias": 110,
+"tipoproducto": {
+"id": 2
+}
+}
+                            </td>
+                            <td>user (2)</td>
+                            <td>Generate a new product in database</td>
+                            <td>Only the admin can generate</td>
+                            <td>The product is generated in database</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerateUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerateUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerateUser">
+                                    <div class="card card-body">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerateUserError"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerateUserError">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerateUserError">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T13:33:24.604+00:00",
+"status": "INTERNAL_SERVER_ERROR",
+"message": "Request method 'POST' not supported",
+"details": "uri=/producto/generate"
+}  
+                     </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/generate/{amount}
+                            </td>
+                            <td>post</td>
+                            <td>{amount}</td>
+                            <td></td>
+                            <td>admin (1)</td>
+                            <td>Generate a new 10 product in database</td>
+                            <td>Only the admin can generate</td>
+                            <td>Products are generated in database</td>
+                            <td>1029</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerateAmountError"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerateAmountError">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerateAmountError">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T13:16:30.191+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/generate/10"
+}
+                 </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <td>product</td>
+                            <td>post</td>
+                            <td>localhost:8082/producto/generate/{amount}
+                            </td>
+                            <td>post</td>
+                            <td>{amount}</td>
+                            <td></td>
+                            <td>user (2)</td>
+                            <td>Generate a new 10 product in database</td>
+                            <td>Only the admin can generate</td>
+                            <td>Products are generated in database</td>
+                            <td>1029</td>
+                            <td>
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseProdcuoPostGenerateAmountErrorUser"
+                                        role="button" aria-expanded="false" aria-controls="collapseProdcuoPostGenerateAmountErrorUser">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseProdcuoPostGenerateAmountErrorUser">
+                                    <div class="card card-body">
+                                        <pre>
+{
+"timestamp": "2022-10-14T13:16:30.191+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+"details": "uri=/producto/generate/10"
+}
+                </pre>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
+
+</html>
