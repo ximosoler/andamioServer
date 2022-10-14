@@ -35,96 +35,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>carrito</td>
-                            <td>get</td>
-                            <td>localhost:8082/carrito/{id}</td>
-                            <td>GET</td>
-                            <td>id</td>
-                            <td></td>
-                            <td>user (2)</td>
-                            <td>Get carrito of a user in session</td>
-                            <td>A usuario only can see his own carrito</td>
-                            <td>The carrito is obtained from the database</td>
-                            <td>
-
-                                <p>
-                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGet1"
-                                        role="button" aria-expanded="false" aria-controls="collapseCarritoGet1">
-                                        JSON
-                                    </a>
-                                </p>
-                                <div class="collapse" id="collapseCarritoGet1">
-                                    <div class="card card-body">
-                                        <pre>
-{
-    "id": 2,
-    "cantidad": 3,
-    "precio": 0.0,
-    "producto": {
-        "id": 1,
-        "codigo": "41298Z",
-        "nombre": "Lampara de plastico de color amarillo de tamaño mediano",
-        "existencias": 55,
-        "precio": 94.9,
-        "imagen": 2,
-        "descuento": 21,
-        "tipoproducto": {
-            "id": 47,
-            "nombre": "Productos de gran tonelage para el jardin",
-            "productos": 7
-        },
-        "carritos": 1,
-        "compras": 0
-    },
-    "usuario": {
-        "id": 2,
-        "dni": "51707107W",
-        "nombre": "sergio",
-        "apellido1": "marti",
-        "apellido2": "salom",
-        "login": "user",
-        "email": "marti_sergio@daw.tk",
-        "descuento": 46,
-        "validado": false,
-        "activo": false,
-        "tipousuario": {
-            "id": 2,
-            "nombre": "usuario",
-            "usuarios": 79
-        },
-        "carritos": 1,
-        "facturas": 1
-    }
-}                                                                   
-                                                                            </pre>
-                                    </div>
-                                </div>
-
-
-
-                            </td>
-                            <td>
-                                <p>
-                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetError1"
-                                        role="button" aria-expanded="false" aria-controls="collapseCarritoGetError1">
-                                        JSON
-                                    </a>
-                                </p>
-                                <div class="collapse" id="collapseCarritoGetError1">
-                                    <div class="card card-body">
-                                        <pre>
-{
-    "timestamp": "2022-10-13T18:34:12.330+00:00",
-    "status": "NOT_FOUND",
-    "message": "ERROR: Resource not found: id 5 not exist",
-    "details": "uri=/carrito/5"
-}    
-                                        </pre>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        
 
                         <tr>
                             <td>Session</td>
@@ -189,11 +100,11 @@
                                     <div class="card card-body">
 <pre>
 {
-    "timestamp": "2022-10-13T18:34:12.330+00:00",
-    "status": "NOT_FOUND",
-    "message": "ERROR: Resource not found: id 5 not exist",
-    "details": "uri=/carrito/5"
-}    
+"timestamp": "2022-10-14T16:07:49.551+00:00",
+"status": "UNAUTHORIZED",
+"message": "ERROR: Unauthorized access attempt: login or password incorrect",
+"details": "uri=/session"
+}
 </pre>
 </div>
 </div>
@@ -245,16 +156,21 @@
                                 
                             </td>
                             <td>
-                              
-                                <div class="collapse" id="collapseCarritoGetError3">
+                                <p>
+                                    <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetError5"
+                                        role="button" aria-expanded="false" aria-controls="collapseCarritoGetError  5">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseCarritoGetError5">
                                     <div class="card card-body">
 <pre>
 {
-    "timestamp": "2022-10-13T18:34:12.330+00:00",
-    "status": "NOT_FOUND",
-    "message": "ERROR: Resource not found: id 5 not exist",
-    "details": "uri=/carrito/5"
-}    
+    "timestamp": "2022-10-14T15:33:45.659+00:00",
+    "status": "UNAUTHORIZED",
+    "message": "ERROR: Unauthorized access attempt: no active session",
+    "details": "uri=/session"
+}
 </pre>
 </div>
 </div>
@@ -286,12 +202,7 @@
                                 <div class="collapse" id="collapseCarritoGetError4">
                                     <div class="card card-body">
 <pre>
-{
-    "timestamp": "2022-10-13T18:34:12.330+00:00",
-    "status": "NOT_FOUND",
-    "message": "ERROR: Resource not found: id 5 not exist",
-    "details": "uri=/carrito/5"
-}    
+   
 </pre>
 </div>
 </div>
