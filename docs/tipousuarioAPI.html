@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type of user API Specification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+
+
+
+<!-- jose/mario -->
+
+<div class="container" style="font-size: smaller;">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">Type of user.</h2>
+            <table class="table table-responsive table-bordered table-striped ">
+                <thead>
+                    <tr>
+                        <th>Entity</th>
+                        <th>Operation</th>
+                        <th>URL</th>
+                        <th>Method</th>
+                        <th>Arguments</th>
+                        <th>Payload</th>
+                        <th>Profile</th>
+                        <th>Description</th>
+                        <th>Security</th>
+                        <th>Process</th>
+                        <th>Response example</th>
+                        <th>Error response example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- inicio -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>get</td>
+                        <td>localhost:8082/tipousuario/{id}</td>
+                        <td>GET</td>
+                        <td>id</td>
+                        <td></td>
+                        <td>user (2)</td>
+                        <td>Get type of user , if user or admin.</td>
+                        <td></td>
+                        <td>Returns type of user from bd.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType9"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType9">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType9">
+                                <div class="card card-body">
+                                    <pre>
+                                                <pre>
+{
+    "id": 1,
+    "nombre": "administrador",
+    "usuarios": 1
+}                                                                  
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError9"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError9">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError9">
+                                <div class="card card-body">
+                                    <pre>
+{
+    "timestamp": "2022-10-13T22:58:01.059+00:00",
+    "status": "NOT_FOUND",
+    "message": "ERROR: Resource not found: id 100 not exist",
+    "details": "uri=/tipousuario/100"
+}       
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- fin -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>get</td>
+                        <td>localhost:8082/tipousuario/{id}</td>
+                        <td>GET</td>
+                        <td>id</td>
+                        <td></td>
+                        <td>administrador(1)</td>
+                        <td>Get type of user , if user or admin.</td>
+                        <td></td>
+                        <td>Returns type of user from bd.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType91"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType91">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType91">
+                                <div class="card card-body">
+                                    <pre>
+                                                <pre>
+{
+    "id": 1,
+    "nombre": "administrador",
+    "usuarios": 1
+}                                                                  
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError91"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError91">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError91">
+                                <div class="card card-body">
+                                    <pre>
+{
+    "timestamp": "2022-10-13T22:58:01.059+00:00",
+    "status": "NOT_FOUND",
+    "message": "ERROR: Resource not found: id 100 not exist",
+    "details": "uri=/tipousuario/100"
+}       
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 1 -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>all</td>
+                        <td>localhost:8082/tipousuario/all</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>administrador(1)</td>
+                        <td>Get all kind of user from db and info about em.</td>
+                        <td></td>
+                        <td>Obtains info about type of users from bd.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType8"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType8">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType8">
+                                <div class="card card-body">
+                                    <pre>
+[
+    {
+        "id": 1,
+        "nombre": "administrador",
+        "usuarios": 1
+    },
+    {   
+        "id": 2,
+        "nombre": "usuario",
+        "usuarios": 10
+    }
+]                                                                   
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError8"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError8">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError8">
+                                <div class="card card-body">
+                                    <pre>
+
+                                         </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 3 -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>all</td>
+                        <td>localhost:8082/tipousuario/all</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>user(2)</td>
+                        <td>Get all kind of user from db and info about em.</td>
+                        <td></td>
+                        <td>Obtains info about type of users from bd.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType87"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType87">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType87">
+                                <div class="card card-body">
+                                    <pre>
+[
+    {
+        "id": 1,
+        "nombre": "administrador",
+        "usuarios": 1
+    },
+    {   
+        "id": 2,
+        "nombre": "usuario",
+        "usuarios": 10
+    }
+]                                                                   
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError87"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError87">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError87">
+                                <div class="card card-body">
+                                    <pre>
+
+                                         </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 2 -->
+
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>count</td>
+                        <td>localhost:8082/carrito/count</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>user(2)</td>
+                        <td>Shows us that there can only be 2 types of users.</td>
+                        <td></td>
+                        <td>Returns how many type of users are there.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType7"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType7">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType7">
+                                <div class="card card-body">
+                                    {
+                                    <pre>
+2                                                                   
+}                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError7"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError7">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError7">
+                                <div class="card card-body">
+                                    <pre>
+
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 3 -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>count</td>
+                        <td>localhost:8082/carrito/count</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>administrador(1)</td>
+                        <td>Shows us that there can only be 2 types of users.</td>
+                        <td></td>
+                        <td>Returns how many type of users are there.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType77"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType77">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType77">
+                                <div class="card card-body">
+                                    {
+                                    <pre>
+2                                                                   
+}                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError77"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError77">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError77">
+                                <div class="card card-body">
+                                    <pre>
+
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>carrito</td>
+                        <td>getPage</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>user (2)</td>
+                        <td>Returns page of types of users in wildCart2021.</td>
+                        <td>Only admins can access here , users are unable to enter.</td>
+                        <td>The page containing the types of users and info are received all from the database.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType6"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType6">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType6">
+                                <div class="card card-body">
+                                    <pre>
+{
+    "timestamp": "2022-10-14T11:00:34.003+00:00",
+    "status": "UNAUTHORIZED",
+    "message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+    "details": "uri=/tipousuario"
+}
+                                                                 
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError6"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError6">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError6">
+                                <div class="card card-body">
+                                    <pre>
+
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 4 -->
+                    <!-- 3 -->
+                    <tr>
+                        <td>carrito</td>
+                        <td>getPage</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>GET</td>
+                        <td></td>
+                        <td></td>
+                        <td>administrador (1)</td>
+                        <td>Returns page of types of users in wildCart2021.</td>
+                        <td>Only admins can access here , users are unable to enter.</td>
+                        <td>The page containing the types of users and info are received all from the database.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType56"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType56">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType56">
+                                <div class="card card-body">
+                                    <pre>
+{
+    "content": [
+    {
+    "id": 1,
+    "nombre": "administrador",
+    "usuarios": 1
+    },
+    {
+    "id": 2,
+    "nombre": "usuario",
+    "usuarios": 10
+    }
+],
+        "pageable": {
+        "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+        },
+        "offset": 0,
+        "pageNumber": 0,
+        "pageSize": 11,
+        "paged": true,
+        "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 2,
+    "last": true,
+    "size": 11,
+    "number": 0,
+    "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+            },
+    "first": true,
+    "numberOfElements": 2,
+    "empty": false
+}                                    
+                                                    </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse"
+                                    href="#collapseCarritoGetTypeError46" role="button" aria-expanded="false"
+                                    aria-controls="collapseCarritoGetTypeError46">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError46">
+                                <div class="card card-body">
+                                    <pre>
+
+                </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 1 -->
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>update</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>PUT</td>
+                        <td></td>
+                        <td></td>
+                        <td>user (2)</td>
+                        <td>Put allows modify info of the types of user.</td>
+                        <td>Only admins can modify this info.</td>
+                        <td>The info of the types of users its all obtained from the db.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType34"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType34">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType34">
+                                <div class="card card-body">
+                                    <pre>
+{
+
+"content":[
+{
+"id":1,
+"nombre":"administrador",
+"usuarios":1
+},
+{
+"id":2,
+"nombre":"usuario",
+"usuarios":10
+}
+],
+"pageable":{
+"sort":{
+"empty":true,
+"sorted":false,
+"unsorted":true
+},
+"offset":0,
+"pageNumber":0,
+"pageSize":10,
+"paged":true,
+"unpaged":false
+},
+"totalPages":1,
+"totalElements":2,
+"last":true,
+"size":10,
+"number":0,
+"sort":{
+"empty":true,
+"sorted":false,
+"unsorted":true
+},
+"first":true,
+"numberOfElements":2,
+"empty":false
+                    
+}                                                                    
+                                                    </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse"
+                                    href="#collapseCarritoGetTypeError24" role="button" aria-expanded="false"
+                                    aria-controls="collapseCarritoGetTypeError24">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError24">
+                                <div class="card card-body">
+                                    <pre>
+                </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 5 -->
+
+
+
+
+                    <!--  -->
+
+
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>update</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>PUT</td>
+                        <td></td>
+                        <td></td>
+                        <td>administrador (1)</td>
+                        <td>Put allows modify info of the types of user.</td>
+                        <td>Only admins can modify this info.</td>
+                        <td>The info of the types of users its all obtained from the db.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType3"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType3">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType3">
+                                <div class="card card-body">
+                                    <pre>
+{
+
+    "content":[
+                {
+                    "id":1,
+                    "nombre":"administrador",
+                    "usuarios":1
+                },
+                {
+                    "id":2,
+                    "nombre":"usuario",
+                    "usuarios":10
+                }
+            ],
+            "pageable":{
+                "sort":{
+                        "empty":true,
+                        "sorted":false,
+                        "unsorted":true
+                    },
+                    "offset":0,
+                    "pageNumber":0,
+                    "pageSize":10,
+                    "paged":true,
+                    "unpaged":false
+                    },
+                    "totalPages":1,
+                    "totalElements":2,
+                    "last":true,
+                    "size":10,
+                    "number":0,
+                    "sort":{
+                            "empty":true,
+                            "sorted":false,
+                            "unsorted":true
+                    },
+                    "first":true,
+                    "numberOfElements":2,
+                    "empty":false
+                                                
+                }                                                                    
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError2"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError2">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError2">
+                                <div class="card card-body">
+                                    <pre>
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 5 -->
+
+
+
+
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>generate</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>POST</td>
+                        <td></td>
+                        <td></td>
+                        <td>administrador (1)</td>
+                        <td>Allows generate types of user.</td>
+                        <td>Only admins can do this..</td>
+                        <td>Generates new kind of user to the db.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType">
+                                <div class="card card-body">
+                                    <pre>
+{
+    2
+}                
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError">
+                                <div class="card card-body">
+                                    <pre>
+
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td>tipousuario</td>
+                        <td>generate</td>
+                        <td>localhost:8082/tipousuario/</td>
+                        <td>POST</td>
+                        <td></td>
+                        <td></td>
+                        <td>user (2)</td>
+                        <td>Allows generate types of user.</td>
+                        <td>Only admins can do this..</td>
+                        <td>Generates new kind of user to the db.</td>
+                        <td>
+
+                            <p>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoGetType90"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetType90">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetType90">
+                                <div class="card card-body">
+                                    <pre>
+
+                                                                                </pre>
+                                </div>
+                            </div>
+
+
+
+                        </td>
+                        <td>
+                            <p>
+                                <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapseCarritoGetTypeError90"
+                                    role="button" aria-expanded="false" aria-controls="collapseCarritoGetTypeError90">
+                                    JSON
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseCarritoGetTypeError90">
+                                <div class="card card-body">
+                                    <pre>
+
+{
+    "timestamp": "2022-10-14T15:01:54.561+00:00",
+    "status": "UNAUTHORIZED",
+    "message": "ERROR: Unauthorized access attempt: this request is only allowed to admin role",
+    "details": "uri=/tipousuario/generate"
+}
+                                            </pre>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
