@@ -214,7 +214,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>get page of carritos</td>
+                            <td>getPage</td>
                             <td>localhost:8082/carrito</td>
                             <td>GET</td>
                             <td></td>
@@ -235,7 +235,46 @@
                                         <pre>
 {
     "content": [
-        carritos...
+        {
+            "id": 20,
+            "cantidad": 1,
+            "precio": 0.0,
+            "producto": {
+                "id": 43,
+                "codigo": "63659I",
+                "nombre": "Cama de metal de color negro de tamaño extra grande",
+                "existencias": 2,
+                "precio": 95.89,
+                "imagen": 1,
+                "descuento": 14,
+                "tipoproducto": {
+                    "id": 4,
+                    "nombre": "Herramientas económicos para la restauracion",
+                    "productos": 9
+                },
+                "carritos": 1,
+                "compras": 0
+            },
+            "usuario": {
+                "id": 3,
+                "dni": "66417122E",
+                "nombre": "sergio",
+                "apellido1": "gil",
+                "apellido2": "aparici",
+                "login": "sergio_gil",
+                "email": "gil_sergio@daw.tk",
+                "descuento": 3,
+                "validado": false,
+                "activo": false,
+                "tipousuario": {
+                    "id": 2,
+                    "nombre": "usuario",
+                    "usuarios": 6
+                },
+                "carritos": 4,
+                "facturas": 0
+            }
+        }
     ],
     "pageable": {
         "sort": {
@@ -292,12 +331,20 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>save carrito</td>
+                            <td>update</td>
                             <td>localhost:8082/carrito</td>
                             <td>PUT</td>
                             <td>id from payload</td>
                             <td>
-                                <pre>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoUpdatePayload"
+                                        role="button" aria-expanded="false" aria-controls="collapseCarritoUpdatePayload">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseCarritoUpdatePayload">
+                                    <div class="card card-body">
+                                        <pre>
 {
     "id": 2025,
     "cantidad": 22,
@@ -309,7 +356,9 @@
         "id": 2
     }
 }
-                                </pre>
+                                        </pre>
+                                    </div>
+                                </div>
                             </td>
                             <td>admin (1)</td>
                             <td>Updates a carrito by his id</td>
@@ -354,12 +403,20 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>create carrito</td>
+                            <td>create</td>
                             <td>localhost:8082/carrito</td>
                             <td>POST</td>
                             <td></td>
                             <td>
-                                <pre>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCarritoCreatePayload"
+                                        role="button" aria-expanded="false" aria-controls="collapseCarritoCreatePayload">
+                                        JSON
+                                    </a>
+                                </p>
+                                <div class="collapse" id="collapseCarritoCreatePayload">
+                                    <div class="card card-body">
+                                        <pre>
 {
     "cantidad": 2,
     "precio": 1.11,
@@ -370,7 +427,9 @@
         "id": 2
     }
 }
-                                </pre>
+                                        </pre>
+                                    </div>
+                                </div>
                             </td>
                             <td>admin (1)</td>
                             <td>Creates a carrito</td>
@@ -416,7 +475,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>empty carrito</td>
+                            <td>delete</td>
                             <td>localhost:8082/carrito/{id}</td>
                             <td>DELETE</td>
                             <td>id</td>
@@ -465,7 +524,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>delete carrito</td>
+                            <td>delete</td>
                             <td>localhost:8082/carrito/{id}</td>
                             <td>DELETE</td>
                             <td>id</td>
@@ -514,7 +573,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>buy products from carrito</td>
+                            <td>buy</td>
                             <td>localhost:8082/buy</td>
                             <td>PUT</td>
                             <td></td>
@@ -528,7 +587,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>add a product to user's carrito</td>
+                            <td>add</td>
                             <td>localhost:8082/carrito/{id_product}/{amount}</td>
                             <td>POST</td>
                             <td>id_product, amount</td>
@@ -577,7 +636,7 @@
                         
                         <tr>
                             <td>carrito</td>
-                            <td>count carritos</td>
+                            <td>count</td>
                             <td>localhost:8082/carrito/count</td>
                             <td>GET</td>
                             <td></td>
@@ -626,7 +685,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>count carritos</td>
+                            <td>count</td>
                             <td>localhost:8082/carrito/count</td>
                             <td>GET</td>
                             <td></td>
@@ -673,7 +732,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>generate carrito</td>
+                            <td>generate</td>
                             <td>localhost:8082/carrito/generate/{amount}</td>
                             <td>POST</td>
                             <td>amount</td>
@@ -722,7 +781,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>delete products from carrito</td>
+                            <td>empty</td>
                             <td>localhost:8082/carrito/producto/{id_producto}</td>
                             <td>DELETE</td>
                             <td>id_producto</td>
@@ -769,7 +828,7 @@
                         </tr>
                         <tr>
                             <td>carrito</td>
-                            <td>delete a product with amount from carrito</td>
+                            <td>reduce</td>
                             <td>localhost:8082/carrito/producto/{id_producto}/{amount}</td>
                             <td>DELETE</td>
                             <td>id_producto, amount</td>
