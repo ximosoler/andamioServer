@@ -33,7 +33,7 @@
 package net.ausiasmarch.andamio.exception;
 
 import java.util.Date;
-import net.ausiasmarch.wildcart.bean.ErrorResponseBean;
+import net.ausiasmarch.andamio.bean.ErrorResponseBean;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

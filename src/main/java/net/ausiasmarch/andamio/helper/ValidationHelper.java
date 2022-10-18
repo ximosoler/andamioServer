@@ -34,7 +34,7 @@ package net.ausiasmarch.andamio.helper;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import net.ausiasmarch.wildcart.exception.ValidationException;
+import net.ausiasmarch.andamio.exception.ValidationException;
 
 public class ValidationHelper {
 

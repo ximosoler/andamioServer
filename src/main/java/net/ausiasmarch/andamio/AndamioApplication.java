@@ -30,23 +30,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.ausiasmarch.andamio.repository;
+package net.ausiasmarch.andamio;
 
-import net.ausiasmarch.wildcart.entity.FacturaEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public interface FacturaRepository extends JpaRepository<FacturaEntity, Long> {
+@SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "WILDCART API", version = "1.0", description = "WILDCART OPEN API Information"))
+public class AndamioApplication {
 
-    @Query(value = "SELECT * FROM factura WHERE id_usuario = ?1", nativeQuery = true)
-    Page<FacturaEntity> findByUsuarioId(Long id_usuario, Pageable pageable);
-
-    @Query(value = "SELECT * FROM factura WHERE (iva LIKE  %?1% OR fecha LIKE %?2%)", nativeQuery = true)
-    Page<FacturaEntity> findByIvaContainingOrFechaContaining(String iva, String fecha, Pageable oPageable);
-
-    @Query(value = "SELECT * FROM factura WHERE id_usuario = ?1 AND (iva LIKE  %?2% OR fecha LIKE %?3%)", nativeQuery = true)
-    Page<FacturaEntity> findByUsuarioIdAndIvaContainingOrFechaContaining(long id_usuario, String iva, String fecha, Pageable oPageable);
+    public static void main(String[] args) {
+        SpringApplication.run(AndamioApplication.class, args);
+    }
 
 }
