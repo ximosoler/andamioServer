@@ -43,6 +43,23 @@ CREATE TABLE `task` (
 
 -- --------------------------------------------------------
 
+--
+-- Estructura de tabla para la tabla `developer`
+--
+
+
+CREATE TABLE `developer` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `surname` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `last_name` VARCHAR(255)CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `administrador` tinyint(1) NOT NULL
+    PRIMARY KEY(id)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+    -- --------------------------------------------------------
+
 INSERT INTO project (id,project_code, project_description, url) VALUES
 (1,"aabb","Example1","https://example1/andamios.net"),
 (2,"aaabbb","Example2","https://example2/andamios.net"),
@@ -79,3 +96,15 @@ INSERT INTO `task` VALUES
 (8, 'My cat bigotillos',2,4,8),
 (9, 'The mexican',9,9,8),
 (10, 'Another one',1,1,1);
+
+INSERT INTO `developer` (`name`, `surname`, `second_name`, `email`, `administrador`) VALUES 
+('raimon', 'vilar', 'morera', 'test@email.com',  0), 
+('alvaro', 'talaya', 'romance', 'test@email.com', 0), 
+('mario', 'tomas', 'zanon', 'test@email.com', 0),
+('aitana', 'collado', 'soler', 'test@email.com', 0), 
+('carlos', 'merlos', 'pilar', 'test@email.com', 0), 
+('luis', 'perez', 'derecho', 'test@email.com', 0), 
+('estefania', 'boriko', 'izquierdo', 'test@email.com', 0),
+('quique', 'aroca', 'garcia', 'test@email.com', 0), 
+('adrian', 'duyang', 'liang', 'test@email.com', 0), 
+('rafael', 'aznar', 'caballero', 'test@email.com', 1);
