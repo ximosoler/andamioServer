@@ -28,6 +28,21 @@ CREATE TABLE `help`(
 
 -- ---------------------------------
 
+
+--
+-- Estructura de tabla para la tabla `task`
+--
+
+CREATE TABLE `task` (
+  `id` bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `id_project` bigint NOT NULL,
+  `priority` int NOT NULL DEFAULT '0',
+  `complexity` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
 INSERT INTO project (id,project_code, project_description, url) VALUES
 (1,"aabb","Example1","https://example1/andamios.net"),
 (2,"aaabbb","Example2","https://example2/andamios.net"),
@@ -51,3 +66,16 @@ INSERT INTO `help` (`id`, `id_resolution`, `id_developer`, `percentage`) VALUES
 (8, 8, 2, 3), 
 (9, 4, 7, 1), 
 (10, 10, 4, 10);
+
+
+INSERT INTO `task` VALUES
+(1, 'SQL db test',2,4,8),
+(2, 'Inno db is cool',4,3,9),
+(3, 'administrador SQL test',2,4,8),
+(4, 'MongoDB',2,4,8),
+(5, 'Hola mundo!',4,4,8),
+(6, 'Adios Mundo!',6,3,8),
+(7, 'Say hello!',9,5,8),
+(8, 'My cat bigotillos',2,4,8),
+(9, 'The mexican',9,9,8),
+(10, 'Another one',1,1,1);
