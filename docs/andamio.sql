@@ -211,6 +211,36 @@ INSERT INTO `usertype` (`id`, `name`) VALUES
 (3, 'Developer');
 
 --
+-- Estructura de tabla para la tabla `resolution`
+--
+
+CREATE TABLE IF NOT EXISTS `resolution` (
+  `id` bigint(20) NOT NULL,
+  `id_issue` bigint(20) NOT NULL,
+  `observations` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `integration_turn` bigint(20) DEFAULT NULL,
+  `integration_datetime` datetime DEFAULT NULL,
+  `pullrequest_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `value` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `resolution`
+--
+
+INSERT INTO `resolution` (`id`, `id_issue`, `observations`, `integration_turn`, `integration_datetime`, `pullrequest_url`, `value`) VALUES
+(1, 4, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 1, '2022-09-10 20:13:33', 'https://www.example.com/', 4),
+(2, 7, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 2, '2022-10-03 20:13:33', 'https://www.example.com/', 3),
+(3, 5, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3, '2022-11-03 20:13:33', 'https://www.example.com/', 5),
+(4, 1, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 4, '2022-12-25 20:13:33', 'https://www.example.com/', 2),
+(5, 3, NULL, NULL, NULL, NULL, 0),
+(6, 3, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 5, '2023-01-03 20:13:33', 'https://www.example.com/', 5),
+(7, 10, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 6, '2023-02-03 20:13:33', 'https://www.example.com/', 2),
+(8, 2, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 7, '2023-03-03 20:13:33', 'https://www.example.com/', 0),
+(9, 6, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 8, '2023-04-03 20:13:33', 'https://www.example.com/', 3),
+(10, 8, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 9, '2023-05-03 20:13:33', 'https://www.example.com/', 5);
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -245,6 +275,12 @@ ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `resolution`
+--
+ALTER TABLE `resolution`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -276,6 +312,12 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT de la tabla `task`
 --
 ALTER TABLE `task`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `resolution`
+--
+ALTER TABLE `resolution`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
