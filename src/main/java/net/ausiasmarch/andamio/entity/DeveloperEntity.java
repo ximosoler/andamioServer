@@ -2,6 +2,8 @@ package net.ausiasmarch.andamio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,13 +32,13 @@ public class DeveloperEntity implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
-    private final List<ProjectsEntity> projects;
+    private final List<ProjectEntity> projects;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
     private final List<IssueEntity> issues;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
-    private final List<ResolutionsEntity> resolutions;
+    private final List<ResolutionEntity> resolutions;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
     private final List<HelpEntity> helps;
@@ -47,7 +50,6 @@ public class DeveloperEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usertype")
     private UsertypeEntity usertype;
-
 
     public DeveloperEntity() {
         this.projects = new ArrayList<>();
@@ -149,17 +151,14 @@ public class DeveloperEntity implements Serializable {
     }
 
     public void setUsertype(UsertypeEntity usertype) {
-        this.Usertype = usertype;
+        this.usertype = usertype;
     }
 
-    @PreRemove
-    public void nullify() {
-        this.projects.forEach(c -> c.setDeveloperEntity(null));
-        this.issues.forEach(c -> c.setDeveloperEntity(null));
-        this.resolutions.forEach(c -> c.setDeveloperEntity(null));
-        this.helps.forEach(c -> c.setDeveloperEntity(null));
-    }
+//    @PreRemove
+//    public void nullify() {
+//        this.projects.forEach(c -> c.setDeveloperEntity(null));
+//        this.issues.forEach(c -> c.setDeveloperEntity(null));
+//        this.resolutions.forEach(c -> c.setDeveloperEntity(null));
+//        this.helps.forEach(c -> c.setDeveloperEntity(null));
+//    }
 }
-
-
-

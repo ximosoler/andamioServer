@@ -26,6 +26,10 @@ public class IssueEntity {
     @JoinColumn(name = "id_developer")
     private DeveloperEntity developer;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_task")
+    private TaskEntity task;
+
     public Long getId() {
         return id;
     }
@@ -58,5 +62,12 @@ public class IssueEntity {
         this.developer = developer;
     }
 
-    
+    public TaskEntity getTask() {
+        return task;
+    }
+
+    public void setTask(TaskEntity task) {
+        this.task = task;
+    }
+
 }

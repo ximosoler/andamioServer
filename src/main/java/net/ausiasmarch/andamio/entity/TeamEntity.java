@@ -1,4 +1,3 @@
-
 package net.ausiasmarch.andamio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,17 +23,22 @@ public class TeamEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+
     private Long id;
     private String name;
 
-    //@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-    private final List<ProjectEntity> project;
+    public TeamEntity() {
+        this.projects = new ArrayList<>();
+        this.developers = new ArrayList<>();
+    }
 
     //@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-    private final List<DeveloperEntity> developer;
+    private final List<ProjectEntity> projects;
+
+    //@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    private final List<DeveloperEntity> developers;
 
     public Long getId() {
         return id;
@@ -52,15 +56,12 @@ public class TeamEntity {
         this.name = name;
     }
 
-    public List<ProjectEntity> getProject() {
-        return project;
+    public int getProject() {
+        return projects.size();
     }
 
-    public List<DeveloperEntity> getDeveloper() {
-        return developer;
+    public int getDevelopers() {
+        return developers.size();
     }
 
-    
-
-   
 }
