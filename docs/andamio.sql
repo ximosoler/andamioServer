@@ -134,6 +134,38 @@ INSERT INTO `task` (`id`, `description`, `id_project`, `priority`, `complexity`)
 (9, 'The mexican', 9, 9, 8),
 (10, 'Another one', 1, 1, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `issue`
+--
+
+CREATE TABLE `issue`(
+    `id` bigint(20) NOT NULL,
+    `open_datetime` datetime,
+    `close_datetime` datetime,
+    `id_developer_author` bigint(20) NOT NULL,
+    `observations` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `id_developer_assigned` bigint(20) NOT NULL
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `issue`
+--
+
+INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer_author`, `observations`, `id_developer_assigned`) VALUES
+(1, '2022-09-25', '2022-10-02', 1, 'example observation 1', 2),
+(2, '2022-09-10', '2022-09-24', 2, 'example observation 2', 3),
+(3, '2022-10-01', '2022-10-05', 3, 'example observation 3', 4),
+(4, '2022-10-06', '2022-10-15', 4, 'example observation 4', 5),
+(5, '2022-10-15', '2022-10-18', 5, 'example observation 5', 6),
+(6, '2022-10-25', '2022-10-29', 6, 'example observation 6', 7),
+(7, '2022-11-11', '2022-11-15', 7, 'example observation 7', 8),
+(8, '2022-11-25', '2022-11-28', 8, 'example observation 8', 9),
+(9, '2022-12-02', '2022-12-20', 9, 'example observation 9', 10),
+(10, '2022-12-15', '2022-12-20', 10,'example observation 10', 2);
+
+
 --
 -- Índices para tablas volcadas
 --
@@ -163,6 +195,12 @@ ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `issue`
+--
+ALTER TABLE `issue`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -188,5 +226,12 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT de la tabla `task`
 --
 ALTER TABLE `task`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+
+--
+-- AUTO_INCREMENT de la tabla `task`
+--
+ALTER TABLE `issue`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
