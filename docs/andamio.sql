@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 20-10-2022 a las 16:20:40
+-- Tiempo de generación: 20-10-2022 a las 17:13:12
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -34,24 +34,26 @@ CREATE TABLE `developer` (
   `last_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `id_usertype` bigint(20) NOT NULL,
-  `id_team` bigint(20) NOT NULL
+  `id_team` bigint(20) NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `developer`
 --
 
-INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `id_usertype`, `id_team`) VALUES
-(1, 'raimon', 'vilar', 'morera', 'test@email.com', 0, 0),
-(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 0, 0),
-(3, 'mario', 'tomas', 'zanon', 'test@email.com', 0, 0),
-(4, 'aitana', 'collado', 'soler', 'test@email.com', 0, 0),
-(5, 'carlos', 'merlos', 'pilar', 'test@email.com', 0, 0),
-(6, 'luis', 'perez', 'derecho', 'test@email.com', 0, 0),
-(7, 'estefania', 'boriko', 'izquierdo', 'test@email.com', 0, 0),
-(8, 'quique', 'aroca', 'garcia', 'test@email.com', 0, 0),
-(9, 'adrian', 'duyang', 'liang', 'test@email.com', 0, 0),
-(10, 'rafael', 'aznar', 'caballero', 'test@email.com', 1, 0);
+INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `id_usertype`, `id_team`, `username`, `password`) VALUES
+(1, 'raimon', 'vilar', 'morera', 'test@email.com', 1, 1, 'raivi', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 2, 1, 'alta', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(3, 'mario', 'tomas', 'zanon', 'test@email.com', 3, 1, 'mato', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(4, 'aitana', 'collado', 'soler', 'test@email.com', 3, 1, 'aico', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(5, 'carlos', 'merlos', 'pilar', 'test@email.com', 3, 1, 'came', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(6, 'luis', 'perez', 'derecho', 'test@email.com', 3, 1, 'lupe', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(7, 'estefania', 'boriko', 'izquierdo', 'test@email.com', 3, 1, 'esbo', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(8, 'quique', 'aroca', 'garcia', 'test@email.com', 3, 1, 'quiga', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(9, 'adrian', 'duyang', 'liang', 'test@email.com', 3, 1, 'adu', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(10, 'rafael', 'aznar', 'caballero', 'test@email.com', 3, 1, 'raza', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6');
 
 -- --------------------------------------------------------
 
@@ -92,26 +94,26 @@ CREATE TABLE `issue` (
   `id` bigint(20) NOT NULL,
   `open_datetime` datetime DEFAULT NULL,
   `close_datetime` datetime DEFAULT NULL,
-  `id_developer_author` bigint(20) NOT NULL,
+  `id_developer` bigint(20) NOT NULL,
   `observations` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `id_developer_assigned` bigint(20) NOT NULL
+  `value` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `issue`
 --
 
-INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer_author`, `observations`, `id_developer_assigned`) VALUES
-(1, '2022-09-25 00:00:00', '2022-10-02 00:00:00', 1, 'example observation 1', 2),
-(2, '2022-09-10 00:00:00', '2022-09-24 00:00:00', 2, 'example observation 2', 3),
-(3, '2022-10-01 00:00:00', '2022-10-05 00:00:00', 3, 'example observation 3', 4),
-(4, '2022-10-06 00:00:00', '2022-10-15 00:00:00', 4, 'example observation 4', 5),
-(5, '2022-10-15 00:00:00', '2022-10-18 00:00:00', 5, 'example observation 5', 6),
-(6, '2022-10-25 00:00:00', '2022-10-29 00:00:00', 6, 'example observation 6', 7),
-(7, '2022-11-11 00:00:00', '2022-11-15 00:00:00', 7, 'example observation 7', 8),
-(8, '2022-11-25 00:00:00', '2022-11-28 00:00:00', 8, 'example observation 8', 9),
-(9, '2022-12-02 00:00:00', '2022-12-20 00:00:00', 9, 'example observation 9', 10),
-(10, '2022-12-15 00:00:00', '2022-12-20 00:00:00', 10, 'example observation 10', 2);
+INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer`, `observations`, `value`) VALUES
+(1, '2022-09-25 00:00:00', '2022-10-02 00:00:00', 1, 'example observation 1', 6),
+(2, '2022-09-10 00:00:00', '2022-09-24 00:00:00', 2, 'example observation 2', 4),
+(3, '2022-10-01 00:00:00', '2022-10-05 00:00:00', 3, 'example observation 3', 1),
+(4, '2022-10-06 00:00:00', '2022-10-15 00:00:00', 4, 'example observation 4', 9),
+(5, '2022-10-15 00:00:00', '2022-10-18 00:00:00', 5, 'example observation 5', 5),
+(6, '2022-10-25 00:00:00', '2022-10-29 00:00:00', 6, 'example observation 6', 2),
+(7, '2022-11-11 00:00:00', '2022-11-15 00:00:00', 7, 'example observation 7', 0),
+(8, '2022-11-25 00:00:00', '2022-11-28 00:00:00', 8, 'example observation 8', 3),
+(9, '2022-12-02 00:00:00', '2022-12-20 00:00:00', 9, 'example observation 9', 2),
+(10, '2022-12-15 00:00:00', '2022-12-20 00:00:00', 10, 'example observation 10', 3);
 
 -- --------------------------------------------------------
 
@@ -123,24 +125,58 @@ CREATE TABLE `project` (
   `id` bigint(20) NOT NULL,
   `project_code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `project_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `id_team` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `project`
 --
 
-INSERT INTO `project` (`id`, `project_code`, `project_description`, `url`) VALUES
-(1, 'aabb', 'Example1', 'https://example1/andamios.net'),
-(2, 'aaabbb', 'Example2', 'https://example2/andamios.net'),
-(3, 'ccdd', 'Example3', 'https://example3/andamios.net'),
-(4, 'cccddd', 'Example4', 'https://example4/andamios.net'),
-(5, 'eeff', 'Example5', 'https://example5/andamios.net'),
-(6, 'eeefff', 'Example6', 'https://example6/andamios.net'),
-(7, 'gghh', 'Example7', 'https://example7/andamios.net'),
-(8, 'ggghhh', 'Example8', 'https://example8/andamios.net'),
-(9, 'iijj', 'Example9', 'https://example9/andamios.net'),
-(10, 'iiijjj', 'Example10', 'https://example10/andamios.net');
+INSERT INTO `project` (`id`, `project_code`, `project_description`, `url`, `id_team`) VALUES
+(1, 'aabb', 'Example1', 'https://example1/andamios.net', 1),
+(2, 'aaabbb', 'Example2', 'https://example2/andamios.net', 1),
+(3, 'ccdd', 'Example3', 'https://example3/andamios.net', 1),
+(4, 'cccddd', 'Example4', 'https://example4/andamios.net', 1),
+(5, 'eeff', 'Example5', 'https://example5/andamios.net', 1),
+(6, 'eeefff', 'Example6', 'https://example6/andamios.net', 1),
+(7, 'gghh', 'Example7', 'https://example7/andamios.net', 1),
+(8, 'ggghhh', 'Example8', 'https://example8/andamios.net', 1),
+(9, 'iijj', 'Example9', 'https://example9/andamios.net', 1),
+(10, 'iiijjj', 'Example10', 'https://example10/andamios.net', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resolution`
+--
+
+CREATE TABLE `resolution` (
+  `id` bigint(20) NOT NULL,
+  `id_issue` bigint(20) NOT NULL,
+  `observations` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `integration_turn` bigint(20) DEFAULT NULL,
+  `integration_datetime` datetime DEFAULT NULL,
+  `pullrequest_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `value` tinyint(4) DEFAULT NULL,
+  `id_developer` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `resolution`
+--
+
+INSERT INTO `resolution` (`id`, `id_issue`, `observations`, `integration_turn`, `integration_datetime`, `pullrequest_url`, `value`, `id_developer`) VALUES
+(1, 4, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 1, '2022-09-10 20:13:33', 'https://www.example.com/', 4, 3),
+(2, 7, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 2, '2022-10-03 20:13:33', 'https://www.example.com/', 3, 4),
+(3, 5, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3, '2022-11-03 20:13:33', 'https://www.example.com/', 5, 5),
+(4, 1, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 4, '2022-12-25 20:13:33', 'https://www.example.com/', 2, 6),
+(5, 3, 'working in projects', 5, '2022-10-04 19:00:44', 'https://www.example.com/', 1, 7),
+(6, 3, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 9, NULL, NULL, 5, 8),
+(7, 10, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 6, '2023-02-03 20:13:33', 'https://www.example.com/', 2, 3),
+(8, 2, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 7, '2023-03-03 20:13:33', 'https://www.example.com/', 0, 4),
+(9, 6, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 8, '2023-04-03 20:13:33', 'https://www.example.com/', 3, 5),
+(10, 8, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 9, '2023-05-03 20:13:33', 'https://www.example.com/', 5, 6);
 
 -- --------------------------------------------------------
 
@@ -211,36 +247,6 @@ INSERT INTO `usertype` (`id`, `name`) VALUES
 (3, 'Developer');
 
 --
--- Estructura de tabla para la tabla `resolution`
---
-
-CREATE TABLE IF NOT EXISTS `resolution` (
-  `id` bigint(20) NOT NULL,
-  `id_issue` bigint(20) NOT NULL,
-  `observations` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `integration_turn` bigint(20) DEFAULT NULL,
-  `integration_datetime` datetime DEFAULT NULL,
-  `pullrequest_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `value` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `resolution`
---
-
-INSERT INTO `resolution` (`id`, `id_issue`, `observations`, `integration_turn`, `integration_datetime`, `pullrequest_url`, `value`) VALUES
-(1, 4, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 1, '2022-09-10 20:13:33', 'https://www.example.com/', 4),
-(2, 7, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 2, '2022-10-03 20:13:33', 'https://www.example.com/', 3),
-(3, 5, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3, '2022-11-03 20:13:33', 'https://www.example.com/', 5),
-(4, 1, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 4, '2022-12-25 20:13:33', 'https://www.example.com/', 2),
-(5, 3, NULL, NULL, NULL, NULL, 0),
-(6, 3, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 5, '2023-01-03 20:13:33', 'https://www.example.com/', 5),
-(7, 10, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 6, '2023-02-03 20:13:33', 'https://www.example.com/', 2),
-(8, 2, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 7, '2023-03-03 20:13:33', 'https://www.example.com/', 0),
-(9, 6, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 8, '2023-04-03 20:13:33', 'https://www.example.com/', 3),
-(10, 8, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 9, '2023-05-03 20:13:33', 'https://www.example.com/', 5);
-
---
 -- Índices para tablas volcadas
 --
 
@@ -269,15 +275,15 @@ ALTER TABLE `project`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `task`
---
-ALTER TABLE `task`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `resolution`
 --
 ALTER TABLE `resolution`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `task`
+--
+ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -309,15 +315,15 @@ ALTER TABLE `project`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT de la tabla `task`
---
-ALTER TABLE `task`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
 -- AUTO_INCREMENT de la tabla `resolution`
 --
 ALTER TABLE `resolution`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `task`
+--
+ALTER TABLE `task`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
