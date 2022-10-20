@@ -3,13 +3,19 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 20-10-2022 a las 15:30:15
+-- Tiempo de generación: 20-10-2022 a las 16:20:40
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `andamio`
@@ -27,24 +33,25 @@ CREATE TABLE `developer` (
   `surname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `administrador` tinyint(1) NOT NULL
+  `id_usertype` bigint(20) NOT NULL,
+  `id_team` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `developer`
 --
 
-INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `administrador`) VALUES
-(1, 'raimon', 'vilar', 'morera', 'test@email.com', 0),
-(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 0),
-(3, 'mario', 'tomas', 'zanon', 'test@email.com', 0),
-(4, 'aitana', 'collado', 'soler', 'test@email.com', 0),
-(5, 'carlos', 'merlos', 'pilar', 'test@email.com', 0),
-(6, 'luis', 'perez', 'derecho', 'test@email.com', 0),
-(7, 'estefania', 'boriko', 'izquierdo', 'test@email.com', 0),
-(8, 'quique', 'aroca', 'garcia', 'test@email.com', 0),
-(9, 'adrian', 'duyang', 'liang', 'test@email.com', 0),
-(10, 'rafael', 'aznar', 'caballero', 'test@email.com', 1);
+INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `id_usertype`, `id_team`) VALUES
+(1, 'raimon', 'vilar', 'morera', 'test@email.com', 0, 0),
+(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 0, 0),
+(3, 'mario', 'tomas', 'zanon', 'test@email.com', 0, 0),
+(4, 'aitana', 'collado', 'soler', 'test@email.com', 0, 0),
+(5, 'carlos', 'merlos', 'pilar', 'test@email.com', 0, 0),
+(6, 'luis', 'perez', 'derecho', 'test@email.com', 0, 0),
+(7, 'estefania', 'boriko', 'izquierdo', 'test@email.com', 0, 0),
+(8, 'quique', 'aroca', 'garcia', 'test@email.com', 0, 0),
+(9, 'adrian', 'duyang', 'liang', 'test@email.com', 0, 0),
+(10, 'rafael', 'aznar', 'caballero', 'test@email.com', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -74,6 +81,37 @@ INSERT INTO `help` (`id`, `id_resolution`, `id_developer`, `percentage`) VALUES
 (8, 8, 2, 3),
 (9, 4, 7, 1),
 (10, 10, 4, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `issue`
+--
+
+CREATE TABLE `issue` (
+  `id` bigint(20) NOT NULL,
+  `open_datetime` datetime DEFAULT NULL,
+  `close_datetime` datetime DEFAULT NULL,
+  `id_developer_author` bigint(20) NOT NULL,
+  `observations` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `id_developer_assigned` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `issue`
+--
+
+INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer_author`, `observations`, `id_developer_assigned`) VALUES
+(1, '2022-09-25 00:00:00', '2022-10-02 00:00:00', 1, 'example observation 1', 2),
+(2, '2022-09-10 00:00:00', '2022-09-24 00:00:00', 2, 'example observation 2', 3),
+(3, '2022-10-01 00:00:00', '2022-10-05 00:00:00', 3, 'example observation 3', 4),
+(4, '2022-10-06 00:00:00', '2022-10-15 00:00:00', 4, 'example observation 4', 5),
+(5, '2022-10-15 00:00:00', '2022-10-18 00:00:00', 5, 'example observation 5', 6),
+(6, '2022-10-25 00:00:00', '2022-10-29 00:00:00', 6, 'example observation 6', 7),
+(7, '2022-11-11 00:00:00', '2022-11-15 00:00:00', 7, 'example observation 7', 8),
+(8, '2022-11-25 00:00:00', '2022-11-28 00:00:00', 8, 'example observation 8', 9),
+(9, '2022-12-02 00:00:00', '2022-12-20 00:00:00', 9, 'example observation 9', 10),
+(10, '2022-12-15 00:00:00', '2022-12-20 00:00:00', 10, 'example observation 10', 2);
 
 -- --------------------------------------------------------
 
@@ -137,34 +175,40 @@ INSERT INTO `task` (`id`, `description`, `id_project`, `priority`, `complexity`)
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `issue`
+-- Estructura de tabla para la tabla `team`
 --
 
-CREATE TABLE `issue`(
-    `id` bigint(20) NOT NULL,
-    `open_datetime` datetime,
-    `close_datetime` datetime,
-    `id_developer_author` bigint(20) NOT NULL,
-    `observations` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-    `id_developer_assigned` bigint(20) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `team` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Volcado de datos para la tabla `issue`
+-- Volcado de datos para la tabla `team`
 --
 
-INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer_author`, `observations`, `id_developer_assigned`) VALUES
-(1, '2022-09-25', '2022-10-02', 1, 'example observation 1', 2),
-(2, '2022-09-10', '2022-09-24', 2, 'example observation 2', 3),
-(3, '2022-10-01', '2022-10-05', 3, 'example observation 3', 4),
-(4, '2022-10-06', '2022-10-15', 4, 'example observation 4', 5),
-(5, '2022-10-15', '2022-10-18', 5, 'example observation 5', 6),
-(6, '2022-10-25', '2022-10-29', 6, 'example observation 6', 7),
-(7, '2022-11-11', '2022-11-15', 7, 'example observation 7', 8),
-(8, '2022-11-25', '2022-11-28', 8, 'example observation 8', 9),
-(9, '2022-12-02', '2022-12-20', 9, 'example observation 9', 10),
-(10, '2022-12-15', '2022-12-20', 10,'example observation 10', 2);
+INSERT INTO `team` (`id`, `name`) VALUES
+(1, 'DAW2022-2023');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usertype`
+--
+
+CREATE TABLE `usertype` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `usertype`
+--
+
+INSERT INTO `usertype` (`id`, `name`) VALUES
+(1, 'Administrator'),
+(2, 'Reviewer'),
+(3, 'Developer');
 
 --
 -- Índices para tablas volcadas
@@ -183,6 +227,12 @@ ALTER TABLE `help`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `issue`
+--
+ALTER TABLE `issue`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `project`
 --
 ALTER TABLE `project`
@@ -192,12 +242,6 @@ ALTER TABLE `project`
 -- Indices de la tabla `task`
 --
 ALTER TABLE `task`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `issue`
---
-ALTER TABLE `issue`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -217,6 +261,12 @@ ALTER TABLE `help`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT de la tabla `issue`
+--
+ALTER TABLE `issue`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT de la tabla `project`
 --
 ALTER TABLE `project`
@@ -227,11 +277,8 @@ ALTER TABLE `project`
 --
 ALTER TABLE `task`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
-
---
--- AUTO_INCREMENT de la tabla `task`
---
-ALTER TABLE `issue`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
