@@ -89,4 +89,8 @@ public class TaskEntity implements Serializable {
 //        this.issues.forEach(c -> c.setTask(null));
 //    }
 
+public int getIssues() {
+    return issues.size();
+}
+
 }
