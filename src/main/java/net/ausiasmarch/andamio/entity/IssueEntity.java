@@ -30,6 +30,8 @@ public class IssueEntity {
     @JoinColumn(name = "id_task")
     private TaskEntity task;
 
+    private int value;
+
     public Long getId() {
         return id;
     }
@@ -66,8 +68,16 @@ public class IssueEntity {
         return task;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public void setTask(TaskEntity task) {
         this.task = task;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
 }
