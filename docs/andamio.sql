@@ -92,8 +92,8 @@ INSERT INTO `help` (`id`, `id_resolution`, `id_developer`, `percentage`) VALUES
 
 CREATE TABLE `issue` (
   `id` bigint(20) NOT NULL,
-  `open_datetime` datetime DEFAULT NULL,
-  `close_datetime` datetime DEFAULT NULL,
+  `open_datetime` datetime DEFAULT NULL,  
+  `id_task` bigint(20) NOT NULL,
   `id_developer` bigint(20) NOT NULL,
   `observations` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `value` int(2) NOT NULL
@@ -103,17 +103,17 @@ CREATE TABLE `issue` (
 -- Volcado de datos para la tabla `issue`
 --
 
-INSERT INTO `issue` (`id`, `open_datetime`, `close_datetime`, `id_developer`, `observations`, `value`) VALUES
-(1, '2022-09-25 00:00:00', '2022-10-02 00:00:00', 1, 'example observation 1', 6),
-(2, '2022-09-10 00:00:00', '2022-09-24 00:00:00', 2, 'example observation 2', 4),
-(3, '2022-10-01 00:00:00', '2022-10-05 00:00:00', 3, 'example observation 3', 1),
-(4, '2022-10-06 00:00:00', '2022-10-15 00:00:00', 4, 'example observation 4', 9),
-(5, '2022-10-15 00:00:00', '2022-10-18 00:00:00', 5, 'example observation 5', 5),
-(6, '2022-10-25 00:00:00', '2022-10-29 00:00:00', 6, 'example observation 6', 2),
-(7, '2022-11-11 00:00:00', '2022-11-15 00:00:00', 7, 'example observation 7', 0),
-(8, '2022-11-25 00:00:00', '2022-11-28 00:00:00', 8, 'example observation 8', 3),
-(9, '2022-12-02 00:00:00', '2022-12-20 00:00:00', 9, 'example observation 9', 2),
-(10, '2022-12-15 00:00:00', '2022-12-20 00:00:00', 10, 'example observation 10', 3);
+INSERT INTO `issue` (`id`, `open_datetime`, `id_task`, `id_developer`, `observations`, `value`) VALUES
+(1, '2022-09-25 00:00:00', 2, 1, 'example observation 1', 6),
+(2, '2022-09-10 00:00:00', 2, 2, 'example observation 2', 4),
+(3, '2022-10-01 00:00:00', 2, 3, 'example observation 3', 1),
+(4, '2022-10-06 00:00:00', 3, 4, 'example observation 4', 9),
+(5, '2022-10-15 00:00:00', 4, 5, 'example observation 5', 5),
+(6, '2022-10-25 00:00:00', 6, 6, 'example observation 6', 2),
+(7, '2022-11-11 00:00:00', 3, 7, 'example observation 7', 0),
+(8, '2022-11-25 00:00:00', 8, 8, 'example observation 8', 3),
+(9, '2022-12-02 00:00:00', 9, 9, 'example observation 9', 2),
+(10, '2022-12-15 00:00:00', 2, 10, 'example observation 10', 3);
 
 -- --------------------------------------------------------
 
