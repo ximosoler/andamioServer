@@ -55,16 +55,20 @@ public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+
     private Long id;
 
     private String project_code;
     private String project_description;
     private String url;
 
+    public ProjectEntity() {
+        this.tasks = new ArrayList<>();
+    }
+
     //@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    private final List<TaskEntity> task;
+    private final List<TaskEntity> tasks;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_team")
@@ -103,7 +107,7 @@ public class ProjectEntity {
     }
 
     public List<TaskEntity> getTask() {
-        return task;
+        return tasks;
     }
 
     public TeamEntity getTeam() {
@@ -114,7 +118,4 @@ public class ProjectEntity {
         this.team = team;
     }
 
-    
-
-   
 }
