@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AndamioApplication<andamioServer>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "net.ausiasmarch.andamio.AndamioApplication",
+            "projectName": "andamioServer",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

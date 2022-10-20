@@ -118,4 +118,10 @@ public class ProjectEntity {
         this.team = team;
     }
 
+
+
+public int getTasks() {
+    return tasks.size();
+}
+
 }
