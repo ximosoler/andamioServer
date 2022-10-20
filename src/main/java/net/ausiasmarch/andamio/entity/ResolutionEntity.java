@@ -83,8 +83,11 @@ public class ResolutionEntity {
     private final List<HelpEntity> helps;
 
 
-    public ResolutionEntity(List<HelpEntity> helps) {
-        this.helps = helps;
+    /**
+     * 
+     */
+    public ResolutionEntity() {
+        this.helps = new ArrayList<>();
     }
 
     public Long getId() {
