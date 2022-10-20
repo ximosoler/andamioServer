@@ -88,7 +88,7 @@ public class DeveloperEntity implements Serializable {
     }
 
     public String getLast_name() {
-        return surname;
+        return last_name;
     }
 
     public void setLast_name(String last_name) {
