@@ -32,6 +32,19 @@ public class IssueEntity {
 
     private int value;
 
+    public IssueEntity() {
+
+    }
+
+    public IssueEntity(Long id, LocalDateTime open_datetime, String observations, DeveloperEntity developer, TaskEntity task, int value) {
+        this.id = id;
+        this.open_datetime = open_datetime;
+        this.observations = observations;
+        this.developer = developer;
+        this.task = task;
+        this.value = value;
+    }
+
     public Long getId() {
         return id;
     }
