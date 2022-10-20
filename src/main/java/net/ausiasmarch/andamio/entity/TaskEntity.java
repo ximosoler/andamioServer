@@ -24,8 +24,7 @@ public class TaskEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String description;
-    private int id_project;
+    private String description;    
     private int priority;
     private int complexity;
 
@@ -59,14 +58,6 @@ public class TaskEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getId_project() {
-        return id_project;
-    }
-
-    public void setId_project(int id_project) {
-        this.id_project = id_project;
     }
 
     public int getPriority() {
