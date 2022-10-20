@@ -82,7 +82,9 @@ public class ResolutionEntity {
     @OneToMany(mappedBy = "resolution", fetch = FetchType.LAZY)
     private final List<HelpEntity> helps;
 
-    public ResolutionEntity() {
+
+    public ResolutionEntity(List<HelpEntity> helps) {
+        this.helps = helps;
     }
 
     public Long getId() {
