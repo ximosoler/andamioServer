@@ -27,6 +27,10 @@ public class TeamEntity {
     private Long id;
     private String name;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_developer")
+    private DeveloperEntity developer;
+
     public TeamEntity() {
         this.projects = new ArrayList<>();
         this.developers = new ArrayList<>();
@@ -62,6 +66,14 @@ public class TeamEntity {
 
     public int getDevelopers() {
         return developers.size();
+    }
+
+    public Long getDeveloper() {
+        return developer.getId();
+    }
+
+    public void setDeveloper(DeveloperEntity developer) {
+        this.developer = developer;
     }
 
 }

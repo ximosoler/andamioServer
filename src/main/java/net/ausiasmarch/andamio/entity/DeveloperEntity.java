@@ -35,6 +35,9 @@ public class DeveloperEntity implements Serializable {
     private final List<IssueEntity> issues;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
+    private final List<TeamEntity> teams;
+
+    @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
     private final List<ResolutionEntity> resolutions;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
@@ -51,6 +54,7 @@ public class DeveloperEntity implements Serializable {
     public DeveloperEntity() {
 
         this.issues = new ArrayList<>();
+        this.teams = new ArrayList<>();
         this.resolutions = new ArrayList<>();
         this.helps = new ArrayList<>();
     }
@@ -58,6 +62,7 @@ public class DeveloperEntity implements Serializable {
     public DeveloperEntity(Long id) {
 
         this.issues = new ArrayList<>();
+        this.teams = new ArrayList<>();
         this.resolutions = new ArrayList<>();
         this.helps = new ArrayList<>();
         this.id = id;
@@ -121,6 +126,10 @@ public class DeveloperEntity implements Serializable {
 
     public int getIssues() {
         return issues.size();
+    }
+
+    public int getTeams() {
+        return teams.size();
     }
 
     public int getResolutions() {
