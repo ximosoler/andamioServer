@@ -1,6 +1,8 @@
 package net.ausiasmarch.andamio.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.OneToMany;
 
 @Table(name = "issue")
 @Entity
@@ -30,10 +33,13 @@ public class IssueEntity {
     @JoinColumn(name = "id_task")
     private TaskEntity task;
 
+    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY)
+    private final List<ResolutionEntity> resolutions;
+
     private int value;
 
     public IssueEntity() {
-
+        this.resolutions = new ArrayList<>();
     }
 
     public IssueEntity(Long id, LocalDateTime open_datetime, String observations, DeveloperEntity developer, TaskEntity task, int value) {
@@ -43,6 +49,7 @@ public class IssueEntity {
         this.developer = developer;
         this.task = task;
         this.value = value;
+        this.resolutions = new ArrayList<>();
     }
 
     public Long getId() {
@@ -83,6 +90,10 @@ public class IssueEntity {
 
     public int getValue() {
         return value;
+    }
+
+    public int getResolutions() {
+        return this.resolutions.size();
     }
 
     public void setTask(TaskEntity task) {
