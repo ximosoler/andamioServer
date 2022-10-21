@@ -145,10 +145,6 @@ public class ResolutionEntity {
     public void setValue(int value) {
         this.value = value;
     }
-
-    public List<HelpEntity> getHelps() {
-        return helps;
-    }
     
     public DeveloperEntity getDeveloper() {
         return developer;
