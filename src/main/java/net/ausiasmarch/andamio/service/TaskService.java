@@ -19,5 +19,9 @@ public class TaskService {
         return oTaskRepository.getById(id);
     }
 
+    public Long count() {
+        return oTaskRepository.count();
+    }
+
 
 }

@@ -26,5 +26,10 @@ public class TaskController {
 
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oTaskService.count(), HttpStatus.OK);
+    }
+
 
 }
