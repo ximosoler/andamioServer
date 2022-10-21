@@ -32,9 +32,7 @@
  */
 package net.ausiasmarch.andamio.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -44,7 +42,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 
@@ -106,10 +103,6 @@ public class ProjectEntity {
         this.url = url;
     }
 
-    public List<TaskEntity> getTask() {
-        return tasks;
-    }
-
     public TeamEntity getTeam() {
         return team;
     }
@@ -118,10 +111,8 @@ public class ProjectEntity {
         this.team = team;
     }
 
-
-
-public int getTasks() {
-    return tasks.size();
-}
+    public int getTasks() {
+        return tasks.size();
+    }
 
 }
