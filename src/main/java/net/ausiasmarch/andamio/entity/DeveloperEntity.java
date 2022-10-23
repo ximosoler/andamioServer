@@ -1,6 +1,8 @@
 package net.ausiasmarch.andamio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,15 @@ public class DeveloperEntity implements Serializable {
     private String last_name;
     private String email;
     private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
     private final List<IssueEntity> issues;
+
+    @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
+    private final List<TeamEntity> teams;
 
     @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
     private final List<ResolutionEntity> resolutions;
@@ -51,6 +58,7 @@ public class DeveloperEntity implements Serializable {
     public DeveloperEntity() {
 
         this.issues = new ArrayList<>();
+        this.teams = new ArrayList<>();
         this.resolutions = new ArrayList<>();
         this.helps = new ArrayList<>();
     }
@@ -58,6 +66,7 @@ public class DeveloperEntity implements Serializable {
     public DeveloperEntity(Long id) {
 
         this.issues = new ArrayList<>();
+        this.teams = new ArrayList<>();
         this.resolutions = new ArrayList<>();
         this.helps = new ArrayList<>();
         this.id = id;
@@ -121,6 +130,10 @@ public class DeveloperEntity implements Serializable {
 
     public int getIssues() {
         return issues.size();
+    }
+
+    public int getTeams() {
+        return teams.size();
     }
 
     public int getResolutions() {
