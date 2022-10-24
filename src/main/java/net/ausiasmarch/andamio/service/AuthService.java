@@ -47,7 +47,7 @@ public class AuthService {
     }
 
     public boolean isAdmin() {
-        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("usuario");
+        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("developer");
         if (oDeveloperSessionEntity != null) {
             if (oDeveloperSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
                 return true;
@@ -57,7 +57,7 @@ public class AuthService {
     }
 
     public void OnlyAdmins() {
-        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("usuario");
+        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("developer");
         if (oDeveloperSessionEntity == null) {
             throw new UnauthorizedException("this request is only allowed to admin role");
         } else {
