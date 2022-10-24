@@ -42,7 +42,7 @@
                             <td>localhost:8082/team/5</td>
                             <td>GET</td>
                             <td>reviewer</td>
-                            <td>Returns team ID, team name and amount of developers</td>
+                            <td>Returns team ID, team name and amount of developers if reviewer owns said team</td>
                         </tr>
                         <tr>
                             <td>team</td>
@@ -90,14 +90,14 @@
                             <td>localhost:8082/team/</td>
                             <td>PUT</td>
                             <td>reviewer</td>
-                            <td>Updates team's name. Request body contains team's ID and updated name</td>
+                            <td>Updates team's name if team is owned by reviewer. Request body contains team's ID and updated name</td>
                         </tr>
                         <tr>
                             <td>team</td>
                             <td>put</td>
                             <td>localhost:8082/team/</td>
                             <td>PUT</td>
-                            <td>admin</td>
+                            <td>user</td>
                             <td>Access denied</td>
                         </tr>
                         <tr>
@@ -114,14 +114,14 @@
                             <td>localhost:8082/team/5</td>
                             <td>DELETE</td>
                             <td>reviewer</td>
-                            <td>Deletes team by nullifying id_team from develpers that are in said team</td>
+                            <td>Deletes team if owned. Nullifies id_team from develpers that are in said team</td>
                         </tr>
                         <tr>
                             <td>team</td>
                             <td>delete</td>
                             <td>localhost:8082/team/5</td>
                             <td>DELETE</td>
-                            <td>admin</td>
+                            <td>user</td>
                             <td>Access denied</td>
                         </tr>
                     </tbody>
