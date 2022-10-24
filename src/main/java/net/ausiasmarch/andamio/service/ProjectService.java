@@ -12,6 +12,9 @@ public class ProjectService {
     private final ProjectRepository oProjectRepository;
 
     @Autowired
+    AuthService oAuthService;
+
+    @Autowired
     public ProjectService(ProjectRepository oProjectRepository) {
         this.oProjectRepository = oProjectRepository;
     }
@@ -20,6 +23,11 @@ public class ProjectService {
         return oProjectRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Project with id: " + id + " not found"));
 
+    }
+
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oProjectRepository.count();
     }
     
 }
