@@ -1,4 +1,3 @@
-
 package net.ausiasmarch.andamio.service;
 
 import javax.servlet.http.HttpSession;
@@ -48,16 +47,27 @@ public class AuthService {
     }
 
     public boolean isAdmin() {
-        DeveloperEntity oUsuarioSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity != null) {
-            if (oUsuarioSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
+        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("usuario");
+        if (oDeveloperSessionEntity != null) {
+            if (oDeveloperSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
                 return true;
             }
         }
         return false;
     }
-    
-/*    
+
+    public void OnlyAdmins() {
+        DeveloperEntity oDeveloperSessionEntity = (DeveloperEntity) oHttpSession.getAttribute("usuario");
+        if (oDeveloperSessionEntity == null) {
+            throw new UnauthorizedException("this request is only allowed to admin role");
+        } else {
+            if (!oDeveloperSessionEntity.getUsertype().getId().equals(UsertypeHelper.ADMIN.getUsertype())) {
+                throw new UnauthorizedException("this request is only allowed to admin role");
+            }
+        }
+    }
+
+    /*    
     
     public boolean isLoggedIn() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
@@ -88,16 +98,6 @@ public class AuthService {
         return false;
     }
 
-    public void OnlyAdmins() {
-        UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
-        if (oUsuarioSessionEntity == null) {
-            throw new UnauthorizedException("this request is only allowed to admin role");
-        } else {
-            if (!oUsuarioSessionEntity.getTipousuario().getId().equals(TipoUsuarioHelper.ADMIN)) {
-                throw new UnauthorizedException("this request is only allowed to admin role");
-            }
-        }
-    }
 
     public void OnlyUsers() {
         UsuarioEntity oUsuarioSessionEntity = (UsuarioEntity) oHttpSession.getAttribute("usuario");
@@ -132,6 +132,5 @@ public class AuthService {
         }
     }
 
-*/
-
+     */
 }
