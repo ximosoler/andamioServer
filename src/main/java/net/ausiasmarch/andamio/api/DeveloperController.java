@@ -1,11 +1,7 @@
 package net.ausiasmarch.andamio.api;
 
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import net.ausiasmarch.andamio.entity.DeveloperEntity;
 import net.ausiasmarch.andamio.service.DeveloperService;
@@ -35,8 +31,9 @@ public class DeveloperController {
 
     @GetMapping
     public ResponseEntity<Page<DeveloperEntity>> getPageByTeam(
-            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-            @RequestParam(value = "team", required = false) Long id_team) {
-        return new ResponseEntity<>(oDeveloperService.getPageByTeam(id_team, oPageable), HttpStatus.OK);
+            @RequestParam(value = "team", required = false) Long id_team,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
+        return new ResponseEntity<>(oDeveloperService.getPageByTeam(id_team, page, size), HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package net.ausiasmarch.andamio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,15 @@ public class DeveloperService {
                 .orElseThrow(() -> new ResourceNotFoundException("Developer with id: " + id + " not found"));
     }
 
-    public Page<DeveloperEntity> getPageByTeam(Long id_team, Pageable oPageable) {
+    public Page<DeveloperEntity> getPageByTeam(Long id_team, int page, int size) {
         oAuthService.OnlyAdmins();
-        return id_team == null
-                ? oDeveloperRepository.findAll(oPageable)
-                : oDeveloperRepository.findByTeamId(id_team, oPageable);
+        Pageable oPageable = PageRequest.of(page, size);
+
+        if (id_team == null) {
+            return oDeveloperRepository.findAll(oPageable);
+        } else {
+            return oDeveloperRepository.findByTeamId(id_team, oPageable);
+        }
     }
 }
 
