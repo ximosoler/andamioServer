@@ -43,10 +43,22 @@
                             <td>get</td>
                             <td>localhost:8082/usertype/{id}</td>
                             <td>GET</td>
-                            <td>user-reviewer (2,3)</td>
+                            <td>reviewer (3)</td>
                             
                             <td>Returns type of user from bd , currently there are only 3 types of user , administrador
-                                ,reviewer, usuario, but user and reviewer shouldnt do that.</td>
+                                ,reviewer, usuario, but reviewer shouldnt do that.</td>
+                           
+                        </tr>
+
+                        <tr>
+                            <td>usertype</td>
+                            <td>get</td>
+                            <td>localhost:8082/usertype/{id}</td>
+                            <td>GET</td>
+                            <td>user (2)</td>
+                            
+                            <td>Returns type of user from bd , currently there are only 3 types of user , administrador
+                                ,reviewer, usuario, but user shouldnt do that.</td>
                            
                         </tr>
 
@@ -77,8 +89,18 @@
                             <td>all</td>
                             <td>localhost:8082/usertype/all</td>
                             <td>GET</td>
-                            <td>user-reviewer(2,3)</td>
-                            <td>Obtains info about type of users from bd, but user and reviewer shouldnt do that.</td>
+                            <td>user(2)</td>
+                            <td>Obtains info about type of users from bd, but user shouldnt do that.</td>
+                           
+                        </tr>
+
+                        <tr>
+                            <td>usertype</td>
+                            <td>all</td>
+                            <td>localhost:8082/usertype/all</td>
+                            <td>GET</td>
+                            <td>reviewer(3)</td>
+                            <td>Obtains info about type of users from bd, but reviewer shouldnt do that.</td>
                            
                         </tr>
                         <!-- 2 -->
@@ -89,8 +111,18 @@
                             <td>getPage</td>
                             <td>localhost:8082/usertype/</td>
                             <td>GET</td>
-                            <td>user-reviewer (2,3)</td>
-                            <td>The page containing the types of users and info are received all from the database but user and reviewer shouldnt do that.</td>
+                            <td>user (2)</td>
+                            <td>The page containing the types of users and info are received all from the database but user shouldnt do that.</td>
+                          
+                        </tr>
+
+                        <tr>
+                            <td>usertype</td>
+                            <td>getPage</td>
+                            <td>localhost:8082/usertype/</td>
+                            <td>GET</td>
+                            <td>reviewer (3)</td>
+                            <td>The page containing the types of users and info are received all from the database but reviewer shouldnt do that.</td>
                           
                         </tr>
                         <!-- 4 -->
@@ -123,8 +155,18 @@
                             <td>generate</td>
                             <td>localhost:8082/usertype/</td>
                             <td>POST</td>
-                            <td>user-reviewer (2,3)</td>
-                            <td>Generates new kind of user to the db but user and reviewer shouldnt do that.</td>
+                            <td>user (2)</td>
+                            <td>Generates new kind of user to the db but user shouldnt do that.</td>
+                           
+                        </tr>
+
+                        <tr>
+                            <td>usertype</td>
+                            <td>generate</td>
+                            <td>localhost:8082/usertype/</td>
+                            <td>POST</td>
+                            <td>reviewer (3)</td>
+                            <td>Generates new kind of user to the db but reviewer shouldnt do that.</td>
                            
                         </tr>
 
