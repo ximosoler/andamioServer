@@ -3,19 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 20-10-2022 a las 17:13:12
+-- Tiempo de generación: 21-10-2022 a las 17:27:48
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `andamio`
@@ -45,7 +39,7 @@ CREATE TABLE `developer` (
 
 INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `id_usertype`, `id_team`, `username`, `password`) VALUES
 (1, 'raimon', 'vilar', 'morera', 'test@email.com', 1, 1, 'raivi', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
-(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 2, 1, 'alta', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
+(2, 'alvaro', 'talaya', 'romance', 'test@email.com', 3, 1, 'alta', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
 (3, 'mario', 'tomas', 'zanon', 'test@email.com', 3, 1, 'mato', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
 (4, 'aitana', 'collado', 'soler', 'test@email.com', 3, 1, 'aico', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
 (5, 'carlos', 'merlos', 'pilar', 'test@email.com', 3, 1, 'came', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
@@ -53,7 +47,7 @@ INSERT INTO `developer` (`id`, `name`, `surname`, `last_name`, `email`, `id_user
 (7, 'estefania', 'boriko', 'izquierdo', 'test@email.com', 3, 1, 'esbo', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
 (8, 'quique', 'aroca', 'garcia', 'test@email.com', 3, 1, 'quiga', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
 (9, 'adrian', 'duyang', 'liang', 'test@email.com', 3, 1, 'adu', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6'),
-(10, 'rafael', 'aznar', 'caballero', 'test@email.com', 3, 1, 'raza', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6');
+(10, 'rafael', 'aznar', 'aparici', 'test@email.com', 2, 1, 'raza', '73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6');
 
 -- --------------------------------------------------------
 
@@ -92,7 +86,7 @@ INSERT INTO `help` (`id`, `id_resolution`, `id_developer`, `percentage`) VALUES
 
 CREATE TABLE `issue` (
   `id` bigint(20) NOT NULL,
-  `open_datetime` datetime DEFAULT NULL,  
+  `open_datetime` datetime DEFAULT NULL,
   `id_task` bigint(20) NOT NULL,
   `id_developer` bigint(20) NOT NULL,
   `observations` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -216,15 +210,16 @@ INSERT INTO `task` (`id`, `description`, `id_project`, `priority`, `complexity`)
 
 CREATE TABLE `team` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `id_developer` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `team`
 --
 
-INSERT INTO `team` (`id`, `name`) VALUES
-(1, 'DAW2022-2023');
+INSERT INTO `team` (`id`, `name`, `id_developer`) VALUES
+(1, 'DAW2022-2023', 10);
 
 -- --------------------------------------------------------
 
@@ -326,7 +321,3 @@ ALTER TABLE `resolution`
 ALTER TABLE `task`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
