@@ -38,14 +38,18 @@ public class DeveloperService {
                 .orElseThrow(() -> new ResourceNotFoundException("Developer with id: " + id + " not found"));
     }
 
-    public Page<DeveloperEntity> getPageByTeam(Long id_team, int page, int size) {
+    public Page<DeveloperEntity> getPage(Long id_team, Long id_usertype, int page, int size) {
         oAuthService.OnlyAdmins();
         Pageable oPageable = PageRequest.of(page, size);
 
-        if (id_team == null) {
+        if (id_team == null && id_usertype == null) {
             return oDeveloperRepository.findAll(oPageable);
-        } else {
+        } else if (id_team == null) {
+            return oDeveloperRepository.findByUsertypeId(id_usertype, oPageable);
+        } else if (id_usertype == null) {
             return oDeveloperRepository.findByTeamId(id_team, oPageable);
+        } else {
+            return oDeveloperRepository.findByTeamIdAndUsertypeId(id_team, id_usertype, oPageable);
         }
     }
 
