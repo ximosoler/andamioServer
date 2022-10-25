@@ -21,7 +21,7 @@ public class AuthService {
 
     public DeveloperEntity login(@RequestBody DeveloperBean oDeveloperBean) {
         if (oDeveloperBean.getPassword() != null) {
-            DeveloperEntity oDeveloperEntity = oDeveloperRepository.findByUsernameAndPassword(oDeveloperBean.getLogin(), oDeveloperBean.getPassword());
+            DeveloperEntity oDeveloperEntity = oDeveloperRepository.findByUsernameAndPassword(oDeveloperBean.getUsername(), oDeveloperBean.getPassword());
             if (oDeveloperEntity != null) {
                 oHttpSession.setAttribute("developer", oDeveloperEntity);
                 return oDeveloperEntity;
