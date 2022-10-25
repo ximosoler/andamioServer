@@ -48,5 +48,10 @@ public class TeamService {
         return oPage;
     }
 
+    public Long create(TeamEntity oNewTeamEntity) {
+        oAuthService.OnlyAdmins();
+        oNewTeamEntity.setId(0L);
+        return oTeamRepository.save(oNewTeamEntity).getId();
+    }
 }
 

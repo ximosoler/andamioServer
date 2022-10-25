@@ -282,6 +282,11 @@ ALTER TABLE `task`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `team`
+--
+ALTER TABLE `team`
+  ADD PRIMARY KEY (`id`);
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -296,6 +301,12 @@ ALTER TABLE `developer`
 --
 ALTER TABLE `help`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `team`
+--
+ALTER TABLE `team`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `issue`
