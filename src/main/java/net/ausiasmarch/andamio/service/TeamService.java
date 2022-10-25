@@ -4,9 +4,9 @@ package net.ausiasmarch.andamio.service;
 import net.ausiasmarch.andamio.entity.TeamEntity;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.TeamRepository;
-
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,11 +20,10 @@ public class TeamService {
         this.oTeamRepository = oTeamRepository;
         this.oAuthService = oAuthService;
     }
-
+  
     public TeamEntity get(Long id) {
         return oTeamRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Team with id: " + id + " not found"));
-
     }
 
     public void validate(Long id) {
@@ -40,4 +39,13 @@ public class TeamService {
         return id;
     }
 
+    public Page<TeamEntity> getPage(Pageable oPageable) {
+        Page<TeamEntity> oPage = null;
+        if (oAuthService.isAdmin()) {
+            oPage= oTeamRepository.findAll(oPageable);
+        } 
+        return oPage;
+    }
+
 }
+
