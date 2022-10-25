@@ -76,4 +76,12 @@ public class TeamEntity {
         this.developer = developer;
     }
 
+    @PreRemove
+    public void nullify(){
+        this.projects.forEach(c ->
+                                c.setTeam(null));
+        this.developers.forEach(c ->
+                                c.setTeam(null));                  
+    }
+
 }
