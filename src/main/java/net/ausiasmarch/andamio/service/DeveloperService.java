@@ -22,9 +22,6 @@ public class DeveloperService {
         this.oAuthService = oAuthService;
     }
 
-    @Autowired
-    AuthService oAuthService;
-
     public DeveloperEntity get(Long id) {
         return oDeveloperRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Developer with id: " + id + " not found"));
