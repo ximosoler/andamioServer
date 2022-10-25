@@ -19,7 +19,9 @@ public class ProjectService {
         this.oProjectRepository = oProjectRepository;
     }
 
+    
     public ProjectEntity get(Long id) {
+        oAuthService.OnlyAdmins();
         return oProjectRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Project with id: " + id + " not found"));
 
