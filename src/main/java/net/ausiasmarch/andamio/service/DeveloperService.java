@@ -12,12 +12,20 @@ public class DeveloperService {
     @Autowired
     DeveloperRepository oDeveloperRepository;
 
+    @Autowired
+    AuthService oAuthService;
+
     public DeveloperEntity get(Long id) {
         try {
             return oDeveloperRepository.findById(id).get();
         } catch (Exception ex) {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
+    }
+
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oDeveloperRepository.count();
     }
 }
 
