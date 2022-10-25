@@ -1,6 +1,7 @@
 package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.entity.ProjectEntity;
+import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.ProjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,12 @@ public class ProjectService {
     public ProjectService(ProjectRepository oProjectRepository) {
         this.oProjectRepository = oProjectRepository;
     }
+    
+    public void validate(Long id) {
+        if (!oProjectRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
 
     
     public ProjectEntity get(Long id) {
@@ -32,4 +39,10 @@ public class ProjectService {
         return oProjectRepository.count();
     }
     
+    public Long update(ProjectEntity oProjectEntity) {
+        validate(oProjectEntity.getId());
+        oAuthService.OnlyAdmins();
+        return oProjectRepository.save(oProjectEntity).getId();
+    }
+
 }
