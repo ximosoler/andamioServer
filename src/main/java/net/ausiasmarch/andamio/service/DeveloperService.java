@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.andamio.entity.DeveloperEntity;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.DeveloperRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DeveloperService {
@@ -21,6 +22,16 @@ public class DeveloperService {
         this.oDeveloperRepository = oDeveloperRepository;
         this.oAuthService = oAuthService;
     }
+
+    /**
+     * @param id
+     */
+    public void validate(Long id) {
+        if (!oDeveloperRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+    
 
     public DeveloperEntity get(Long id) {
         return oDeveloperRepository.findById(id)
@@ -42,5 +53,17 @@ public class DeveloperService {
         oAuthService.OnlyAdmins();
         return oDeveloperRepository.count();
     }
+
+          /**
+     * Allows update fields of DeveloperEntity @Service executes action of update.
+     * @param oDeveloperEntity
+     * @return
+     */
+    @Transactional
+    public Long update(DeveloperEntity oDeveloperEntity){
+        validate(oDeveloperEntity.getId());
+        oAuthService.OnlyAdmins();
+        return oDeveloperRepository.save(oDeveloperEntity).getId();
+    } 
 }
 
