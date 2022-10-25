@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +31,18 @@ public class TeamController {
         return new ResponseEntity<>(oTeamService.get(id), HttpStatus.OK);
     }
     
+
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable(value = "id") Long id){
+        return oTeamService.delete(id);
+    }
+
     @GetMapping("")
     public ResponseEntity<Page<TeamEntity>> getPage(
             @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable) {
         return new ResponseEntity<Page<TeamEntity>>(oTeamService.getPage(oPageable), HttpStatus.OK);
     }
+
 
  
     
