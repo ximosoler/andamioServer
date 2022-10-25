@@ -83,11 +83,36 @@
 
                         <tr>
                             <td>Issue</td>
+                            <td>getPage</td>
+                            <td>localhost:8082/issue/id</td>
+                            <td>GET</td>
+                            <td>Admin</td>
+                            <td>Gets a pagination of issue`s info</td>
+                        </tr>
+                        <tr>
+                            <td>Issue</td>
+                            <td>getPage</td>
+                            <td>localhost:8082/issue/id</td>
+                            <td>GET</td>
+                            <td>Reviewer</td>
+                            <td>Gets a pagination of issue`s info of the project the reviewer belongs</td>
+                        </tr>
+                        <tr>
+                            <td>Issue</td>
+                            <td>getPage</td>
+                            <td>localhost:8082/issue/id</td>
+                            <td>GET</td>
+                            <td>Developer</td>
+                            <td>Gets a pagination of issue`s info of the project the developer belongs</td>
+                        </tr>
+
+                        <tr>
+                            <td>Issue</td>
                             <td>create</td>
                             <td>localhost:8082/issue/id</td>
                             <td>CREATE</td>
                             <td>Reviewer</td>
-                            <td>A teacher can create a issue only if the task belong to the project where the teacher is
+                            <td>A teacher create an issue only if the task belong to the project where the teacher is
                             </td>
                         </tr>
 
@@ -97,7 +122,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>CREATE</td>
                             <td>Developer</td>
-                            <td>A developer can create a issue only if the task belong to the project where the developer is
+                            <td>A developer create an issue only if the task belong to the project where the developer is
                             </td>
                         </tr>
 
@@ -107,7 +132,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>CREATE</td>
                             <td>Admin</td>
-                            <td>A admin can create a issue </td>
+                            <td>A admin create an issue </td>
                         </tr>
 
 
@@ -117,7 +142,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>DELETE</td>
                             <td>Reviewer</td>
-                            <td>A teacher can delete a issue only if the task belong to the project where the teacher is
+                            <td>A teacher delete an issue only if the task belong to the project where the teacher is
                             </td>
                         </tr>
 
@@ -127,7 +152,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>DELETE</td>
                             <td>Developer</td>
-                            <td>A developer can delete a issue only if the task belong to the project where the developer is
+                            <td>A developer delete an issue only if the task belong to the project where the developer is
                             </td>
                         </tr>
 
@@ -137,7 +162,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>DELETE</td>
                             <td>Admin</td>
-                            <td>An admin can delete an issue </td>
+                            <td>An admin delete an issue </td>
                         </tr>
 
                         <tr>
@@ -146,7 +171,7 @@
                             <td>localhost:8082/issue/id</td>
                             <td>PUT</td>
                             <td>Admin</td>
-                            <td>An admin can update an issue </td>
+                            <td>An admin update an issue </td>
                         </tr>
 
                         <tr>
@@ -155,20 +180,8 @@
                             <td>localhost:8082/issue/id</td>
                             <td>PUT</td>
                             <td>Reviewer</td>
-                            <td>A teacher can update an issue </td>
+                            <td>A teacher update an issue </td>
                         </tr>
-
-                        <tr>
-                            <td>Issue</td>
-                            <td>update</td>
-                            <td>localhost:8082/issue/id</td>
-                            <td>PUT</td>
-                            <td>Developer</td>
-                            <td>A developer can't update an issue </td>
-                        </tr>
-            
-
-
 
 </body>
 
