@@ -27,6 +27,9 @@ public class ProjectController {
         return new ResponseEntity<ProjectEntity>(oProjectService.get(id), HttpStatus.OK);
     }
     
- 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oProjectService.count(), HttpStatus.OK);
+    }
     
 }
