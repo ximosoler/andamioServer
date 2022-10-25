@@ -36,4 +36,10 @@ public class DeveloperController {
             @RequestParam(value = "size", defaultValue = "5") int size) {
         return new ResponseEntity<>(oDeveloperService.getPageByTeam(id_team, page, size), HttpStatus.OK);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oDeveloperService.count(), HttpStatus.OK);
+    }
+
 }
