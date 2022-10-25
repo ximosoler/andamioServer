@@ -23,4 +23,9 @@ public class DeveloperController {
         return new ResponseEntity<DeveloperEntity>(oDeveloperService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oDeveloperService.count(), HttpStatus.OK);
+    }
+
 }
