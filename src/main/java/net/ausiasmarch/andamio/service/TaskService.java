@@ -17,7 +17,7 @@ public class TaskService {
     TaskRepository oTaskRepository;
 
     public TaskEntity get(Long id) {
-      
+        oAuthService.OnlyAdmins();
         return oTaskRepository.getById(id);
     }
 

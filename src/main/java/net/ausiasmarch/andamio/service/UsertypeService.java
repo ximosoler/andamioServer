@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service;
 public class UsertypeService {
 
     private final UsertypeRepository oUsertypeRepository;
+    private final AuthService oAuthService;
 
     @Autowired
-    public UsertypeService(UsertypeRepository oUsertypeRepository) {
+    public UsertypeService(UsertypeRepository oUsertypeRepository, AuthService oAuthService) {
         this.oUsertypeRepository = oUsertypeRepository;
+        this.oAuthService = oAuthService;
     }
 
     public UsertypeEntity get(Long id) {
+        oAuthService.OnlyAdmins();
         return oUsertypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserType with id: " + id + " not found"));
     }
