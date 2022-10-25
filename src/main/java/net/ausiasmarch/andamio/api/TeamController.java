@@ -50,6 +50,9 @@ public class TeamController {
         return new ResponseEntity<Long>(oTeamService.create(oTeamEntity), HttpStatus.OK);
     }
 
- 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oTeamService.count(), HttpStatus.OK);
+    }
     
 }
