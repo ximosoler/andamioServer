@@ -28,7 +28,7 @@ public class TeamController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TeamEntity> get(@PathVariable(value = "id") Long id) {
-        return new ResponseEntity<>(oTeamService.get(id), HttpStatus.OK);
+        return new ResponseEntity<TeamEntity>(oTeamService.get(id), HttpStatus.OK);
     }
     
 

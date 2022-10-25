@@ -22,6 +22,7 @@ public class TeamService {
     }
   
     public TeamEntity get(Long id) {
+        oAuthService.OnlyAdmins();
         return oTeamRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Team with id: " + id + " not found"));
     }
