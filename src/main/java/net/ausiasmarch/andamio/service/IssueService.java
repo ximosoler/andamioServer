@@ -15,7 +15,7 @@ public class IssueService {
         this.oIssueRepository = oIssueRepository;
     }
 
-    public IssueEntity get(Long id) {
+    public IssueEntity get(Long id) {        
         return oIssueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Issue with id: " + id + " not found"));
     }
