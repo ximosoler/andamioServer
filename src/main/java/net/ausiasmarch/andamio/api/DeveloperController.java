@@ -38,7 +38,7 @@ public class DeveloperController {
             @RequestParam(value = "usertype", required = false) Long id_usertype,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size) {
-        return new ResponseEntity<>(oDeveloperService.getPage(id_team, id_usertype,page, size), HttpStatus.OK);
+        return new ResponseEntity<>(oDeveloperService.getPage(id_team, id_usertype, page, size), HttpStatus.OK);
     }
 
     @GetMapping("/count")
@@ -46,13 +46,6 @@ public class DeveloperController {
         return new ResponseEntity<Long>(oDeveloperService.count(), HttpStatus.OK);
     }
 
-    /**
-     * Allows controller update DeveloperEntity in our case , pass info to @Service
-     * = logic.
-     * 
-     * @param oDeveloperEntity
-     * @return
-     */
     @PutMapping("")
     public ResponseEntity<Long> update(@RequestBody DeveloperEntity oDeveloperEntity) {
         return new ResponseEntity<Long>(oDeveloperService.update(oDeveloperEntity), HttpStatus.OK);
@@ -64,8 +57,8 @@ public class DeveloperController {
     }
 
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable(value = "id") Long id) {
-        return oDeveloperService.delete(id);
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<Long>(oDeveloperService.delete(id), HttpStatus.OK);
     }
 
 }
