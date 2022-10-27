@@ -33,11 +33,12 @@ public class DeveloperController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DeveloperEntity>> getPageByTeam(
+    public ResponseEntity<Page<DeveloperEntity>> getPage(
             @RequestParam(value = "team", required = false) Long id_team,
+            @RequestParam(value = "usertype", required = false) Long id_usertype,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size) {
-        return new ResponseEntity<>(oDeveloperService.getPageByTeam(id_team, page, size), HttpStatus.OK);
+        return new ResponseEntity<>(oDeveloperService.getPage(id_team, id_usertype,page, size), HttpStatus.OK);
     }
 
     @GetMapping("/count")
