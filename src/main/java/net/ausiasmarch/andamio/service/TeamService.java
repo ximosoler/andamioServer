@@ -66,4 +66,9 @@ public class TeamService {
         oNewTeamEntity.setId(0L);
         return oTeamRepository.save(oNewTeamEntity).getId();
     }
+
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oTeamRepository.count();
+        }
 }
