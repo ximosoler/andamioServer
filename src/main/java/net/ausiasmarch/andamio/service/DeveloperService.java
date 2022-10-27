@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.andamio.entity.DeveloperEntity;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
+import net.ausiasmarch.andamio.exception.ResourceNotModifiedException;
 import net.ausiasmarch.andamio.repository.DeveloperRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +76,20 @@ public class DeveloperService {
         oAuthService.OnlyAdmins();
         oNewDeveloperEntity.setId(0L);
         return oDeveloperRepository.save(oNewDeveloperEntity).getId();
+    }
+
+    public Long delete(Long id) {
+        oAuthService.OnlyAdmins();
+        if (oDeveloperRepository.existsById(id)) {
+            oDeveloperRepository.deleteById(id);
+            if (oDeveloperRepository.existsById(id)) {
+                throw new ResourceNotModifiedException("can't remove register " + id);
+            } else {
+                return id;
+            }
+        } else {
+            throw new ResourceNotModifiedException("id " + id + " doesn't exist");
         }
+    }
 }
 
