@@ -74,7 +74,7 @@ public class DeveloperService {
 
     public Long create(DeveloperEntity oNewDeveloperEntity) {
         oAuthService.OnlyAdmins();
-        
+        oNewDeveloperEntity.setId(0L);
         return oDeveloperRepository.save(oNewDeveloperEntity).getId();
     }
 

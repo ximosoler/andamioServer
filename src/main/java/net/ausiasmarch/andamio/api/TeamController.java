@@ -19,30 +19,29 @@ import org.springframework.data.domain.Sort;
 import net.ausiasmarch.andamio.entity.TeamEntity;
 import net.ausiasmarch.andamio.service.TeamService;
 
-
 @RestController
 @RequestMapping("/team")
 public class TeamController {
 
     @Autowired
     private TeamService oTeamService;
- 
 
     @GetMapping("/{id}")
     public ResponseEntity<TeamEntity> get(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<TeamEntity>(oTeamService.get(id), HttpStatus.OK);
     }
-    
 
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable(value = "id") Long id){
+    public Long delete(@PathVariable(value = "id") Long id) {
         return oTeamService.delete(id);
     }
 
     @GetMapping("")
     public ResponseEntity<Page<TeamEntity>> getPage(
-            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable) {
-        return new ResponseEntity<Page<TeamEntity>>(oTeamService.getPage(oPageable), HttpStatus.OK);
+            @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
+            @RequestParam(name = "filter", required = false) String strFilter,
+            @RequestParam(name = "developer", required = false) Long lDeveloper) {
+        return new ResponseEntity<Page<TeamEntity>>(oTeamService.getPage(oPageable, strFilter, lDeveloper), HttpStatus.OK);
     }
 
     @PostMapping("/")
