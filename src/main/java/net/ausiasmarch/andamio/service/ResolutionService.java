@@ -24,5 +24,14 @@ public class ResolutionService {
         oAuthService.OnlyAdmins();
         return oResolutionRepository.getById(id);
     }
+
+   
+    /**
+     * @return returns number of resolutions in database.
+     */
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oResolutionRepository.count();
+    }
     
 }

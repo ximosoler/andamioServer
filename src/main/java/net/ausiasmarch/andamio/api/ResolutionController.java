@@ -22,4 +22,14 @@ public class ResolutionController {
     public ResponseEntity<ResolutionEntity> get(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<ResolutionEntity>(oResolutionService.get(id), HttpStatus.OK);
     }
+
+    
+    /**
+     * @return calls ResolutionService so it returns the nuber of resolutions there are in the database.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oResolutionService.count(), HttpStatus.OK);
+    }
+
 }
