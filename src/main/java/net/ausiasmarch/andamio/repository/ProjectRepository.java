@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
     
+    Page<ProjectEntity> findByTeamId(Long id_team, Pageable oPageable);
     
 }
