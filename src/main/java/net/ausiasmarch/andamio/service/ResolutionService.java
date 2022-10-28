@@ -12,13 +12,16 @@ public class ResolutionService {
 
     
     @Autowired
-    public ResolutionService(ResolutionRepository oResolutionRepository) {
+    public ResolutionService(ResolutionRepository oResolutionRepository, AuthService oAuthService) {
         this.oResolutionRepository = oResolutionRepository;
+        this.oAuthService = oAuthService;
     }
 
     private final ResolutionRepository oResolutionRepository;
+    private final AuthService oAuthService;
     
     public ResolutionEntity get(Long id) {
+        oAuthService.OnlyAdmins();
         return oResolutionRepository.getById(id);
     }
     

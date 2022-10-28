@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -160,11 +161,11 @@ public class DeveloperEntity implements Serializable {
         this.usertype = usertype;
     }
 
-//    @PreRemove
-//    public void nullify() {
-//        this.projects.forEach(c -> c.setDeveloperEntity(null));
-//        this.issues.forEach(c -> c.setDeveloperEntity(null));
-//        this.resolutions.forEach(c -> c.setDeveloperEntity(null));
-//        this.helps.forEach(c -> c.setDeveloperEntity(null));
-//    }
+    @PreRemove
+    public void nullify() {
+        this.issues.forEach(c -> c.setDeveloper(null));
+        this.teams.forEach(c -> c.setDeveloper(null));
+        this.resolutions.forEach(c -> c.setDeveloper(null));
+        this.helps.forEach(c -> c.setDeveloper(null));
+    }
 }

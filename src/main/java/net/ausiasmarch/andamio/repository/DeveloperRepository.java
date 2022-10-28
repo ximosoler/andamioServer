@@ -11,5 +11,9 @@ public interface DeveloperRepository extends JpaRepository<DeveloperEntity, Long
     
       DeveloperEntity findByUsernameAndPassword(String username, String password);
 
+      Page<DeveloperEntity> findByTeamIdAndUsertypeId(Long id_team, Long id_usertype, Pageable oPageable);
+
+      Page<DeveloperEntity> findByUsertypeId(Long id_usertype, Pageable oPageable);
+
       Page<DeveloperEntity> findByTeamId(Long id_team, Pageable oPageable);
 }
