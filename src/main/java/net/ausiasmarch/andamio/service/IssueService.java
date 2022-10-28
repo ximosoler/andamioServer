@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 public class IssueService {
 
     private final IssueRepository oIssueRepository;
+    private final AuthService oAuthService;
 
     @Autowired
-    public IssueService(IssueRepository oIssueRepository) {
+    public IssueService(IssueRepository oIssueRepository, AuthService oAuthService) {
         this.oIssueRepository = oIssueRepository;
+        this.oAuthService = oAuthService;
     }
 
     @Autowired
@@ -26,6 +28,7 @@ public class IssueService {
     }
 
     public IssueEntity get(Long id) {
+        oAuthService.OnlyAdmins();
         return oIssueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Issue with id: " + id + " not found"));
     }
