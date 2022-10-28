@@ -44,4 +44,11 @@ public class ProjectService {
         return oProjectRepository.save(oProjectEntity).getId();
     }
 
+    public Long delete(Long id) {
+        validate(id);
+        oAuthService.OnlyAdmins();
+        oProjectRepository.deleteById(id);
+        return id;
+    }
+
 }
