@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,6 +52,11 @@ public class ProjectController {
     @PutMapping("")
     public ResponseEntity<Long> update(@RequestBody ProjectEntity oProjectEntity) {
         return new ResponseEntity<Long>(oProjectService.update(oProjectEntity), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable(value = "id") Long id){
+        return oProjectService.delete(id);
     }
     
 }
