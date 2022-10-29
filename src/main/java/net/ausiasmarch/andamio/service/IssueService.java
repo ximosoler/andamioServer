@@ -18,9 +18,6 @@ public class IssueService {
         this.oAuthService = oAuthService;
     }
 
-    @Autowired
-    AuthService oAuthService;
-
     public void validate(Long id) {
         if (!oIssueRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
@@ -37,13 +34,7 @@ public class IssueService {
         validate(oIssueEntity.getId());
         oAuthService.OnlyAdmins();
         return oIssueRepository.save(oIssueEntity).getId();
-    }
-    
-    public void validate(Long id) {
-        if (!oIssueRepository.existsById(id)) {
-            throw new ResourceNotFoundException("id " + id + " not exist");
-        }
-    }
+    }    
     
     public Long delete(Long id) {
         oAuthService.OnlyAdmins();
