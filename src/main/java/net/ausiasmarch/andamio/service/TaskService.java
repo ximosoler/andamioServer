@@ -38,5 +38,12 @@ public class TaskService {
         return oTaskRepository.count();
     }
 
+    public Long update(TaskEntity oTaskEntity) {
+        validate(oTaskEntity.getId());
+        oAuthService.OnlyAdmins();
+        oTaskRepository.save(oTaskEntity);
+        return oTaskEntity.getId();
+    }
+
 
 }

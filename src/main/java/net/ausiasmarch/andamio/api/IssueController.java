@@ -5,6 +5,7 @@ import net.ausiasmarch.andamio.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,8 +30,14 @@ public class IssueController {
         return new ResponseEntity<>(oIssueService.get(id), HttpStatus.OK);
     }
 
+
     @PutMapping("")
     public ResponseEntity<Long> update(@RequestBody IssueEntity oIssueEntity) {
         return new ResponseEntity<Long>(oIssueService.update(oIssueEntity), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<Long>(oIssueService.delete(id), HttpStatus.OK);
     }
 }

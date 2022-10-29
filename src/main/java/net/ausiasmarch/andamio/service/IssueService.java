@@ -38,4 +38,18 @@ public class IssueService {
         oAuthService.OnlyAdmins();
         return oIssueRepository.save(oIssueEntity).getId();
     }
+    
+    public void validate(Long id) {
+        if (!oIssueRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+    
+    public Long delete(Long id) {
+        oAuthService.OnlyAdmins();
+        validate(id);
+        oIssueRepository.deleteById(id);
+        return id;
+    }
+    
 }
