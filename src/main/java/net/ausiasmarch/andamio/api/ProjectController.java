@@ -40,8 +40,9 @@ public class ProjectController {
     @GetMapping("")
 	public ResponseEntity<Page<ProjectEntity>> getPage(
         	@ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
-        	@RequestParam(name = "team", required = false) Long id_team) {
-    	return new ResponseEntity<Page<ProjectEntity>>(oProjectService.getPage(oPageable, id_team), HttpStatus.OK);
+            @RequestParam(name = "filter", required = false) String strFilter,
+        	@RequestParam(name = "team", required = false) Long lTeam) {
+    	return new ResponseEntity<Page<ProjectEntity>>(oProjectService.getPage(oPageable, strFilter, lTeam), HttpStatus.OK);
 	}
     
     @GetMapping("/count")
