@@ -29,6 +29,12 @@ public class ResolutionController {
         return new ResponseEntity<ResolutionEntity>(oResolutionService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oResolutionService.count(), HttpStatus.OK);
+    }
+
+
     @GetMapping
     public ResponseEntity<Page<ResolutionEntity>> getPage(
         @ParameterObject @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC) Pageable oPageable,
@@ -37,4 +43,5 @@ public class ResolutionController {
         @RequestParam(value = "developer", required = false) Long id_developer) {
         return new ResponseEntity<>(oResolutionService.getPage(observations, id_issue, id_developer, oPageable), HttpStatus.OK);
     }
+
 }

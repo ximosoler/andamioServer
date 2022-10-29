@@ -29,6 +29,11 @@ public class ResolutionService {
         return oResolutionRepository.getById(id);
     }
 
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oResolutionRepository.count();
+    }
+    
     public Page<ResolutionEntity> getPage(String strFilter, Long id_issue, Long id_developer, Pageable oPageable) {
         oAuthService.OnlyAdmins();
         if (strFilter == null && id_issue == null && id_developer == null) {
