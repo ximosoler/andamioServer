@@ -18,21 +18,38 @@ public class IssueService {
         this.oAuthService = oAuthService;
     }
 
-    public IssueEntity get(Long id) {
-        oAuthService.OnlyAdmins();
-        return oIssueRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Issue with id: " + id + " not found"));
-    }
+    @Autowired
+    AuthService oAuthService;
 
     public void validate(Long id) {
         if (!oIssueRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
     }
+
+    public IssueEntity get(Long id) {
+        oAuthService.OnlyAdmins();
+        return oIssueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Issue with id: " + id + " not found"));
+    }
+
+    public Long update(IssueEntity oIssueEntity) {
+        validate(oIssueEntity.getId());
+        oAuthService.OnlyAdmins();
+        return oIssueRepository.save(oIssueEntity).getId();
+    }
+    
+    public void validate(Long id) {
+        if (!oIssueRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
+    }
+    
     public Long delete(Long id) {
         oAuthService.OnlyAdmins();
         validate(id);
         oIssueRepository.deleteById(id);
         return id;
     }
+    
 }

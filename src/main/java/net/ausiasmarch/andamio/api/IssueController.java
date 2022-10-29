@@ -8,8 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/issue")
@@ -27,6 +30,12 @@ public class IssueController {
         return new ResponseEntity<>(oIssueService.get(id), HttpStatus.OK);
     }
 
+
+    @PutMapping("")
+    public ResponseEntity<Long> update(@RequestBody IssueEntity oIssueEntity) {
+        return new ResponseEntity<Long>(oIssueService.update(oIssueEntity), HttpStatus.OK);
+    }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Long>(oIssueService.delete(id), HttpStatus.OK);
