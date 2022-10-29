@@ -35,6 +35,7 @@ public class TaskService {
     }
 
     public Long count() {
+        oAuthService.OnlyAdmins();
         return oTaskRepository.count();
     }
 
