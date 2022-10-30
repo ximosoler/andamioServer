@@ -35,9 +35,15 @@ public class IssueController {
     public ResponseEntity<Long> update(@RequestBody IssueEntity oIssueEntity) {
         return new ResponseEntity<Long>(oIssueService.update(oIssueEntity), HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Long>(oIssueService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count(){
+        return new ResponseEntity<Long>(oIssueService.count(), HttpStatus.OK);
+        
     }
 }
