@@ -35,13 +35,21 @@ public class ProjectService {
 
     }
 
-    public Page<ProjectEntity> getPage(Pageable oPageable, Long id_team) {
+    public Page<ProjectEntity> getPage(Pageable oPageable, String strFilter, Long lTeam) {
         oAuthService.OnlyAdmins();
         Page<ProjectEntity> oPage = null;
-        if (id_team == null) {
-            oPage = oProjectRepository.findAll(oPageable);
+        if (lTeam != null) {
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oProjectRepository.findByTeamId(lTeam, oPageable);
+            } else {
+                oPage = oProjectRepository.findByTeamIdAndProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(lTeam, strFilter, strFilter, strFilter, oPageable);
+            }
         } else {
-            oPage = oProjectRepository.findByTeamId(id_team, oPageable);
+            if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                oPage = oProjectRepository.findAll(oPageable);
+            } else {
+                oPage =  oProjectRepository.findByProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(strFilter, strFilter, strFilter, oPageable);
+            }
         }
         return oPage;
     }

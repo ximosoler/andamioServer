@@ -43,10 +43,17 @@ public class IssueService {
         return id;
     }
 
+
     public Long create(IssueEntity oNewIssueEntity) {
         oAuthService.OnlyAdmins();
         oNewIssueEntity.setId(0L);
         return oIssueRepository.save(oNewIssueEntity).getId();
+    }
+    
+    public Long count(){
+        oAuthService.OnlyAdmins();
+        return oIssueRepository.count();
+
     }
 
 }
