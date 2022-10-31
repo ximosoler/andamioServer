@@ -43,4 +43,9 @@ public class IssueService {
         return id;
     }
     
+    public Long count(){
+        oAuthService.OnlyAdmins();
+        return oIssueRepository.count();
+
+    }
 }
