@@ -35,4 +35,10 @@ public class HelpService {
         oHelpRepository.deleteById(id);
         return id;
     }
+
+    public Long update(HelpEntity oHelpEntity) {
+        validate(oHelpEntity.getId());
+        oAuthService.OnlyAdmins();
+        return oHelpRepository.save(oHelpEntity).getId();
+    }
 }
