@@ -34,13 +34,20 @@ public class IssueService {
         validate(oIssueEntity.getId());
         oAuthService.OnlyAdmins();
         return oIssueRepository.save(oIssueEntity).getId();
-    }    
-    
+    }
+
     public Long delete(Long id) {
         oAuthService.OnlyAdmins();
         validate(id);
         oIssueRepository.deleteById(id);
         return id;
+    }
+
+
+    public Long create(IssueEntity oNewIssueEntity) {
+        oAuthService.OnlyAdmins();
+        oNewIssueEntity.setId(0L);
+        return oIssueRepository.save(oNewIssueEntity).getId();
     }
     
     public Long count(){
@@ -48,4 +55,5 @@ public class IssueService {
         return oIssueRepository.count();
 
     }
+
 }
