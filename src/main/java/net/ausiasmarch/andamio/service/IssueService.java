@@ -4,6 +4,9 @@ import net.ausiasmarch.andamio.entity.IssueEntity;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,6 +38,21 @@ public class IssueService {
         oAuthService.OnlyAdmins();
         return oIssueRepository.save(oIssueEntity).getId();
     }
+
+    public Page<IssueEntity> getPage(Long id_developer, Long id_task, int page, int size) {
+        oAuthService.OnlyAdmins();
+        Pageable oPageable = PageRequest.of(page, size);
+        if (id_developer == null && id_task == null) {
+            return oIssueRepository.findAll(oPageable);
+        } else if (id_developer == null) {
+            return oIssueRepository.findByTaskId(id_task, oPageable);
+        } else if (id_task == null) {
+            return oIssueRepository.findByDeveloperId(id_developer, oPageable);
+        } else {
+            return oIssueRepository.findByDeveloperIdAndTaskId(id_developer, id_task, oPageable);
+        }
+    }
+        
 
     public Long delete(Long id) {
         oAuthService.OnlyAdmins();
