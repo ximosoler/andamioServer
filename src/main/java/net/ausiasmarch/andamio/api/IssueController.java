@@ -3,6 +3,7 @@ package net.ausiasmarch.andamio.api;
 import net.ausiasmarch.andamio.entity.IssueEntity;
 import net.ausiasmarch.andamio.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,6 +34,15 @@ public class IssueController {
         return new ResponseEntity<>(oIssueService.get(id), HttpStatus.OK);
     }
 
+    @GetMapping("")
+	public ResponseEntity<Page<IssueEntity>> getPage(
+        	@RequestParam(value = "developer", required = false) Long id_developer,
+            @RequestParam(value = "task", required = false) Long id_task,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size
+            ) {
+    	return new ResponseEntity<Page<IssueEntity>>(oIssueService.getPage(id_developer,id_task,page, size), HttpStatus.OK);
+	}
 
     @PutMapping("")
     public ResponseEntity<Long> update(@RequestBody IssueEntity oIssueEntity) {
@@ -42,6 +53,7 @@ public class IssueController {
     public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<Long>(oIssueService.delete(id), HttpStatus.OK);
     }
+    
 
 
     @PostMapping("/")

@@ -28,7 +28,7 @@ CREATE TABLE `developer` (
   `last_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `id_usertype` bigint(20) NOT NULL,
-  `id_team` bigint(20) NOT NULL,
+  `id_team` bigint(20),
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -120,7 +120,7 @@ CREATE TABLE `project` (
   `project_code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `project_description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `id_team` bigint(20) NOT NULL
+  `id_team` bigint(20)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

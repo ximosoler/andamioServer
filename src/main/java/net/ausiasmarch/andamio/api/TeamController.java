@@ -53,5 +53,15 @@ public class TeamController {
     public ResponseEntity<Long> count() {
         return new ResponseEntity<Long>(oTeamService.count(), HttpStatus.OK);
     }
+
+    @PostMapping("/generate")
+    public ResponseEntity<TeamEntity> generate() {
+        return new ResponseEntity<TeamEntity>(oTeamService.generate(), HttpStatus.OK);
+    }
+
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") int amount) {
+        return new ResponseEntity<Long>(oTeamService.generateSome(amount), HttpStatus.OK);
+    }
     
 }
