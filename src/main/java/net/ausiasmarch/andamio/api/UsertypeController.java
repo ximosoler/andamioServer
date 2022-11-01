@@ -25,4 +25,9 @@ public class UsertypeController {
     public ResponseEntity<UsertypeEntity> get(@PathVariable Long id) {
         return new ResponseEntity<>(oUsertypeService.get(id), HttpStatus.OK);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<Long>(oUsertypeService.count(), HttpStatus.OK);
+    }
 }

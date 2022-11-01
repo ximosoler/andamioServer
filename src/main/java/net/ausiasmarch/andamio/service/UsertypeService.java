@@ -22,4 +22,9 @@ public class UsertypeService {
         return oUsertypeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserType with id: " + id + " not found"));
     }
+
+    public Long count() {
+        oAuthService.OnlyAdmins();
+        return oUsertypeRepository.count();
+    }
 }
