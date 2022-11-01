@@ -1,13 +1,17 @@
 package net.ausiasmarch.andamio.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import net.ausiasmarch.andamio.entity.DeveloperEntity;
+import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.exception.ResourceNotModifiedException;
+import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.DeveloperRepository;
 
 @Service
@@ -73,6 +77,21 @@ public class DeveloperService {
             throw new ResourceNotModifiedException("can't remove register " + id);
         } else {
             return id;
+        }
+    }
+
+   //necesario para coger el id para el generate del team 
+    public DeveloperEntity getOneRandom() {
+        if (count() > 0) {
+            DeveloperEntity oDeveloperEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oDeveloperRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<DeveloperEntity> developerPage = oDeveloperRepository.findAll(oPageable);
+            List<DeveloperEntity> developerList = developerPage.getContent();
+            oDeveloperEntity = oDeveloperRepository.getById(developerList.get(0).getId());
+            return oDeveloperEntity;
+        } else {
+            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
         }
     }
 }
