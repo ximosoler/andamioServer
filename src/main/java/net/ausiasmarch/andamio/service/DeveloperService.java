@@ -1,7 +1,10 @@
 package net.ausiasmarch.andamio.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.ausiasmarch.andamio.repository.TeamRepository;
+import net.ausiasmarch.andamio.repository.UsertypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,11 +21,27 @@ import net.ausiasmarch.andamio.repository.DeveloperRepository;
 public class DeveloperService {
 
     private final DeveloperRepository oDeveloperRepository;
+    private final TeamRepository oTeamRepository;
+    private final UsertypeRepository oUsertypeRepository;
     private final AuthService oAuthService;
 
+    private final List<String> names = List.of("Ainhoa", "Kevin", "Estefania", "Cristina",
+            "Jose Maria", "Lucas Ezequiel", "Carlos", "Elliot", "Alexis", "Ruben", "Luis Fernando", "Karim", "Luis",
+            "Jose David", "Nerea", "Ximo", "Iris", "Alvaro", "Mario", "Raimon");
+
+    private final List<String> surnames = List.of("Benito", "Blanco", "Boriko", "Carrascosa", "Guerrero", "Gyori",
+            "Lazaro", "Luque", "Perez", "Perez", "Perez", "Rezgaoui", "Rodríguez", "Rosales" ,"Soler", "Soler", "Suay", "Talaya", "Tomas", "Vilar");
+
+    private final List<String> last_names = List.of("Sanchis", "Bañuls", "Laenos", "Torres", "Sanchez", "Gyori",
+            "Luz", "Pascual", "Blayimir", "Castello", "Hurtado", "Mourad", "Fernández", "Ríos" ,"Benavent", "Benavent", "Patricio", "Romance", "Zanon", "Morera");
+
+    private final String ANDAMIO_DEFAULT_PASSWORD = "73ec8dee81ea4c9e7515d63c9e5bbb707c7bc4789363c5afa401d3aa780630f6";
+
     @Autowired
-    public DeveloperService(DeveloperRepository oDeveloperRepository, AuthService oAuthService) {
+    public DeveloperService(DeveloperRepository oDeveloperRepository, TeamRepository oTeamRepository, UsertypeRepository oUsertypeRepository, AuthService oAuthService) {
         this.oDeveloperRepository = oDeveloperRepository;
+        this.oTeamRepository = oTeamRepository;
+        this.oUsertypeRepository = oUsertypeRepository;
         this.oAuthService = oAuthService;
     }
 
@@ -93,5 +112,46 @@ public class DeveloperService {
         } else {
             throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
         }
+    }
+
+    private DeveloperEntity generateDeveloper() {
+        DeveloperEntity oDeveloperEntity = new DeveloperEntity();
+
+        oDeveloperEntity.setName(names.get(RandomHelper.getRandomInt(0, names.size() - 1)));
+        oDeveloperEntity.setSurname(surnames.get(RandomHelper.getRandomInt(0, names.size() - 1)));
+        oDeveloperEntity.setLast_name(last_names.get(RandomHelper.getRandomInt(0, names.size() - 1)));
+
+        oDeveloperEntity.setUsername((oDeveloperEntity.getName().toLowerCase()
+                + oDeveloperEntity.getSurname().toLowerCase()).replaceAll("\\s", ""));
+        oDeveloperEntity.setEmail(oDeveloperEntity.getUsername() + "@andamio.net");
+
+        oDeveloperEntity.setPassword(ANDAMIO_DEFAULT_PASSWORD);
+
+        int totalUsertypes = (int) oUsertypeRepository.count();
+        int randomUserTypeId = RandomHelper.getRandomInt(1, totalUsertypes);
+        oUsertypeRepository.findById((long) randomUserTypeId)
+                .ifPresent(oDeveloperEntity::setUsertype);
+
+        int totalTeams = (int) oTeamRepository.count();
+        int randomTeamId = RandomHelper.getRandomInt(1, totalTeams);
+        oTeamRepository.findById((long) randomTeamId)
+                .ifPresent(oDeveloperEntity::setTeam);
+
+        return oDeveloperEntity;
+    }
+
+    public DeveloperEntity generateOne() {
+        oAuthService.OnlyAdmins();
+        return oDeveloperRepository.save(generateDeveloper());
+    }
+
+    public Long generateSome(Long amount) {
+        oAuthService.OnlyAdmins();
+        List<DeveloperEntity> developerToSave = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            developerToSave.add(generateDeveloper());
+        }
+        oDeveloperRepository.saveAll(developerToSave);
+        return oDeveloperRepository.count();
     }
 }

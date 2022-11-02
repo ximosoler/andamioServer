@@ -7,7 +7,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.ausiasmarch.andamio.entity.DeveloperEntity;
 import net.ausiasmarch.andamio.entity.ResolutionEntity;
+import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
+import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.ResolutionRepository;
 
 
@@ -23,6 +26,13 @@ public class ResolutionService {
 
     private final ResolutionRepository oResolutionRepository;
     private final AuthService oAuthService;
+
+    @Autowired
+    DeveloperService oDeveloperService;
+
+    @Autowired
+    IssueService oIssueService;
+
     
     public ResolutionEntity get(Long id) {
         oAuthService.OnlyAdmins();
@@ -54,5 +64,41 @@ public class ResolutionService {
             return oResolutionRepository.findByObservationsIgnoreCaseContainingAndIssueIdAndDeveloperId(strFilter, id_issue, id_developer, oPageable);
         }
     }
+
+    public ResolutionEntity generate() {
+        if (oResolutionRepository.count() > 0) {
+            String [] observacionesLista = {"Proyecto dedicado a la sanidad", "Falta actualizar la API", "Mejorar el diagrama de Entidad - Relacion"
+            , "Hacer imagen con los recursos necesarios para el despliegue", "GIT: incorporar rama Desarrollo a Produccion"};
+            String [] pullRequestUrls = {"http://localhost:8082/developer", "http://localhost:8082/issue", "http://localhost:8082/project",
+            "http://localhost:8082/resolution"};
+            String pullRequestUrl = pullRequestUrls[(int) (Math.floor(Math.random() * ((pullRequestUrls.length - 1) - 0 + 1) + 0))];
+            String observacion = observacionesLista[(int) (Math.floor(Math.random() * ((observacionesLista.length - 1) - 0 + 1) + 0))];
+            ResolutionEntity oResolutionEntity = new ResolutionEntity();
+            oResolutionEntity.setDeveloper(oDeveloperService.getOneRandom());
+            oResolutionEntity.setIntegration_datetime(RandomHelper.getRadomDateTime());
+            oResolutionEntity.setIntegration_turn(RandomHelper.getRandomInt(1, 10));
+            oResolutionEntity.setIssue(oIssueService.getOneRandom());
+            oResolutionEntity.setObservations(observacion);
+            oResolutionEntity.setPullrequest_url(pullRequestUrl);
+            oResolutionEntity.setValue(RandomHelper.getRandomInt(1, 10));
+            return oResolutionEntity;
+        } else {
+            return null;
+        }
+    }
+
+    public Long generateSome(int amount) {
+        oAuthService.isAdmin();
+        if (oIssueService.count() > 0) {
+            for (int i = 0; i < amount; i++) {
+                ResolutionEntity oResolutionEntity = generate();
+                oResolutionRepository.save(oResolutionEntity);
+            }
+            return oResolutionRepository.count();
+        } else {
+            throw new CannotPerformOperationException("no hay usuarios en la base de datos");
+        }
+    }
+
     
 }

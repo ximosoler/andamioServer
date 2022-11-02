@@ -1,8 +1,13 @@
 package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.entity.IssueEntity;
+import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
+import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.IssueRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,6 +77,20 @@ public class IssueService {
         oAuthService.OnlyAdmins();
         return oIssueRepository.count();
 
+    }
+
+    public IssueEntity getOneRandom() {
+        if (count() > 0) {
+            IssueEntity oIssueEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oIssueRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<IssueEntity> issuePage = oIssueRepository.findAll(oPageable);
+            List<IssueEntity> issueList = issuePage.getContent();
+            oIssueEntity = oIssueRepository.getById(issueList.get(0).getId());
+            return oIssueEntity;
+        } else {
+            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
+        }
     }
 
 }
