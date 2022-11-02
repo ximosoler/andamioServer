@@ -3,6 +3,9 @@ package net.ausiasmarch.andamio.service;
 import net.ausiasmarch.andamio.entity.UsertypeEntity;
 import net.ausiasmarch.andamio.repository.UsertypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,5 +29,12 @@ public class UsertypeService {
     public Long count() {
         oAuthService.OnlyAdmins();
         return oUsertypeRepository.count();
+    }
+
+    public Page<UsertypeEntity> getPage(int page, int size) {
+        oAuthService.OnlyAdmins();
+        Pageable oPageable = PageRequest.of(page, size);
+        
+            return oUsertypeRepository.findAll(oPageable);
     }
 }
