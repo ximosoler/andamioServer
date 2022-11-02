@@ -1,11 +1,16 @@
 package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.entity.ProjectEntity;
+import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
+import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.ProjectRepository;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +75,20 @@ public class ProjectService {
         oAuthService.OnlyAdmins();
         oProjectRepository.deleteById(id);
         return id;
+    }
+
+    public ProjectEntity getOneRandom() {
+        if (count() > 0) {
+            ProjectEntity oProjectEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oProjectRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<ProjectEntity> ProjectPage = oProjectRepository.findAll(oPageable);
+            List<ProjectEntity> ProjectList = ProjectPage.getContent();
+            oProjectEntity = oProjectRepository.getById(ProjectList.get(0).getId());
+            return oProjectEntity;
+        } else {
+            throw new CannotPerformOperationException("No hay projectos en la base de datos");
+        }
     }
 
 }
