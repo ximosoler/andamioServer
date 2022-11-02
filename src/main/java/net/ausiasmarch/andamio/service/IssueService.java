@@ -29,9 +29,6 @@ public class IssueService {
     private final String[] OBSERVATION = {"Ejemplo Observación 1", "Ejemplo Observación 2", "Ejemplo Observación 3", "Ejemplo Observación 4", "Ejemplo Observación 5", "Ejemplo Observación 6", "Ejemplo Observación 7",
     "Ejemplo Observación 8", "Ejemplo Observación 9", "Ejemplo Observación 10"};
 
-    private final String[] DATE = {"2022-09-25 00:00:00", "2022-10-27 00:00:00", "2022-11-26 00:00:00", "2022-09-30 00:00:00", "2022-09-15 00:00:00", "2022-10-10 00:00:00", "2022-10-02 00:00:00",
-    "2022-12-25 00:00:00", "2022-11-25 00:00:00", "2022-09-31 00:00:00"};
-
     @Autowired
     public IssueService(IssueRepository oIssueRepository, AuthService oAuthService) {
         this.oIssueRepository = oIssueRepository;
