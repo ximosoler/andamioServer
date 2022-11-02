@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +28,15 @@ public class HelpController {
     @DeleteMapping("/{id}")
     public Long delete(@PathVariable(value = "id") Long id){
         return oHelpService.delete(id);
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity<HelpEntity> generate() {
+        return new ResponseEntity<>(oHelpService.generate(), HttpStatus.OK);
+    }
+
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") Integer amount) {
+        return new ResponseEntity<>(oHelpService.generateSome(amount), HttpStatus.OK);
     }
 }
