@@ -141,7 +141,7 @@ public class ProjectService {
     }
 
     private String generateUrl() {
-        return "http://www." + generateDescription() + ".com";
+        return "http://www." + generateDescription() + "/andamios.net";
     }
 
 }
