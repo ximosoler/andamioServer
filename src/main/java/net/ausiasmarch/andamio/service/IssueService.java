@@ -6,6 +6,8 @@ import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.IssueRepository;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class IssueService {
 
+    @Autowired
+    DeveloperService oDeveloperService;
+    TaskService oTaskService;
+
     private final IssueRepository oIssueRepository;
     private final AuthService oAuthService;
+            
+    private final String[] OBSERVATION = {"Ejemplo Observación 1", "Ejemplo Observación 2", "Ejemplo Observación 3", "Ejemplo Observación 4", "Ejemplo Observación 5", "Ejemplo Observación 6", "Ejemplo Observación 7",
+    "Ejemplo Observación 8", "Ejemplo Observación 9", "Ejemplo Observación 10"};
+
+    private final String[] DATE = {"2022-09-25 00:00:00", "2022-10-27 00:00:00", "2022-11-26 00:00:00", "2022-09-30 00:00:00", "2022-09-15 00:00:00", "2022-10-10 00:00:00", "2022-10-02 00:00:00",
+    "2022-12-25 00:00:00", "2022-11-25 00:00:00", "2022-09-31 00:00:00"};
 
     @Autowired
     public IssueService(IssueRepository oIssueRepository, AuthService oAuthService) {
@@ -91,6 +103,37 @@ public class IssueService {
         } else {
             throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
         }
+    }
+
+    private IssueEntity generateIssue() {
+        oAuthService.OnlyAdmins();
+        return oIssueRepository.save(generateRandomIssue());
+    }
+    
+    private String generateObservation() {
+        return OBSERVATION[RandomHelper.getRandomInt(0, OBSERVATION.length-1)];
+    }    
+
+    private IssueEntity generateRandomIssue() {
+        IssueEntity oIssueEntity = new IssueEntity();
+        oIssueEntity.setDeveloper(oDeveloperService.getOneRandom()); 
+        oIssueEntity.setObservations(generateObservation());
+        oIssueEntity.setOpen_datetime(RandomHelper.getRadomDateTime());
+        oIssueEntity.setTask(oTaskService.getOneRandom());
+        oIssueEntity.setValue(RandomHelper.getRandomInt(0, 10));
+        return oIssueEntity;
+    }
+
+
+    public Long generateSome(Integer amount) {
+        oAuthService.OnlyAdmins();
+        List<IssueEntity> userList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            IssueEntity oIssueEntity = generateIssue();
+            oIssueRepository.save(oIssueEntity);
+            userList.add(oIssueEntity);
+        }
+        return oIssueRepository.count();
     }
 
 }

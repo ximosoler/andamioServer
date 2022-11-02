@@ -65,4 +65,11 @@ public class IssueController {
     public ResponseEntity<Long> count(){
         return new ResponseEntity<Long>(oIssueService.count(), HttpStatus.OK);        
     }
+
+    
+    @PostMapping("/generate/{amount}")
+    public ResponseEntity<Long> generateSome(@PathVariable(value = "amount") Integer amount) {
+        return new ResponseEntity<>(oIssueService.generateSome(amount), HttpStatus.OK);
+    }
+    
 }

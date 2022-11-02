@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.ausiasmarch.andamio.entity.TaskEntity;
+import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.TaskRepository;
@@ -54,6 +58,20 @@ public class TaskService {
         oAuthService.OnlyAdmins();
         oTaskRepository.save(oTaskEntity);
         return oTaskEntity.getId();
+    }
+
+    public TaskEntity getOneRandom() {
+        if (count() > 0) {
+            TaskEntity oTaskEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oTaskRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<TaskEntity> taskPage = oTaskRepository.findAll(oPageable);
+            List<TaskEntity> TaskList = taskPage.getContent();
+            oTaskEntity = oTaskRepository.getById(TaskList.get(0).getId());
+            return oTaskEntity;
+        } else {
+            throw new CannotPerformOperationException("ho hay usuarios en la base de datos");
+        }
     }
 
     public TaskEntity generate() {
