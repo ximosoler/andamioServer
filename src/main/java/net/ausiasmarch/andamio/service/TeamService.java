@@ -4,11 +4,16 @@ import net.ausiasmarch.andamio.entity.TeamEntity;
 import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.exception.UnauthorizedException;
+import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.DeveloperRepository;
 import net.ausiasmarch.andamio.repository.TeamRepository;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -105,6 +110,20 @@ public class TeamService {
             return oTeamRepository.count();
         } else {
             throw new CannotPerformOperationException("no hay usuarios en la base de datos");
+        }
+    }
+
+    public TeamEntity getOneRandom() {
+        if (count() > 0) {
+            TeamEntity oTeamEntity = null;
+            int iPosicion = RandomHelper.getRandomInt(0, (int) oTeamRepository.count() - 1);
+            Pageable oPageable = PageRequest.of(iPosicion, 1);
+            Page<TeamEntity> TeamPage = oTeamRepository.findAll(oPageable);
+            List<TeamEntity> TeamList = TeamPage.getContent();
+            oTeamEntity = oTeamRepository.getById(TeamList.get(0).getId());
+            return oTeamEntity;
+        } else {
+            throw new CannotPerformOperationException("No hay projectos en la base de datos");
         }
     }
 

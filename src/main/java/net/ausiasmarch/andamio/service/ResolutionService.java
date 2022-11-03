@@ -1,6 +1,8 @@
 package net.ausiasmarch.andamio.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -100,5 +102,14 @@ public class ResolutionService {
         }
     }
 
+    public ResolutionEntity getOneRandom() {
+        ResolutionEntity oTipoProductoEntity = null;
+        int iPosicion = RandomHelper.getRandomInt(0, (int) oResolutionRepository.count() - 1);
+        Pageable oPageable = PageRequest.of(iPosicion, 1);
+        Page<ResolutionEntity> tipoProductoPage = oResolutionRepository.findAll(oPageable);
+        List<ResolutionEntity> tipoProductoList = tipoProductoPage.getContent();
+        oTipoProductoEntity = oResolutionRepository.getById(tipoProductoList.get(0).getId());
+        return oTipoProductoEntity;
+    }
     
 }

@@ -1,6 +1,7 @@
 package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.entity.UsertypeEntity;
+import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.UsertypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,5 +37,11 @@ public class UsertypeService {
         Pageable oPageable = PageRequest.of(page, size);
         
             return oUsertypeRepository.findAll(oPageable);
+    }
+    
+    public void validate(Long id) {
+        if (!oUsertypeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
     }
 }
