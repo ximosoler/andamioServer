@@ -6,6 +6,7 @@ import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.ProjectRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ public class ProjectService {
 
     private final ProjectRepository oProjectRepository;
 
+    private final String[] DESCRIPTION = { "Example12", "Example13", "Example14",
+            "Example15", "Example16", "Example17", "Example18", "Example19", "Example20", "Example21" };
+
+    private final String[] CODE = { "DAW2021", "DAW2022", "DAW2023",
+            "SMR2021", "SMR2022", "SMR2023", "ASIR2021", "ASIR2022", "ASIR2023", "DAM2022" };
+
     @Autowired
     AuthService oAuthService;
 
@@ -26,6 +33,9 @@ public class ProjectService {
     public ProjectService(ProjectRepository oProjectRepository) {
         this.oProjectRepository = oProjectRepository;
     }
+
+    @Autowired
+    TeamService oTeamService;
 
     public void validate(Long id) {
         if (!oProjectRepository.existsById(id)) {
@@ -47,13 +57,17 @@ public class ProjectService {
             if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                 oPage = oProjectRepository.findByTeamId(lTeam, oPageable);
             } else {
-                oPage = oProjectRepository.findByTeamIdAndProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(lTeam, strFilter, strFilter, strFilter, oPageable);
+                oPage = oProjectRepository
+                        .findByTeamIdAndProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(
+                                lTeam, strFilter, strFilter, strFilter, oPageable);
             }
         } else {
             if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
                 oPage = oProjectRepository.findAll(oPageable);
             } else {
-                oPage =  oProjectRepository.findByProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(strFilter, strFilter, strFilter, oPageable);
+                oPage = oProjectRepository
+                        .findByProject_codeIgnoreCaseContainingOrProject_descriptionIgnoreCaseContainingOrUrlContaining(
+                                strFilter, strFilter, strFilter, oPageable);
             }
         }
         return oPage;
@@ -89,6 +103,45 @@ public class ProjectService {
         } else {
             throw new CannotPerformOperationException("No hay projectos en la base de datos");
         }
+    }
+
+    public ProjectEntity generate() {
+        oAuthService.OnlyAdmins();
+        ProjectEntity oProjectEntity = generateRandomProject();
+        oProjectRepository.save(oProjectEntity);
+        return oProjectEntity;
+    }
+
+    public Long generateSome(Integer amount) {
+        oAuthService.OnlyAdmins();
+        List<ProjectEntity> userList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            ProjectEntity oProjectEntity = generateRandomProject();
+            oProjectRepository.save(oProjectEntity);
+            userList.add(oProjectEntity);
+        }
+        return oProjectRepository.count();
+    }
+
+    private ProjectEntity generateRandomProject() {
+        ProjectEntity oProjectEntity = new ProjectEntity();
+        oProjectEntity.setProject_code(generateCode());
+        oProjectEntity.setProject_description(generateDescription());
+        oProjectEntity.setUrl(generateUrl());
+        oProjectEntity.setTeam(oTeamService.getOneRandom());
+        return oProjectEntity;
+    }
+
+    private String generateDescription() {
+        return DESCRIPTION[RandomHelper.getRandomInt(0, DESCRIPTION.length - 1)].toLowerCase();
+    }
+
+    private String generateCode() {
+        return CODE[RandomHelper.getRandomInt(0, CODE.length - 1)].toLowerCase();
+    }
+
+    private String generateUrl() {
+        return "http://www." + generateDescription() + "/andamios.net";
     }
 
 }

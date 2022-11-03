@@ -68,4 +68,10 @@ public class HelpService {
         oHelpEntity.setPercentage(RandomHelper.getRadomDouble(0, 100));
         return oHelpEntity;
     }
+    
+    public Long update(HelpEntity oHelpEntity) {
+        validate(oHelpEntity.getId());
+        oAuthService.OnlyAdmins();
+        return oHelpRepository.save(oHelpEntity).getId();
+    }
 }
