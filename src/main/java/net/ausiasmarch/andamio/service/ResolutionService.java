@@ -111,5 +111,11 @@ public class ResolutionService {
         oTipoProductoEntity = oResolutionRepository.getById(tipoProductoList.get(0).getId());
         return oTipoProductoEntity;
     }
+
+    public void validate(Long id){
+        if (!oResolutionRepository.existsById(id)) {
+            throw new CannotPerformOperationException("id " + id + " not exist");
+        }
+    }
     
 }

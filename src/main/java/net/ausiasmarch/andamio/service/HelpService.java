@@ -2,6 +2,7 @@ package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
+import net.ausiasmarch.andamio.helper.ValidationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,14 @@ public class HelpService {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
     }
+
+    private void validate(HelpEntity oHelpEntity) {
+        ValidationHelper.validateRange(oHelpEntity.getPercentage(), 0, 100, "field percentage must be(de 0 a 100) range");
+        oResolutionService.validate(oHelpEntity.getResolution().getId());
+        oDeveloperService.validate(oHelpEntity.getDeveloper().getId());
+    }
+
+    
 
     public Long delete(Long id) {
         validate(id);
