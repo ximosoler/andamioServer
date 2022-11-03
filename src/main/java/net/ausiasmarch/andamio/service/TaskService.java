@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import net.ausiasmarch.andamio.entity.TaskEntity;
 import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
+import net.ausiasmarch.andamio.exception.UnauthorizedException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
 import net.ausiasmarch.andamio.repository.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class TaskService {
@@ -103,5 +106,26 @@ public class TaskService {
 
     private String generateDescription() {
         return DESCRIPTION[RandomHelper.getRandomInt(0, DESCRIPTION.length - 1)].toLowerCase();
+    }
+
+    public Page<TaskEntity> getPage(Pageable oPageable, String strFilter, Long lProject) {
+        Page<TaskEntity> oPage = null;
+        if (oAuthService.isAdmin()) {
+            if (lProject != null) {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                    return oTaskRepository.findByProjectId(lProject, oPageable);
+                } else {
+                    return oTaskRepository.findByProjectIdAndComplexityContainingIgnoreCase(lProject, strFilter, oPageable);
+                }
+            } else {
+                if (strFilter == null || strFilter.isEmpty() || strFilter.trim().isEmpty()) {
+                    return oTaskRepository.findAll(oPageable);
+                } else {
+                    return oTaskRepository.findByDescriptionContainingIgnoreCase(strFilter, oPageable);
+                }
+            }
+        } else {
+            throw new UnauthorizedException("this request is only allowed to admin role");
+        }
     }
 }
