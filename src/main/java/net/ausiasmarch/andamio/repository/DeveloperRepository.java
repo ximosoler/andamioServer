@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DeveloperRepository extends JpaRepository<DeveloperEntity, Long> {
 
+      boolean existsByUsername(String username);
     
       DeveloperEntity findByUsernameAndPassword(String username, String password);
 

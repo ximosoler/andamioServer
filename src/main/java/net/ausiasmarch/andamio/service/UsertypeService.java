@@ -1,6 +1,7 @@
 package net.ausiasmarch.andamio.service;
 
 import net.ausiasmarch.andamio.entity.UsertypeEntity;
+import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.repository.UsertypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,11 @@ public class UsertypeService {
     public Long count() {
         oAuthService.OnlyAdmins();
         return oUsertypeRepository.count();
+    }
+
+    public void validate(Long id) {
+        if (!oUsertypeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("id " + id + " not exist");
+        }
     }
 }

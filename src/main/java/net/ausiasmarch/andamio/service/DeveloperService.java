@@ -14,11 +14,18 @@ import net.ausiasmarch.andamio.entity.DeveloperEntity;
 import net.ausiasmarch.andamio.exception.CannotPerformOperationException;
 import net.ausiasmarch.andamio.exception.ResourceNotFoundException;
 import net.ausiasmarch.andamio.exception.ResourceNotModifiedException;
+import net.ausiasmarch.andamio.exception.ValidationException;
 import net.ausiasmarch.andamio.helper.RandomHelper;
+import net.ausiasmarch.andamio.helper.ValidationHelper;
 import net.ausiasmarch.andamio.repository.DeveloperRepository;
 
 @Service
 public class DeveloperService {
+    @Autowired
+    UsertypeService oUsertypeService;
+
+    @Autowired
+    TeamService oTeamService;
 
     private final DeveloperRepository oDeveloperRepository;
     private final TeamRepository oTeamRepository;
@@ -49,6 +56,19 @@ public class DeveloperService {
         if (!oDeveloperRepository.existsById(id)) {
             throw new ResourceNotFoundException("id " + id + " not exist");
         }
+    }
+
+    public void validate(DeveloperEntity oDeveloperEntity){
+        ValidationHelper.validateStringLength(oDeveloperEntity.getName(), 2, 50, "campo name de Developer(el campo debe tener longitud de 2 a 50 caracteres)");
+        ValidationHelper.validateStringLength(oDeveloperEntity.getSurname(), 2, 50, "campo surname de Developer(el campo debe tener longitud de 2 a 50 caracteres)");
+        ValidationHelper.validateStringLength(oDeveloperEntity.getLast_name(), 2, 50, "campo lastname de Developer(el campo debe tener longitud de 2 a 50 caracteres)");
+        ValidationHelper.validateEmail(oDeveloperEntity.getEmail(), "campo email de Developer");
+        ValidationHelper.validateLogin(oDeveloperEntity.getUsername(), "campo username de Developer");
+        if (oDeveloperRepository.existsByUsername(oDeveloperEntity.getUsername())) {
+            throw new ValidationException("el campo username está repetido");
+        }
+        oUsertypeService.validate(oDeveloperEntity.getUsertype().getId());
+        oTeamService.validate(oDeveloperEntity.getTeam().getId());
     }
 
     public DeveloperEntity get(Long id) {
@@ -84,6 +104,7 @@ public class DeveloperService {
 
     public Long create(DeveloperEntity oNewDeveloperEntity) {
         oAuthService.OnlyAdmins();
+        validate(oNewDeveloperEntity);
         oNewDeveloperEntity.setId(0L);
         return oDeveloperRepository.save(oNewDeveloperEntity).getId();
     }
